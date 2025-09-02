@@ -5,15 +5,36 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+/**
+ * LANDING (raíz)
+ */
+Route::get('/', fn () => Inertia::render('Landing'))->name('landing');
+
+/**
+ * ALEJANDRA JAIME
+ */
+Route::prefix('aj')->group(function () {
+    Route::get('/', fn () => Inertia::render('AJ/Home'))->name('aj.home');
+    Route::get('/sobre-mi', fn () => Inertia::render('AJ/SobreMi'))->name('aj.sobremi');
+    Route::get('/servicios', fn () => Inertia::render('AJ/Servicios'))->name('aj.servicios');
+    Route::get('/portfolio', fn () => Inertia::render('AJ/Portfolio'))->name('aj.portfolio');
+    Route::get('/contacto', fn () => Inertia::render('AJ/Contacto'))->name('aj.contacto');
 });
 
+/**
+ * LEX CORAZÓN
+ */
+Route::prefix('lex')->group(function () {
+    Route::get('/', fn () => Inertia::render('Lex/Home'))->name('lex.home');
+    Route::get('/sobre-mi', fn () => Inertia::render('Lex/SobreMi'))->name('lex.sobremi');
+    Route::get('/servicios', fn () => Inertia::render('Lex/Servicios'))->name('lex.servicios');
+    Route::get('/portfolio', fn () => Inertia::render('Lex/Portfolio'))->name('lex.portfolio');
+    Route::get('/contacto', fn () => Inertia::render('Lex/Contacto'))->name('lex.contacto');
+});
+
+/**
+ * DASHBOARD / AUTH (Breeze)
+ */
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
