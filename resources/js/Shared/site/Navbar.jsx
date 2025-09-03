@@ -19,13 +19,9 @@ export default function Navbar({ brand }) {
           {brand === 'lex' ? <>Lex <span className="text-primary">Corazón</span></> : <>Alejandra <span className="text-primary">Jaime</span></>}
         </Link>
         <nav className="hidden md:flex gap-2">
-          <NavLink to={`/${brand}`}>Inicio</NavLink>
           <NavLink to={`/${brand}/sobre-mi`}>Sobre mí</NavLink>
-          <NavLink to={`/${brand}/servicios`}>Servicios</NavLink>
           <NavLink to={`/${brand}/portfolio`}>Portfolio</NavLink>
-          <NavLink to={`/${brand}/contacto`}>Contacto</NavLink>
         </nav>
-        <Link href={`/${brand}/contacto`} className="px-3 py-2 rounded-xl bg-primary text-white">Contacto</Link>
       </div>
     </header>
   );
