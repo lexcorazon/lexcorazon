@@ -49,6 +49,92 @@ export const aj = {
   ],
 
   proyectos: [
+    // INTEGRACION
+    {
+      titulo: 'Integración — Fashion Film',
+      categoria: 'marca',
+      // Vimeo: usa el enlace público;
+      media: ['https://vimeo.com/244922955'],
+    },
+
+
+    {
+      titulo: 'Integración — Vogue',
+      categoria: 'marca',
+      media: [
+        '/images/integracion/vogue/PF17_MariaMagdalena_001.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_002.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_003.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_004.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_005.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_006.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_007.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_008.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_009.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_010.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_011.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_012.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_013.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_014.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_015.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_016.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_017.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_018.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_019.JPG',
+        '/images/integracion/vogue/PF17_MariaMagdalena_020.JPG',
+      ]
+    },
+
+    //WE ARE CATTLE
+    // WE ARE CATTLE — Fashion Film
+    {
+      titulo: 'We are Cattle — Fashion Film',
+      categoria: 'marca',
+      media: ['https://vimeo.com/140413109'], // Vimeo autoplay
+    },
+
+    // WE ARE CATTLE — Vogue
+    {
+      titulo: 'We are Cattle — Vogue',
+      categoria: 'marca',
+      media: [
+        '/images/we-are-cattle/vogue/00001-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00001-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00002-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00003-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00003-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00004-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00004-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00005-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00006-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00007-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00007-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00008-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00009-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00009-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00010-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00010-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00011-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00012-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00013-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00014-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00014-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00015-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00016-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00017-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00018-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00018-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00019-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00019-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00020-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00020-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
+        '/images/we-are-cattle/vogue/00021-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00021-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00022-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00023-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+      ],
+    },
+
     // MARÍA MAGDALENA
     {
       titulo: 'We are cattle',
