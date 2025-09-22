@@ -85,6 +85,8 @@ export const aj = {
       ]
     },
 
+
+
     //WE ARE CATTLE
     // WE ARE CATTLE — Fashion Film
     {
@@ -134,6 +136,66 @@ export const aj = {
         '/images/we-are-cattle/vogue/00023-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
       ],
     },
+
+    // PRODUCTO
+    {
+      titulo: 'Play for Art (Adidas x Juancho Marqués)',
+      categoria: 'producto',
+
+
+      // Solo imágenes (ejemplo):
+      media: [
+        '/images/play-for-art/DSC05813(1).jpg',
+        '/images/play-for-art/DSC05916.jpg',
+        '/images/play-for-art/DSC05920.jpg',
+        '/images/play-for-art/DSC05927.jpg',
+        '/images/play-for-art/DSC05933.jpg',
+        '/images/play-for-art/DSC06093.jpg',
+        '/images/play-for-art/DSC06445.jpg',
+        '/images/play-for-art/DSC06480.jpg',
+        '/images/play-for-art/DSC06534(1).jpg',
+        '/images/play-for-art/DSC06561.jpg',
+        '/images/play-for-art/DSC06606.jpg',
+        '/images/play-for-art/DSC06646.jpg',
+        '/images/play-for-art/DSC06673.jpg',
+        '/images/play-for-art/DSC06687.jpg',
+        '/images/play-for-art/DSC06748.jpg',
+        '/images/play-for-art/DSC06783.jpg',
+        '/images/play-for-art/DSC06837.jpg',
+        '/images/play-for-art/DSC06866.jpg',
+      ],
+    },
+
+    {
+      titulo: 'Dressed by MM',
+      categoria: 'estilismo',
+      descripcion: 'Proyecto de estilismo y dirección de arte bajo la marca María Magdalena.',
+      media: [
+        '/images/dressed-by-mm/1.png',
+        '/images/dressed-by-mm/2.png',
+        '/images/dressed-by-mm/3.png',
+        '/images/dressed-by-mm/4.png',
+        '/images/dressed-by-mm/5.jpg',
+      ],
+    },
+
+
+    {
+      titulo: 'The Shame of Spain',
+      categoria: 'marca',
+      descripcion:
+        'Statement visual sobre sexualización, vergüenza y símbolos impuestos. Colores nacionales como herida.',
+      copy:
+        'The Shame of Spain es un statement visual y emocional... Feminismo, rabia y estética como forma de resistencia.',
+      media: [
+        '/images/the-shame-of-spain/IMG_0091.jpg',
+        '/images/the-shame-of-spain/IMG_0135.jpg',
+        '/images/the-shame-of-spain/IMG_0143.jpg',
+        '/images/the-shame-of-spain/IMG_0148.jpg',
+        '/images/the-shame-of-spain/IMG_0167.jpg',
+      ],
+    },
+
 
     // MARÍA MAGDALENA
     {

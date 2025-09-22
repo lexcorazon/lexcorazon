@@ -1,3 +1,4 @@
+// tailwind.config.js
 import defaultTheme from 'tailwindcss/defaultTheme'
 import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
@@ -28,10 +29,18 @@ export default {
       boxShadow: {
         soft: '0 10px 30px -10px rgba(15,17,21,0.15)',
       },
+
+      // ⬇️ container a ancho completo
       container: {
-        center: true,
-        padding: '1rem',
-        screens: { '2xl': '72rem' },
+        center: false,
+        padding: '0rem',
+        screens: {
+          sm: '100%',
+          md: '100%',
+          lg: '100%',
+          xl: '100%',
+          '2xl': '100%',
+        },
       },
     },
   },
