@@ -37,55 +37,132 @@ function PressStrip({ items }) {
   )
 }
 
-/* ---------- Clipping (carrusel) ---------- */
-function AutoCarousel({ items, height = 92 }) {
+/* ---------- Clipping (carrusel) — negro, infinito, draggable, CTA grande ---------- */
+function AutoCarousel({ items, height = 64, speed = 3 }) {
+  const scrollerRef = useRef(null)
+  const contentRef = useRef(null)
   const [hover, setHover] = useState(false)
-  const [x, setX] = useState(0)
 
+  const drag = useRef({
+    active: false,
+    startX: 0,
+    startLeft: 0,
+    moved: 0,
+    clickCandidate: null,
+  })
+
+  // bucle infinito con scrollLeft
   useEffect(() => {
+    const el = scrollerRef.current
+    const track = contentRef.current
+    if (!el || !track) return
+
+    el.scrollLeft = 0
+
     let raf
     const tick = () => {
-      if (!hover) {
-        setX((prev) => {
-          const next = prev - 0.5
-          const limit = items.length * 140
-          return Math.abs(next) > limit ? 0 : next
-        })
-      }
+      const third = track.scrollWidth / 3
+      if (el.scrollLeft >= third) el.scrollLeft -= third
+      if (el.scrollLeft < 0) el.scrollLeft += third
+
+      if (!hover && !drag.current.active) el.scrollLeft += speed
       raf = requestAnimationFrame(tick)
     }
+
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [hover, items.length])
+  }, [speed, hover])
 
-  const loop = [...items, ...items]
+  // drag + click sobre <a>
+  useEffect(() => {
+    const el = scrollerRef.current
+    if (!el) return
+    const MIN_CLICK_MOVE = 6
+
+    const onPointerDown = (e) => {
+      el.setPointerCapture?.(e.pointerId)
+      e.preventDefault()
+      drag.current.active = true
+      drag.current.startX = e.clientX
+      drag.current.startLeft = el.scrollLeft
+      drag.current.moved = 0
+      drag.current.clickCandidate = e.target?.closest('a') || null
+      el.style.cursor = 'grabbing'
+    }
+
+    const onPointerMove = (e) => {
+      if (!drag.current.active) return
+      const delta = e.clientX - drag.current.startX
+      drag.current.moved = Math.max(drag.current.moved, Math.abs(delta))
+      el.scrollLeft = drag.current.startLeft - delta
+    }
+
+    const finish = () => {
+      if (!drag.current.active) return
+      const moved = drag.current.moved
+      const candidate = drag.current.clickCandidate
+      drag.current.active = false
+      drag.current.clickCandidate = null
+      el.style.cursor = 'grab'
+      if (moved < MIN_CLICK_MOVE && candidate) candidate.click()
+    }
+
+    const cancel = () => {
+      drag.current.active = false
+      drag.current.clickCandidate = null
+      el.style.cursor = 'grab'
+    }
+
+    el.addEventListener('pointerdown', onPointerDown, { passive: false })
+    el.addEventListener('pointermove', onPointerMove)
+    el.addEventListener('pointerup', finish)
+    el.addEventListener('pointercancel', cancel)
+    el.addEventListener('pointerleave', cancel)
+
+    el.style.cursor = 'grab'
+    return () => {
+      el.removeEventListener('pointerdown', onPointerDown)
+      el.removeEventListener('pointermove', onPointerMove)
+      el.removeEventListener('pointerup', finish)
+      el.removeEventListener('pointercancel', cancel)
+      el.removeEventListener('pointerleave', cancel)
+    }
+  }, [])
+
+  // 3x para mayor continuidad
+  const loop = useMemo(() => [...items, ...items, ...items], [items])
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl border border-ink/10 bg-white/50 backdrop-blur-sm"
+      ref={scrollerRef}
+      className="relative w-full overflow-hidden bg-black
+                 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden"
       style={{ height }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       <div
-        className="absolute inset-0 flex items-center gap-4 px-4 will-change-transform"
-        style={{ transform: `translateX(${x}px)` }}
+        ref={contentRef}
+        className="flex items-center gap-5 px-0 select-none min-w-[200%]"
       >
         {loop.map((it, i) => (
           <a
-            key={i}
+            key={`${it.medio}-${i}`}
             href={it.url}
             target="_blank"
             rel="noreferrer"
-            className="shrink-0 grid place-items-center h-12 w-28 md:h-14 md:w-36 rounded-lg border border-ink/10 bg-paper text-xs md:text-sm text-ink/70 hover:shadow-soft"
+            className="shrink-0 px-6 md:px-8 py-1.5 md:py-2
+                       bg-black text-white font-display uppercase
+                       text-2xl md:text-4xl tracking-tight
+                       hover:bg-white hover:text-black
+                       transition-colors duration-300
+                       pointer-events-auto select-none"
             title={it.medio}
           >
             {it.medio}
           </a>
         ))}
       </div>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-paper" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-paper" />
     </div>
   )
 }
@@ -103,18 +180,16 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
 
   const AUTOPLAY_MS = 5600
   const FADE_DUR = 1.25
-  const KB_START = 1.00   // suavizado opcional
+  const KB_START = 1.00
   const KB_END = 1.06
   const isSingle = sources.length === 1
 
-  // autoplay: programamos cuál será el siguiente índice
   useEffect(() => {
     if (sources.length < 2) return
     const t = setInterval(() => setNextIdx((curIdx + 1) % sources.length), AUTOPLAY_MS)
     return () => clearInterval(t)
   }, [sources.length, curIdx])
 
-  // PRECARGA REAL sin fallback: marcamos ready solo cuando carga de verdad
   useEffect(() => {
     if (nextIdx == null) return
     const src = sources[nextIdx]
@@ -123,10 +198,11 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     if (isImg(src)) {
       const img = new Image()
       img.onload = () => setNextReady(true)
-      img.onerror = () => setNextReady(true) // si falla, no bloqueamos
+      img.onerror = () => setNextReady(true)
       img.src = src
+    } else {
+      setNextReady(true)
     }
-    // Para vídeos/Vimeo pre-cargamos con un preloader oculto en el JSX (abajo).
   }, [nextIdx, sources])
 
   const onFadeComplete = () => {
@@ -136,101 +212,52 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     setNextReady(false)
   }
 
-  // Render helpers (siempre absolute/inset-0 para no mover layout)
-  const renderVideoCover = (src, key, { onLoaded }) => (
-    <div key={key} className="absolute inset-0">
-      <video
-        src={src}
-        className="absolute left-1/2 top-1/2 w-[178%] h-[178%] -translate-x-1/2 -translate-y-1/2 object-cover"
-        autoPlay muted loop playsInline controls={false}
-        onLoadedMetadata={onLoaded}
-        preload="auto"
-      />
-    </div>
+  const renderVideoCover = (src, key) => (
+    <video
+      key={key}
+      src={src}
+      className="absolute left-1/2 top-1/2 w-[160%] h-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
+      autoPlay muted loop playsInline controls={false}
+      preload="auto"
+    />
   )
-
-  const renderVimeoCover = (src, key, { onLoaded }) => {
+  const renderVimeoCover = (src, key) => {
     const id = vimeoIdFrom(src)
     return (
-      <div key={key} className="absolute inset-0">
-        <iframe
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[160%] h-[160%]"
-          src={`https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1&byline=0&title=0&controls=0`}
-          allow="autoplay; fullscreen; picture-in-picture"
-          loading="lazy"
-          frameBorder="0"
-          onLoad={onLoaded}
-        />
-      </div>
+      <iframe
+        key={key}
+        className="absolute left-1/2 top-1/2 w-[160%] h-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
+        src={`https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1&byline=0&title=0&controls=0`}
+        allow="autoplay; fullscreen; picture-in-picture"
+        loading="lazy"
+        frameBorder="0"
+      />
     )
   }
-
-  const renderImageCover = (src, key, { onLoaded, kenBurns, loopKenBurns }) => {
+  const renderImageCover = (src, key, { kenBurns, loopKenBurns }) => {
     const Img = motion.img
     const kbProps = kenBurns
       ? loopKenBurns
-        ? {
-          initial: { scale: KB_START },
-          animate: { scale: [KB_START, KB_END, KB_START] },
-          transition: { duration: 12, repeat: Infinity, ease: 'linear' },
-        }
-        : {
-          initial: { scale: KB_START },
-          animate: { scale: KB_END },
-          transition: { duration: AUTOPLAY_MS / 1000 + 0.5, ease: 'linear' },
-        }
+        ? { initial: { scale: KB_START }, animate: { scale: [KB_START, KB_END, KB_START] }, transition: { duration: 12, repeat: Infinity, ease: 'linear' } }
+        : { initial: { scale: KB_START }, animate: { scale: KB_END }, transition: { duration: AUTOPLAY_MS / 1000 + 0.5, ease: 'linear' } }
       : {}
-
     return (
-      <div key={key} className="absolute inset-0">
-        <Img
-          src={src}
-          alt={title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          decoding="async"
-          onLoad={onLoaded}
-          {...kbProps}
-        />
-      </div>
+      <Img
+        key={key}
+        src={src}
+        alt={title}
+        className="absolute inset-0 w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+        {...kbProps}
+      />
     )
   }
-
-  const renderMedia = (src, key, { onLoaded, kenBurns = false, loopKenBurns = false }) => {
+  const renderMedia = (src, key, { kenBurns = false, loopKenBurns = false } = {}) => {
     if (!src) return null
-    if (isVid(src)) return renderVideoCover(src, key, { onLoaded })
-    if (isVimeoUrl(src)) return renderVimeoCover(src, key, { onLoaded })
-    if (isImg(src)) return renderImageCover(src, key, { onLoaded, kenBurns, loopKenBurns })
-    return null
-  }
-
-  // PRELOADER oculto para marcar ready de vídeos / Vimeo ANTES del swap
-  const Preloader = () => {
-    if (nextIdx == null || nextReady) return null
-    const src = sources[nextIdx]
-    if (isVid(src)) {
-      return (
-        <video
-          className="sr-only"
-          src={src}
-          muted
-          preload="auto"
-          onLoadedMetadata={() => setNextReady(true)}
-        />
-      )
-    }
-    if (isVimeoUrl(src)) {
-      const id = vimeoIdFrom(src)
-      return (
-        <iframe
-          className="sr-only"
-          src={`https://player.vimeo.com/video/${id}?background=1&autoplay=0&muted=1&loop=0&byline=0&title=0&controls=0`}
-          onLoad={() => setNextReady(true)}
-          title="preload"
-        />
-      )
-    }
-    // imágenes ya se precargan en el useEffect
+    if (isVid(src)) return renderVideoCover(src, key)
+    if (isVimeoUrl(src)) return renderVimeoCover(src, key)
+    if (isImg(src)) return renderImageCover(src, key, { kenBurns, loopKenBurns })
     return null
   }
 
@@ -244,17 +271,13 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Contenedor FIJO para evitar recolocado */}
       <div className="absolute inset-0 w-full h-full">
-        {/* capa actual */}
         {renderMedia(cur, `cur-${curIdx}`, {
-          onLoaded: () => { },
           kenBurns: isImg(cur),
           loopKenBurns: isImg(cur) && isSingle,
         })}
       </div>
 
-      {/* capa siguiente */}
       {nxt != null && nextReady && (
         <motion.div
           className="absolute inset-0 w-full h-full"
@@ -263,14 +286,10 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
           transition={{ duration: FADE_DUR, ease: [0.22, 1, 0.36, 1] }}
           onAnimationComplete={onFadeComplete}
         >
-          {renderMedia(nxt, `next-${nextIdx}`, {
-            onLoaded: () => { },
-            kenBurns: isImg(nxt),
-          })}
+          {renderMedia(nxt, `next-${nextIdx}`, { kenBurns: isImg(nxt) })}
         </motion.div>
       )}
 
-      {/* overlay */}
       <motion.div
         className="absolute inset-0 bg-black/25 text-white p-3 md:p-4 flex items-end"
         initial={{ opacity: 0 }}
@@ -281,10 +300,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
           <div className="text-[11px] md:text-xs uppercase tracking-wide text-white/80">Colección</div>
           <div className="text-base md:text-lg font-semibold">{title}</div>
           {href && (
-            <Link
-              href={href}
-              className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm"
-            >
+            <Link href={href} className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm">
               Ver proyecto
             </Link>
           )}
@@ -292,7 +308,6 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       </motion.div>
     </motion.article>
   )
-
 }
 
 export default function AJHome() {
@@ -308,7 +323,6 @@ export default function AJHome() {
       byTitle('dressed by mm'),
       like(/the shame of spain/i),
       like(/play for art/i),
-
     ].filter(Boolean)
   }, [])
 
@@ -324,18 +338,16 @@ export default function AJHome() {
 
   return (
     <SiteLayout brand="aj">
-      {/* CLIPPING PRENSA */}
-      <section className="w-full px-4 md:px-8 py-12 md:py-16">
-        <h2 className="text-xl md:text-2xl font-display text-ink/90 text-center">Clipping de prensa</h2>
-        <div className="mt-4"><PressStrip items={aj.prensa} /></div>
-        <div className="mt-6"><AutoCarousel items={aj.prensa} height={92} /></div>
+      {/* CLIPPING PRENSA pegado arriba, en bucle infinito, draggable y ahora SÍ se pausa al hover */}
+      <section className="w-full">
+        <AutoCarousel items={aj.prensa} height={64} />
       </section>
 
       {/* PORTFOLIO — grid 5x3 (7 celdas) con layout personalizado */}
       <section className="w-full px-2 md:px-4 py-10 md:py-14">
         <h2 className="px-2 md:px-4 text-xl md:text-2xl font-display text-ink/90">Portfolio</h2>
 
-        <div className="relative mt-6  overflow-hidden bg-gradient-to-br from-black/90 via-ink/80 to-black/90 p-1 md:p-2">
+        <div className="relative mt-6 overflow-hidden bg-gradient-to-br from-black/90 via-ink/80 to-black/90 p-1 md:p-2">
           <div className="grid grid-cols-5 grid-rows-3 gap-1 h-[85vh]">
             <div className="div1">{cell(0)}</div>
             <div className="row-span-2 col-start-1 row-start-2">{cell(1)}</div>
