@@ -160,7 +160,6 @@ export const aj = {
         '/images/play-for-art/DSC06673.jpg',
         '/images/play-for-art/DSC06687.jpg',
         '/images/play-for-art/DSC06748.jpg',
-        '/images/play-for-art/DSC06783.jpg',
         '/images/play-for-art/DSC06837.jpg',
         '/images/play-for-art/DSC06866.jpg',
       ],

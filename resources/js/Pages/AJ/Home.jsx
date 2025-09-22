@@ -90,56 +90,43 @@ function AutoCarousel({ items, height = 92 }) {
   )
 }
 
-/* ---------- Tile de media con cross-fade + Ken Burns ---------- */
+/* ---------- Tile de media con cross-fade + Ken Burns (sin recolocado) ---------- */
 function AutoAspectTile({ title, href, media = [], images = [] }) {
   const sources = media.length ? media : images
   const [curIdx, setCurIdx] = useState(0)
   const [nextIdx, setNextIdx] = useState(null)
   const [nextReady, setNextReady] = useState(false)
   const [hover, setHover] = useState(false)
-  const fallbackTimer = useRef(null)
 
   const cur = sources[curIdx]
   const nxt = nextIdx != null ? sources[nextIdx] : null
 
   const AUTOPLAY_MS = 5600
   const FADE_DUR = 1.25
-  const KB_START = 1.02
-  const KB_END = 1.08
-
+  const KB_START = 1.00   // suavizado opcional
+  const KB_END = 1.06
   const isSingle = sources.length === 1
 
-  // autoplay: programa el siguiente índice (el swap real se hace tras el fade)
+  // autoplay: programamos cuál será el siguiente índice
   useEffect(() => {
     if (sources.length < 2) return
     const t = setInterval(() => setNextIdx((curIdx + 1) % sources.length), AUTOPLAY_MS)
     return () => clearInterval(t)
   }, [sources.length, curIdx])
 
-  // precarga con fallback por si no llega onload
+  // PRECARGA REAL sin fallback: marcamos ready solo cuando carga de verdad
   useEffect(() => {
     if (nextIdx == null) return
     const src = sources[nextIdx]
     setNextReady(false)
 
-    if (fallbackTimer.current) clearTimeout(fallbackTimer.current)
-    fallbackTimer.current = setTimeout(() => setNextReady(true), 1500)
-
     if (isImg(src)) {
       const img = new Image()
-      img.onload = () => {
-        if (fallbackTimer.current) clearTimeout(fallbackTimer.current)
-        setNextReady(true)
-      }
-      img.onerror = () => {
-        if (fallbackTimer.current) clearTimeout(fallbackTimer.current)
-        setNextReady(true)
-      }
+      img.onload = () => setNextReady(true)
+      img.onerror = () => setNextReady(true) // si falla, no bloqueamos
       img.src = src
     }
-    return () => {
-      if (fallbackTimer.current) clearTimeout(fallbackTimer.current)
-    }
+    // Para vídeos/Vimeo pre-cargamos con un preloader oculto en el JSX (abajo).
   }, [nextIdx, sources])
 
   const onFadeComplete = () => {
@@ -149,7 +136,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     setNextReady(false)
   }
 
-  // Render helpers
+  // Render helpers (siempre absolute/inset-0 para no mover layout)
   const renderVideoCover = (src, key, { onLoaded }) => (
     <div key={key} className="absolute inset-0">
       <video
@@ -157,6 +144,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
         className="absolute left-1/2 top-1/2 w-[178%] h-[178%] -translate-x-1/2 -translate-y-1/2 object-cover"
         autoPlay muted loop playsInline controls={false}
         onLoadedMetadata={onLoaded}
+        preload="auto"
       />
     </div>
   )
@@ -177,30 +165,20 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     )
   }
 
-  // Imagen: sin bordes y con Ken Burns
   const renderImageCover = (src, key, { onLoaded, kenBurns, loopKenBurns }) => {
     const Img = motion.img
     const kbProps = kenBurns
       ? loopKenBurns
         ? {
-            // Bucle ida-vuelta continuo para celdas con una única imagen
-            initial: { scale: KB_START },
-            animate: { scale: [KB_START, KB_END, KB_START] },
-            transition: {
-              duration: 12, // más pausado
-              repeat: Infinity,
-              ease: 'linear',
-            },
-          }
+          initial: { scale: KB_START },
+          animate: { scale: [KB_START, KB_END, KB_START] },
+          transition: { duration: 12, repeat: Infinity, ease: 'linear' },
+        }
         : {
-            // Ken Burns por slide cuando hay varias imágenes
-            initial: { scale: KB_START },
-            animate: { scale: KB_END },
-            transition: {
-              duration: AUTOPLAY_MS / 1000 + 0.5,
-              ease: 'linear',
-            },
-          }
+          initial: { scale: KB_START },
+          animate: { scale: KB_END },
+          transition: { duration: AUTOPLAY_MS / 1000 + 0.5, ease: 'linear' },
+        }
       : {}
 
     return (
@@ -226,40 +204,73 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     return null
   }
 
+  // PRELOADER oculto para marcar ready de vídeos / Vimeo ANTES del swap
+  const Preloader = () => {
+    if (nextIdx == null || nextReady) return null
+    const src = sources[nextIdx]
+    if (isVid(src)) {
+      return (
+        <video
+          className="sr-only"
+          src={src}
+          muted
+          preload="auto"
+          onLoadedMetadata={() => setNextReady(true)}
+        />
+      )
+    }
+    if (isVimeoUrl(src)) {
+      const id = vimeoIdFrom(src)
+      return (
+        <iframe
+          className="sr-only"
+          src={`https://player.vimeo.com/video/${id}?background=1&autoplay=0&muted=1&loop=0&byline=0&title=0&controls=0`}
+          onLoad={() => setNextReady(true)}
+          title="preload"
+        />
+      )
+    }
+    // imágenes ya se precargan en el useEffect
+    return null
+  }
+
   return (
     <motion.article
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="relative w-full h-full bg-transparent overflow-hidden"
+      className="relative w-full h-full bg-black overflow-hidden"
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="absolute inset-0">
+      {/* Contenedor FIJO para evitar recolocado */}
+      <div className="absolute inset-0 w-full h-full">
+        {/* capa actual */}
         {renderMedia(cur, `cur-${curIdx}`, {
-          onLoaded: () => {},
+          onLoaded: () => { },
           kenBurns: isImg(cur),
-          loopKenBurns: isImg(cur) && isSingle, // <- loop continuo si solo hay una imagen
+          loopKenBurns: isImg(cur) && isSingle,
         })}
       </div>
 
-      {nxt != null && (
+      {/* capa siguiente */}
+      {nxt != null && nextReady && (
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 w-full h-full"
           initial={{ opacity: 0 }}
-          animate={{ opacity: nextReady ? 1 : 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: FADE_DUR, ease: [0.22, 1, 0.36, 1] }}
           onAnimationComplete={onFadeComplete}
         >
           {renderMedia(nxt, `next-${nextIdx}`, {
-            onLoaded: () => setNextReady(true),
+            onLoaded: () => { },
             kenBurns: isImg(nxt),
-            loopKenBurns: false,
           })}
         </motion.div>
       )}
 
+      {/* overlay */}
       <motion.div
         className="absolute inset-0 bg-black/25 text-white p-3 md:p-4 flex items-end"
         initial={{ opacity: 0 }}
@@ -281,6 +292,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       </motion.div>
     </motion.article>
   )
+
 }
 
 export default function AJHome() {
@@ -296,7 +308,7 @@ export default function AJHome() {
       byTitle('dressed by mm'),
       like(/the shame of spain/i),
       like(/play for art/i),
-      
+
     ].filter(Boolean)
   }, [])
 
@@ -323,14 +335,16 @@ export default function AJHome() {
       <section className="w-full px-2 md:px-4 py-10 md:py-14">
         <h2 className="px-2 md:px-4 text-xl md:text-2xl font-display text-ink/90">Portfolio</h2>
 
-        <div className="mt-6 grid grid-cols-5 grid-rows-3 gap-0 h-[80vh]">
-          <div className="div1">{cell(0)}</div>
-          <div className="row-span-2 col-start-1 row-start-2">{cell(1)}</div>
-          <div className="row-span-3 col-start-2 row-start-1">{cell(5)}</div>
-          <div className="row-span-2 col-start-4 row-start-1">{cell(3)}</div>
-          <div className="col-start-4 row-start-3">{cell(2)}</div>
-          <div className="row-span-3 col-start-3 row-start-1">{cell(4)}</div>
-          <div className="row-span-3 col-start-5 row-start-1">{cell(6)}</div>
+        <div className="relative mt-6  overflow-hidden bg-gradient-to-br from-black/90 via-ink/80 to-black/90 p-1 md:p-2">
+          <div className="grid grid-cols-5 grid-rows-3 gap-1 h-[85vh]">
+            <div className="div1">{cell(0)}</div>
+            <div className="row-span-2 col-start-1 row-start-2">{cell(1)}</div>
+            <div className="row-span-3 col-start-2 row-start-1">{cell(5)}</div>
+            <div className="row-span-2 col-start-4 row-start-1">{cell(3)}</div>
+            <div className="col-start-4 row-start-3">{cell(2)}</div>
+            <div className="row-span-3 col-start-3 row-start-1">{cell(4)}</div>
+            <div className="row-span-3 col-start-5 row-start-1">{cell(6)}</div>
+          </div>
         </div>
 
         <div className="mt-8 text-center">
