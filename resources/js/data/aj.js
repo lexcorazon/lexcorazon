@@ -166,6 +166,22 @@ export const aj = {
     },
 
     {
+      titulo: "drogas-meditacion",
+      images: [
+        "images/drogas-meditacion/1.jpg",
+        "images/drogas-meditacion/2.jpg",
+        "images/drogas-meditacion/3.jpg",
+        "images/drogas-meditacion/4.jpg",
+      ]
+    },
+
+    {
+      titulo: "Its all about Vanishment (Teresa Rofer)",
+      media: ["https://vimeo.com/437936022"]
+    },
+
+
+    {
       titulo: 'Dressed by MM',
       categoria: 'estilismo',
       descripcion: 'Proyecto de estilismo y dirección de arte bajo la marca María Magdalena.',

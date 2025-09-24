@@ -13,31 +13,13 @@ const slug = (s) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
 
-const isImg = (s) => typeof s === 'string' && /\.(png|jpe?g|webp|gif|avif)$/i.test(s)
+const isImg = (s) =>
+  typeof s === 'string' && /\.(png|jpe?g|webp|gif|avif)$/i.test(s)
 const isVid = (s) => typeof s === 'string' && /\.(mp4|webm)$/i.test(s)
 const isVimeoUrl = (s) => typeof s === 'string' && /vimeo\.com\/(\d+)/i.test(s)
 const vimeoIdFrom = (s) => (s.match(/vimeo\.com\/(\d+)/i) || [])[1]
 
-/* ---------- Clipping (enlaces) ---------- */
-function PressStrip({ items }) {
-  return (
-    <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center">
-      {items.map((p, i) => (
-        <a
-          key={i}
-          href={p.url}
-          target="_blank"
-          rel="noreferrer"
-          className="text-sm md:text-base underline underline-offset-4 hover:no-underline hover:opacity-80"
-        >
-          {p.medio}
-        </a>
-      ))}
-    </div>
-  )
-}
-
-/* ---------- Clipping (carrusel) — negro, infinito, draggable, CTA grande ---------- */
+/* ---------- Clipping (carrusel) ---------- */
 function AutoCarousel({ items, height = 64, speed = 3 }) {
   const scrollerRef = useRef(null)
   const contentRef = useRef(null)
@@ -51,15 +33,14 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
     clickCandidate: null,
   })
 
-  // bucle infinito con scrollLeft
   useEffect(() => {
     const el = scrollerRef.current
     const track = contentRef.current
     if (!el || !track) return
 
     el.scrollLeft = 0
-
     let raf
+
     const tick = () => {
       const third = track.scrollWidth / 3
       if (el.scrollLeft >= third) el.scrollLeft -= third
@@ -73,7 +54,6 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
     return () => cancelAnimationFrame(raf)
   }, [speed, hover])
 
-  // drag + click sobre <a>
   useEffect(() => {
     const el = scrollerRef.current
     if (!el) return
@@ -129,7 +109,6 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
     }
   }, [])
 
-  // 3x para mayor continuidad
   const loop = useMemo(() => [...items, ...items, ...items], [items])
 
   return (
@@ -167,7 +146,7 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
   )
 }
 
-/* ---------- Tile de media con cross-fade + Ken Burns (sin recolocado) ---------- */
+/* ---------- Tile media ---------- */
 function AutoAspectTile({ title, href, media = [], images = [] }) {
   const sources = media.length ? media : images
   const [curIdx, setCurIdx] = useState(0)
@@ -180,13 +159,16 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
 
   const AUTOPLAY_MS = 5600
   const FADE_DUR = 1.25
-  const KB_START = 1.00
+  const KB_START = 1.0
   const KB_END = 1.06
   const isSingle = sources.length === 1
 
   useEffect(() => {
     if (sources.length < 2) return
-    const t = setInterval(() => setNextIdx((curIdx + 1) % sources.length), AUTOPLAY_MS)
+    const t = setInterval(
+      () => setNextIdx((curIdx + 1) % sources.length),
+      AUTOPLAY_MS
+    )
     return () => clearInterval(t)
   }, [sources.length, curIdx])
 
@@ -217,7 +199,11 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       key={key}
       src={src}
       className="absolute left-1/2 top-1/2 w-[160%] h-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
-      autoPlay muted loop playsInline controls={false}
+      autoPlay
+      muted
+      loop
+      playsInline
+      controls={false}
       preload="auto"
     />
   )
@@ -238,8 +224,19 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     const Img = motion.img
     const kbProps = kenBurns
       ? loopKenBurns
-        ? { initial: { scale: KB_START }, animate: { scale: [KB_START, KB_END, KB_START] }, transition: { duration: 12, repeat: Infinity, ease: 'linear' } }
-        : { initial: { scale: KB_START }, animate: { scale: KB_END }, transition: { duration: AUTOPLAY_MS / 1000 + 0.5, ease: 'linear' } }
+        ? {
+            initial: { scale: KB_START },
+            animate: { scale: [KB_START, KB_END, KB_START] },
+            transition: { duration: 12, repeat: Infinity, ease: 'linear' },
+          }
+        : {
+            initial: { scale: KB_START },
+            animate: { scale: KB_END },
+            transition: {
+              duration: AUTOPLAY_MS / 1000 + 0.5,
+              ease: 'linear',
+            },
+          }
       : {}
     return (
       <Img
@@ -253,6 +250,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       />
     )
   }
+
   const renderMedia = (src, key, { kenBurns = false, loopKenBurns = false } = {}) => {
     if (!src) return null
     if (isVid(src)) return renderVideoCover(src, key)
@@ -297,10 +295,15 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
         transition={{ duration: 0.35 }}
       >
         <div>
-          <div className="text-[11px] md:text-xs uppercase tracking-wide text-white/80">Colección</div>
+          <div className="text-[11px] md:text-xs uppercase tracking-wide text-white/80">
+            Colección
+          </div>
           <div className="text-base md:text-lg font-semibold">{title}</div>
           {href && (
-            <Link href={href} className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm">
+            <Link
+              href={href}
+              className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm"
+            >
               Ver proyecto
             </Link>
           )}
@@ -310,71 +313,83 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
   )
 }
 
+/* ---------- Home ---------- */
 export default function AJHome() {
   const projects = useMemo(() => {
-    const byTitle = (t) => aj.proyectos.find((p) => p.titulo.toLowerCase() === t.toLowerCase())
+    const byTitle = (t) =>
+      aj.proyectos.find((p) => p.titulo.toLowerCase() === t.toLowerCase())
     const like = (re) => aj.proyectos.find((p) => re.test(p.titulo))
 
-    return [
-      byTitle('we are cattle — fashion film'),
-      byTitle('we are cattle — vogue'),
-      byTitle('integración — fashion film'),
-      byTitle('integración — vogue'),
-      byTitle('dressed by mm'),
-      like(/the shame of spain/i),
-      like(/play for art/i),
-    ].filter(Boolean)
+    return {
+      weAreCattleFilm: byTitle('we are cattle — fashion film'),
+      weAreCattleVogue: byTitle('we are cattle — vogue'),
+      integracionFilm: byTitle('integración — fashion film'),
+      integracionVogue: byTitle('integración — vogue'),
+      shameOfSpain: like(/the shame of spain/i),
+      playForArt: like(/play for art/i),
+      drogasMeditacion: byTitle('drogas-meditacion'),
+      vanishment: byTitle('its all about vanishment (teresa rofer)'),
+    }
   }, [])
 
-  const cell = (i) =>
-    projects[i] ? (
+  const cell = (project) =>
+    project ? (
       <AutoAspectTile
-        title={projects[i].titulo}
-        href={`/aj/portfolio#${slug(projects[i].titulo)}`}
-        media={projects[i].media}
-        images={projects[i].images}
+        title={project.titulo}
+        href={`/aj/portfolio#${slug(project.titulo)}`}
+        media={project.media}
+        images={project.images}
       />
     ) : null
 
   return (
     <SiteLayout brand="aj">
-      {/* CLIPPING PRENSA pegado arriba, en bucle infinito, draggable y ahora SÍ se pausa al hover */}
+      {/* CLIPPING PRENSA */}
       <section className="w-full">
         <AutoCarousel items={aj.prensa} height={64} />
       </section>
 
-      {/* PORTFOLIO — grid 5x3 (7 celdas) con layout personalizado */}
+      {/* PORTFOLIO — grid 5x4 */}
       <section className="w-full px-2 md:px-4 py-10 md:py-14">
-        <h2 className="px-2 md:px-4 text-xl md:text-2xl font-display text-ink/90">Portfolio</h2>
+        <h2 className="px-2 md:px-4 text-xl md:text-2xl font-display text-ink/90">
+          Portfolio
+        </h2>
 
         <div className="relative mt-6 overflow-hidden bg-gradient-to-br from-black/90 via-ink/80 to-black/90 p-1 md:p-2">
-          <div className="grid grid-cols-5 grid-rows-3 gap-1 h-[85vh]">
-            <div className="div1">{cell(0)}</div>
-            <div className="row-span-2 col-start-1 row-start-2">{cell(1)}</div>
-            <div className="row-span-3 col-start-2 row-start-1">{cell(5)}</div>
-            <div className="row-span-2 col-start-4 row-start-1">{cell(3)}</div>
-            <div className="col-start-4 row-start-3">{cell(2)}</div>
-            <div className="row-span-3 col-start-3 row-start-1">{cell(4)}</div>
-            <div className="row-span-3 col-start-5 row-start-1">{cell(6)}</div>
+          <div className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]">
+            <div className="div1">{cell(projects.weAreCattleFilm)}</div>
+            <div className="row-span-3 col-start-1 row-start-2">
+              {cell(projects.weAreCattleVogue)}
+            </div>
+            <div className="row-span-4 col-start-2 row-start-1">
+              {cell(projects.drogasMeditacion)}
+            </div>
+            <div className="row-span-3 col-start-3 row-start-1">
+              {cell(projects.integracionVogue)}
+            </div>
+            <div className="col-start-3 row-start-4">
+              {cell(projects.integracionFilm)}
+            </div>
+            <div className="row-span-4 col-start-4 row-start-1">
+              {cell(projects.shameOfSpain)}
+            </div>
+            <div className="col-start-5 row-start-1">
+              {cell(projects.vanishment)}
+            </div>
+            <div className="row-span-3 col-start-5 row-start-2">
+              {cell(projects.playForArt)}
+            </div>
           </div>
         </div>
 
         <div className="mt-8 text-center">
-          <Link href="/aj/portfolio" className="inline-block border border-ink/30 px-5 py-2 text-sm">
+          <Link
+            href="/aj/portfolio"
+            className="inline-block border border-ink/30 px-5 py-2 text-sm"
+          >
             Ver todo el portfolio
           </Link>
         </div>
-      </section>
-
-      {/* Futuras secciones */}
-      <section className="w-full px-4 md:px-8 py-14 border-t border-ink/10 text-center">
-        <h2 className="text-lg md:text-xl text-ink/70">Experiencia destacada · próximamente</h2>
-      </section>
-      <section className="w-full px-4 md:px-8 py-14 border-t border-ink/10 text-center">
-        <h2 className="text-lg md:text-xl text-ink/70">Sobre mí · próximamente</h2>
-      </section>
-      <section className="w-full px-4 md:px-8 py-14 border-t border-ink/10 text-center">
-        <h2 className="text-lg md:text-ink/70">Contacto / Redes / Política de privacidad · próximamente</h2>
       </section>
     </SiteLayout>
   )
