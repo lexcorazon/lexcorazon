@@ -385,8 +385,8 @@ export default function AJHome() {
       titulo: "It's All About Vanishment (Teresa Rofer)",
       media: ['https://vimeo.com/437936022'],
       descripcion: `
-    <p><strong>It’s All About Vanishment</strong> explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.</p>
-    <p>Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.</p>
+    It’s All About Vanishment explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.
+    Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.
   `,
     }
 
