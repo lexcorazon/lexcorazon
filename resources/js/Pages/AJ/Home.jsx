@@ -296,7 +296,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       >
         <div>
           <div className="text-[11px] md:text-xs uppercase tracking-wide text-white/80">
-            Colección
+         
           </div>
           <div className="text-base md:text-lg font-semibold">{title}</div>
           {href && (
