@@ -194,6 +194,16 @@ export const aj = {
       ],
     },
 
+    {
+      titulo: "Winter-Series",
+      images: [
+        "images/winter-series/a.jpg",
+        "images/winter-series/b.jpg",
+        "images/winter-series/c.jpg",
+        "images/winter-series/d.jpg"
+      ]
+    },
+
 
     {
       titulo: 'The Shame of Spain',

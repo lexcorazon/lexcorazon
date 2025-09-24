@@ -329,6 +329,7 @@ export default function AJHome() {
       playForArt: like(/play for art/i),
       drogasMeditacion: byTitle('drogas-meditacion'),
       vanishment: byTitle('its all about vanishment (teresa rofer)'),
+      winterSeries: byTitle('winter-series'),
     }
   }, [])
 
@@ -349,7 +350,7 @@ export default function AJHome() {
         <AutoCarousel items={aj.prensa} height={64} />
       </section>
 
-      {/* PORTFOLIO — grid 5x4 */}
+      {/* PORTFOLIO — grid 5x4 con 9 celdas */}
       <section className="w-full px-2 md:px-4 py-10 md:py-14">
         <h2 className="px-2 md:px-4 text-xl md:text-2xl font-display text-ink/90">
           Portfolio
@@ -373,11 +374,10 @@ export default function AJHome() {
             <div className="row-span-4 col-start-4 row-start-1">
               {cell(projects.shameOfSpain)}
             </div>
-            <div className="col-start-5 row-start-1">
-              {cell(projects.vanishment)}
-            </div>
-            <div className="row-span-3 col-start-5 row-start-2">
-              {cell(projects.playForArt)}
+            <div className="col-start-5 row-start-1">{cell(projects.vanishment)}</div>
+            <div className="col-start-5 row-start-2">{cell(projects.playForArt)}</div>
+            <div className="row-span-2 col-start-5 row-start-3">
+              {cell(projects.winterSeries)}
             </div>
           </div>
         </div>
