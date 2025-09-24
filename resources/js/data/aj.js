@@ -177,7 +177,11 @@ export const aj = {
 
     {
       titulo: "Its all about Vanishment (Teresa Rofer)",
-      media: ["https://vimeo.com/437936022"]
+      media: ["https://vimeo.com/437936022"],
+      descripcion: `
+    <p><strong>It’s All About Vanishment</strong> explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.</p>
+    <p>Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.</p>
+  `,
     },
 
 
@@ -310,4 +314,70 @@ export const aj = {
       'Primer premio Fashion Film “Integración” — Madrid Fashion Film Festival',
     ],
   },
+
+
 }
+
+/* ==== PATCH: actualizar solo descripciones sin tocar imágenes/medias ==== */
+const __norm = (s) =>
+  (s || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+
+const __descs = {
+  // ——— Ya existentes ———
+  'integración — fashion film': `
+    <p><strong>Integración</strong> es una colección de ropa que mezcla opuestos. Rechaza lo rígido, lo estéril y lo separado. Reúne los contrastes del imaginario personal y los pone a convivir: lo puro y lo caótico, lo tradicional y lo espontáneo, lo espiritual y lo cotidiano.</p>
+    <p>La estética se inspira en la Sevilla de finales de los 90 y principios de los 2000, con guiños a las tribus urbanas que marcaban la época: canis y pijos. Dos estilos enfrentados que aquí se cruzan y se mezclan para crear algo nuevo.</p>
+    <p>Los tejidos elegantes se combinan con otros más crudos. Hay referencias al flamenco jondo, a la religión, a la sexualidad y a las diferencias de clase. Lo banal y lo profundo se encuentran en un universo textil pensado, pero sin rigidez.</p>
+    <p>La nostalgia funciona como herramienta de integración: entender el pasado, revisar patrones y abrir una etapa de madurez y diversión, en la que estar más cerca de la esencia se vuelve una elección.</p>
+  `,
+  'we are cattle — fashion film': `
+    <p>El hombre dentro de la sociedad como individuo que hay que idiotizar para que contribuya a sus reglas. En “We are cattle” se compara al ciudadano con el ganado. Al haberlo sometido a estrategias —cada vez más sutiles— de persuasión, se le va despojando del pensamiento crítico e identidad propia, alejándolo de los valores esenciales. El resultado es un ser humano convertido en cómplice y víctima de la patocracia.</p>
+    <p>“We are cattle” es una representación irónica y surrealista del panorama. El aspecto teatral de las prendas pretende transmitir de manera impactante un mensaje: <strong>necesidad de despertar</strong>.</p>
+  `,
+  'maría magdalena': `
+    <p><strong>María Magdalena</strong> fue una marca de moda conceptual que se mueve entre lo religioso, lo filosófico y lo urbano. Su universo estético está profundamente influenciado por la iconografía cristiana, el folclore andaluz, la cultura popular y el streetwear, con una mirada crítica y poética a la vez.</p>
+    <p>La marca propone un discurso dual: lo sagrado y lo profano, lo marginal y lo aspiracional, la devoción y la rebeldía, conviven en cada prenda como parte de una narrativa más amplia.</p>
+    <p>Su nombre no es casual: María Magdalena representa el arquetipo femenino contradictorio, la santa y la pecadora, y funciona como símbolo de la complejidad identitaria que la marca explora. Las prendas no son solo moda, sino vehículos para comunicar ideas, muchas veces con una carga irónica, subversiva o política.</p>
+    <p>María Magdalena también se posiciona desde una ética de producción consciente, trabajando con talleres locales y apostando por la sostenibilidad y la inclusión social. Más allá del diseño, se presenta como un proyecto artístico y filosófico que utiliza la ropa como lenguaje para cuestionar y narrar.</p>
+  `,
+  'the shame of spain': `
+    <p><strong>The Shame of Spain</strong> es un statement visual y emocional. Una pieza crítica sobre la sexualización, la vergüenza de existir y el peso de los símbolos que nos fueron impuestos.</p>
+    <p>Colores nacionales usados como herida, como espejo. Un drop que incomoda desde el cuerpo, habla desde el género y subvierte desde la ironía. <strong>Feminismo, rabia y estética</strong> como forma de resistencia.</p>
+  `,
+  'drogas-meditacion': `
+    <p>Una tensión entre dos extremos: el viaje hacia dentro o la huida hacia fuera. Por un lado, el silencio oriental que enseña a mirar el ego de frente; por el otro, la velocidad occidental que lo anestesia con químicos.</p>
+    <p>Dos formas de estar —o de no estar— en el mundo. Dos respuestas al mismo vacío.</p>
+  `,
+  'Play for Art (Adidas x Juancho Marqués)': `
+    <p><strong>Drop Play for Art x Adidas – Dirección Creativa y Concepto</strong></p>
+    <p>En este proyecto desarrollé y materialicé el <em>concepto original <strong>Play for Art</strong></em>, un universo creativo que mezcla arte, música y moda, donde la expresión y el juego son protagonistas. Sobre esta base, dirigí y coordiné la colaboración con Adidas, creando la <strong>camiseta exclusiva</strong> que lleva el espíritu de la marca.</p>
+    <p>Diseñamos el <strong>falso logo de equipo de fútbol con las iniciales de Juancho Marqués</strong>, elemento central que conecta identidad, estética y narrativa. Cada detalle —color, tipografía, símbolo— fue pensado para <strong>reflejar autenticidad, innovación y diversión</strong>, valores esenciales de <em>Play for Art</em>.</p>
+    <p>El resultado es una pieza que trasciende el merchandising tradicional: no solo es un producto, sino una <strong>extensión tangible de un concepto artístico</strong>, mostrando cómo la dirección creativa y la conceptualización pueden transformar una prenda en experiencia y en identidad.</p>
+  `,
+  'winter-series': `
+    <p><strong>Winter Series Hoodie – Dirección Creativa y Diseño</strong></p>
+    <p>Participé en el diseño de la hoodie de la colección Winter Series, <strong>dirigiendo el proceso creativo</strong> y seleccionando colores y detalles para asegurar coherencia y estilo.</p>
+    <p>La prenda combina <strong>comodidad y presencia visual</strong>, manteniendo la esencia del concepto original.</p>
+  `,
+  'we are cattle — vogue': `
+    <p><strong>We Are Cattle — Vogue</strong> reinterpreta el discurso del film en clave editorial. Siluetas escultóricas, estilismo teatral y encuadres frontales para convertir la crítica social en imágenes icónicas.</p>
+    <p>Dirección creativa, estilismo y casting dialogan con una luz dura y una composición limpia que refuerzan la idea de alienación y masa. El resultado: una serie potente, directa y memorable.</p>
+  `,
+  'integración — vogue': `
+    <p><strong>Integración — Vogue</strong> traduce la mezcla <em>cani / pijo</em> a fotografía: tejidos nobles junto a denim y deportivas, símbolos religiosos con elementos populares, Sevilla como telón y una paleta cálida que une contradicciones.</p>
+    <p>Una editorial que condensa el concepto de la colección en imágenes: choque, cruce y madurez estética sin perder la calle.</p>
+  `,
+
+};
+
+if (Array.isArray(aj?.proyectos)) {
+  aj.proyectos = aj.proyectos.map((p) => {
+    const matchKey = Object.keys(__descs).find((k) => __norm(k) === __norm(p.titulo));
+    return matchKey ? { ...p, descripcion: __descs[matchKey] } : p;
+  });
+}
+/* ==== /PATCH ==== */

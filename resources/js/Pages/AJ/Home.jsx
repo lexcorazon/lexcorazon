@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react'
 import { Link } from '@inertiajs/react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import SiteLayout from '@/Layouts/SiteLayout'
 import { aj } from '@/data/aj'
 
@@ -13,13 +13,31 @@ const slug = (s) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)/g, '')
 
-const isImg = (s) =>
-  typeof s === 'string' && /\.(png|jpe?g|webp|gif|avif)$/i.test(s)
+const isImg = (s) => typeof s === 'string' && /\.(png|jpe?g|webp|gif|avif)$/i.test(s)
 const isVid = (s) => typeof s === 'string' && /\.(mp4|webm)$/i.test(s)
 const isVimeoUrl = (s) => typeof s === 'string' && /vimeo\.com\/(\d+)/i.test(s)
 const vimeoIdFrom = (s) => (s.match(/vimeo\.com\/(\d+)/i) || [])[1]
 
-/* ---------- Clipping (carrusel) ---------- */
+/* ---------- Clipping (enlaces) ---------- */
+function PressStrip({ items }) {
+  return (
+    <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+      {items.map((p, i) => (
+        <a
+          key={i}
+          href={p.url}
+          target="_blank"
+          rel="noreferrer"
+          className="text-sm md:text-base underline underline-offset-4 hover:no-underline hover:opacity-80"
+        >
+          {p.medio}
+        </a>
+      ))}
+    </div>
+  )
+}
+
+/* ---------- Clipping (carrusel) — negro, infinito, draggable, CTA grande ---------- */
 function AutoCarousel({ items, height = 64, speed = 3 }) {
   const scrollerRef = useRef(null)
   const contentRef = useRef(null)
@@ -33,14 +51,15 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
     clickCandidate: null,
   })
 
+  // bucle infinito con scrollLeft (triplicamos contenido para continuidad)
   useEffect(() => {
     const el = scrollerRef.current
     const track = contentRef.current
     if (!el || !track) return
 
     el.scrollLeft = 0
-    let raf
 
+    let raf
     const tick = () => {
       const third = track.scrollWidth / 3
       if (el.scrollLeft >= third) el.scrollLeft -= third
@@ -54,6 +73,7 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
     return () => cancelAnimationFrame(raf)
   }, [speed, hover])
 
+  // drag + click sobre <a>
   useEffect(() => {
     const el = scrollerRef.current
     if (!el) return
@@ -109,6 +129,7 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
     }
   }, [])
 
+  // 3x para mayor continuidad
   const loop = useMemo(() => [...items, ...items, ...items], [items])
 
   return (
@@ -146,8 +167,8 @@ function AutoCarousel({ items, height = 64, speed = 3 }) {
   )
 }
 
-/* ---------- Tile media ---------- */
-function AutoAspectTile({ title, href, media = [], images = [] }) {
+/* ---------- Tile de media con cross-fade + Ken Burns (sin recolocado) ---------- */
+function AutoAspectTile({ title, href, media = [], images = [], onOpen }) {
   const sources = media.length ? media : images
   const [curIdx, setCurIdx] = useState(0)
   const [nextIdx, setNextIdx] = useState(null)
@@ -159,16 +180,13 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
 
   const AUTOPLAY_MS = 5600
   const FADE_DUR = 1.25
-  const KB_START = 1.0
+  const KB_START = 1.00
   const KB_END = 1.06
   const isSingle = sources.length === 1
 
   useEffect(() => {
     if (sources.length < 2) return
-    const t = setInterval(
-      () => setNextIdx((curIdx + 1) % sources.length),
-      AUTOPLAY_MS
-    )
+    const t = setInterval(() => setNextIdx((curIdx + 1) % sources.length), AUTOPLAY_MS)
     return () => clearInterval(t)
   }, [sources.length, curIdx])
 
@@ -194,16 +212,13 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     setNextReady(false)
   }
 
+  // Vídeo más grande dentro de su celda (overscan suave)
   const renderVideoCover = (src, key) => (
     <video
       key={key}
       src={src}
       className="absolute left-1/2 top-1/2 w-[160%] h-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
-      autoPlay
-      muted
-      loop
-      playsInline
-      controls={false}
+      autoPlay muted loop playsInline controls={false}
       preload="auto"
     />
   )
@@ -224,19 +239,8 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
     const Img = motion.img
     const kbProps = kenBurns
       ? loopKenBurns
-        ? {
-            initial: { scale: KB_START },
-            animate: { scale: [KB_START, KB_END, KB_START] },
-            transition: { duration: 12, repeat: Infinity, ease: 'linear' },
-          }
-        : {
-            initial: { scale: KB_START },
-            animate: { scale: KB_END },
-            transition: {
-              duration: AUTOPLAY_MS / 1000 + 0.5,
-              ease: 'linear',
-            },
-          }
+        ? { initial: { scale: KB_START }, animate: { scale: [KB_START, KB_END, KB_START] }, transition: { duration: 12, repeat: Infinity, ease: 'linear' } }
+        : { initial: { scale: KB_START }, animate: { scale: KB_END }, transition: { duration: AUTOPLAY_MS / 1000 + 0.5, ease: 'linear' } }
       : {}
     return (
       <Img
@@ -250,7 +254,6 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
       />
     )
   }
-
   const renderMedia = (src, key, { kenBurns = false, loopKenBurns = false } = {}) => {
     if (!src) return null
     if (isVid(src)) return renderVideoCover(src, key)
@@ -288,6 +291,7 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
         </motion.div>
       )}
 
+      {/* overlay */}
       <motion.div
         className="absolute inset-0 bg-black/25 text-white p-3 md:p-4 flex items-end"
         initial={{ opacity: 0 }}
@@ -295,17 +299,25 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
         transition={{ duration: 0.35 }}
       >
         <div>
-          <div className="text-[11px] md:text-xs uppercase tracking-wide text-white/80">
-         
-          </div>
+          <div className="text-[11px] md:text-xs uppercase tracking-wide text-white/80">Colección</div>
           <div className="text-base md:text-lg font-semibold">{title}</div>
-          {href && (
-            <Link
-              href={href}
-              className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm"
+
+          {onOpen ? (
+            <button
+              onClick={onOpen}
+              className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm hover:bg-white hover:text-black transition"
             >
               Ver proyecto
-            </Link>
+            </button>
+          ) : (
+            href && (
+              <Link
+                href={href}
+                className="mt-2 inline-block border border-white/30 px-3 py-1 text-xs md:text-sm"
+              >
+                Ver proyecto
+              </Link>
+            )
           )}
         </div>
       </motion.div>
@@ -313,12 +325,70 @@ function AutoAspectTile({ title, href, media = [], images = [] }) {
   )
 }
 
-/* ---------- Home ---------- */
+/* ---------- Modal sencillo para info de proyecto ---------- */
+function ProjectModal({ project, onClose }) {
+  if (!project) return null
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div
+          className="relative w-full max-w-lg rounded-xl bg-white text-black p-6 shadow-2xl"
+          initial={{ scale: 0.96, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.96, opacity: 0 }}
+          transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <button
+            onClick={onClose}
+            className="absolute right-3 top-3 rounded-full px-2 py-1 text-sm hover:bg-black/10"
+            aria-label="Cerrar"
+          >
+            ✕
+          </button>
+
+          <h3 className="text-xl font-semibold">{project.titulo}</h3>
+          {project.descripcion && (
+            <p className="mt-2 text-sm text-neutral-700 leading-relaxed">
+              {project.descripcion}
+            </p>
+          )}
+
+          <div className="mt-5">
+            <Link
+              href={`/aj/portfolio#${slug(project.titulo)}`}
+              className="inline-block border border-black px-4 py-2 text-sm hover:bg-black hover:text-white transition"
+            >
+              Ir al portfolio completo
+            </Link>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}
+
 export default function AJHome() {
+  const [activeProject, setActiveProject] = useState(null)
+
   const projects = useMemo(() => {
     const byTitle = (t) =>
       aj.proyectos.find((p) => p.titulo.toLowerCase() === t.toLowerCase())
     const like = (re) => aj.proyectos.find((p) => re.test(p.titulo))
+
+    // Proyecto especial para el vídeo de Vimeo "It’s All About Vanishment (Teresa Rofer)"
+    const vanishment = {
+      titulo: "It's All About Vanishment (Teresa Rofer)",
+      media: ['https://vimeo.com/437936022'],
+      descripcion: `
+    <p><strong>It’s All About Vanishment</strong> explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.</p>
+    <p>Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.</p>
+  `,
+    }
 
     return {
       weAreCattleFilm: byTitle('we are cattle — fashion film'),
@@ -326,10 +396,10 @@ export default function AJHome() {
       integracionFilm: byTitle('integración — fashion film'),
       integracionVogue: byTitle('integración — vogue'),
       shameOfSpain: like(/the shame of spain/i),
-      playForArt: like(/play for art/i),
+      playForArt: byTitle('Play for Art (Adidas x Juancho Marqués)'),
       drogasMeditacion: byTitle('drogas-meditacion'),
-      vanishment: byTitle('its all about vanishment (teresa rofer)'),
       winterSeries: byTitle('winter-series'),
+      vanishment, // vídeo suelto
     }
   }, [])
 
@@ -340,6 +410,7 @@ export default function AJHome() {
         href={`/aj/portfolio#${slug(project.titulo)}`}
         media={project.media}
         images={project.images}
+        onOpen={() => setActiveProject(project)}
       />
     ) : null
 
@@ -350,7 +421,7 @@ export default function AJHome() {
         <AutoCarousel items={aj.prensa} height={64} />
       </section>
 
-      {/* PORTFOLIO — grid 5x4 con 9 celdas */}
+      {/* PORTFOLIO — grid 5x4 (9 celdas) */}
       <section className="w-full px-2 md:px-4 py-10 md:py-14">
         <h2 className="px-2 md:px-4 text-xl md:text-2xl font-display text-ink/90">
           Portfolio
@@ -358,26 +429,48 @@ export default function AJHome() {
 
         <div className="relative mt-6 overflow-hidden bg-gradient-to-br from-black/90 via-ink/80 to-black/90 p-1 md:p-2">
           <div className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]">
+            {/* div1 → we are cattle — fashion film */}
             <div className="div1">{cell(projects.weAreCattleFilm)}</div>
+
+            {/* div2 → we are cattle — vogue */}
             <div className="row-span-3 col-start-1 row-start-2">
               {cell(projects.weAreCattleVogue)}
             </div>
+
+            {/* div3 → drogas-meditacion */}
             <div className="row-span-4 col-start-2 row-start-1">
               {cell(projects.drogasMeditacion)}
             </div>
+
+            {/* div4 → integracion — vogue */}
             <div className="row-span-3 col-start-3 row-start-1">
               {cell(projects.integracionVogue)}
             </div>
+
+            {/* div5 → integracion — fashion film */}
             <div className="col-start-3 row-start-4">
               {cell(projects.integracionFilm)}
             </div>
+
+            {/* div6 → the shame of spain */}
             <div className="row-span-4 col-start-4 row-start-1">
               {cell(projects.shameOfSpain)}
             </div>
-            <div className="col-start-5 row-start-1">{cell(projects.vanishment)}</div>
-            <div className="col-start-5 row-start-2">{cell(projects.playForArt)}</div>
-            <div className="row-span-2 col-start-5 row-start-3">
+
+            {/* div7 → vídeo suelto (Vanishment) */}
+            <div className="col-start-5 row-start-1">
+              {cell(projects.vanishment)}
+            </div>
+
+            {/* div8 → play for art */}
+            <div className="col-start-5 row-start-2">
               {cell(projects.winterSeries)}
+            </div>
+
+            {/* div9 → winter-series */}
+            <div className="row-span-2 col-start-5 row-start-3">
+              {cell(projects.playForArt)}
+
             </div>
           </div>
         </div>
@@ -391,6 +484,25 @@ export default function AJHome() {
           </Link>
         </div>
       </section>
+
+      {/* Modal */}
+      <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
+
+      {/* Futuras secciones */}
+      <section className="w-full px-4 md:px-8 py-14 border-t border-ink/10 text-center">
+        <h2 className="text-lg md:text-xl text-ink/70">
+          Experiencia destacada · próximamente
+        </h2>
+      </section>
+      <section className="w-full px-4 md:px-8 py-14 border-t border-ink/10 text-center">
+        <h2 className="text-lg md:text-xl text-ink/70">Sobre mí · próximamente</h2>
+      </section>
+      <section className="w-full px-4 md:px-8 py-14 border-t border-ink/10 text-center">
+        <h2 className="text-lg md:text-ink/70">
+          Contacto / Redes / Política de privacidad · próximamente
+        </h2>
+      </section>
     </SiteLayout>
   )
 }
+
