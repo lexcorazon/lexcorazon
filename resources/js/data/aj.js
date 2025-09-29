@@ -360,8 +360,8 @@ const __descs = {
   `,
   'winter-series': `
     Winter Series Hoodie – Dirección Creativa y Diseño
-    Participé en el diseño de la hoodie de la colección Winter Series, <strong>dirigiendo el proceso creativo y seleccionando colores y detalles para asegurar coherencia y estilo.
-    La prenda combina <strong>comodidad y presencia visual, manteniendo la esencia del concepto original.
+    Participé en el diseño de la hoodie de la colección Winter Series, dirigiendo el proceso creativo y seleccionando colores y detalles para asegurar coherencia y estilo.
+    La prenda combina comodidad y presencia visual, manteniendo la esencia del concepto original.
   `,
   'we are cattle — vogue': `
     We Are Cattle — Vogue reinterpreta el discurso del film en clave editorial. Siluetas escultóricas, estilismo teatral y encuadres frontales para convertir la crítica social en imágenes icónicas.
