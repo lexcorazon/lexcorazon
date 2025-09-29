@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { Link } from '@inertiajs/react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import SiteLayout from '@/Layouts/SiteLayout'
 import { aj } from '@/data/aj'
 
@@ -10,17 +10,17 @@ const slug = (s) =>
 /* ---------- Clipping de prensa horizontal ---------- */
 function Clipping({ items }) {
   return (
-    <section className="w-full bg-white py-8">
-      <h2 className="text-3xl md:text-4xl font-bold text-black mb-4 text-center">
+    <section className="w-full bg-black py-8">
+      <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">
         Clipping de prensa
       </h2>
       <div className="flex gap-4 px-4 md:px-8">
         {items.map((item, idx) => (
           <motion.div
             key={idx}
-            whileHover={{ scale: 1.03, boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
+            whileHover={{ scale: 1.03, boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}
             transition={{ type: 'spring', stiffness: 120 }}
-            className="flex-1 min-w-0" 
+            className="flex-1 min-w-0"
           >
             <a
               href={item.url}
@@ -35,7 +35,7 @@ function Clipping({ items }) {
                   className="w-full h-full object-cover"
                 />
               )}
-              <div className="absolute bottom-0 left-0 w-full p-2 bg-black/40 text-white text-xs">
+              <div className="absolute bottom-0 left-0 w-full p-2 bg-black/50 text-white text-xs">
                 <span className="font-semibold">{item.medio}</span>
               </div>
             </a>
@@ -45,7 +45,6 @@ function Clipping({ items }) {
     </section>
   )
 }
-
 
 /* ---------- AutoAspectTile para portfolio ---------- */
 function AutoAspectTile({ title, href, media = [], images = [], onOpen }) {
@@ -131,33 +130,101 @@ function AutoAspectTile({ title, href, media = [], images = [], onOpen }) {
   )
 }
 
-/* ---------- Carrusel Dressed by MM ---------- */
+/* ---------- Carrusel Dressed by MM con autoplay ---------- */
 function DressedByMMCarousel({ media = [] }) {
   const [curIdx, setCurIdx] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
 
   const next = () => setCurIdx((prev) => (prev + 1) % media.length)
   const prev = () => setCurIdx((prev) => (prev - 1 + media.length) % media.length)
 
+  useEffect(() => {
+    if (isHovered) return
+    const interval = setInterval(() => {
+      setCurIdx((prev) => (prev + 1) % media.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [isHovered, media.length])
+
+  const getPosition = (index) => {
+    const diff = (index - curIdx + media.length) % media.length
+    if (diff === 0) return "center"
+    if (diff === 1) return "right"
+    if (diff === media.length - 1) return "left"
+    return "hidden"
+  }
+
   return (
-    <section className="w-full px-4 md:px-8 py-10">
-      <h2 className="text-2xl md:text-3xl font-bold text-black mb-6">Dressed by MM</h2>
-      <div className="relative w-full max-w-4xl mx-auto h-[500px]">
-        {media[curIdx] && (
-          <motion.img
-            key={media[curIdx]}
-            src={media[curIdx]}
-            alt={`Look ${curIdx + 1}`}
-            className="w-full h-full object-contain rounded-lg"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.8 }}
-          />
-        )}
-        <button onClick={prev} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white px-3 py-1 rounded">‹</button>
-        <button onClick={next} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white px-3 py-1 rounded">›</button>
+    <section className="w-full px-4 md:px-8 py-16 bg-black">
+      <h2 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">Dressed by MM</h2>
+      <div
+        className="relative w-full max-w-6xl mx-auto flex items-center justify-center h-[500px] overflow-hidden"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {media.map((src, idx) => {
+          const pos = getPosition(idx)
+          let style = {}
+
+          if (pos === "center") {
+            style = { scale: 1, opacity: 1, zIndex: 30, x: 0 }
+          } else if (pos === "left") {
+            style = { scale: 0.8, opacity: 0.6, zIndex: 20, x: "-60%" }
+          } else if (pos === "right") {
+            style = { scale: 0.8, opacity: 0.6, zIndex: 20, x: "60%" }
+          } else {
+            style = { scale: 0.5, opacity: 0, zIndex: 10 }
+          }
+
+          return (
+            <motion.img
+              key={idx}
+              src={src}
+              alt={`Look ${idx + 1}`}
+              className="absolute rounded-lg shadow-lg object-contain max-h-[500px]"
+              initial={false}
+              animate={style}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
+            />
+          )
+        })}
+
+        <button onClick={prev} className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40">‹</button>
+        <button onClick={next} className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40">›</button>
       </div>
     </section>
+  )
+}
+
+/* ---------- AccordionItem para Trayectoria ---------- */
+function AccordionItem({ title, children }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div
+      className="p-4 border rounded-md bg-black border-white/30 cursor-pointer"
+      onClick={() => setOpen(!open)}
+    >
+      <div className="font-semibold text-lg flex justify-between items-center">
+        {title}
+        <span className="ml-2">{open ? "−" : "+"}</span>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <div className="mt-2 text-sm">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 
@@ -197,13 +264,23 @@ export default function AJHome() {
     }
   }, [])
 
-  const cell = (project) => project ? <AutoAspectTile title={project.titulo} href={`/aj/portfolio#${slug(project.titulo)}`} media={project.media} images={project.images} onOpen={() => setActiveProject(project)} /> : null
+  const cell = (project) =>
+    project ? (
+      <AutoAspectTile
+        title={project.titulo}
+        href={`/aj/portfolio#${slug(project.titulo)}`}
+        media={project.media}
+        images={project.images}
+        onOpen={() => setActiveProject(project)}
+      />
+    ) : null
 
   return (
-     <SiteLayout brand="aj" className="font-roboto bg-black text-white">
+    <SiteLayout brand="aj" className="font-roboto bg-black text-white">
       <Clipping items={aj.prensa || []} />
 
-      <section className="w-full px-4 md:px-8 py-10">
+      {/* Portfolio */}
+      <section className="w-full px-4 md:px-8 py-10 bg-white text-black">
         <div className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]">
           <div>{cell(projects.weAreCattleFilm)}</div>
           <div className="row-span-3 col-start-1 row-start-2">{cell(projects.weAreCattleVogue)}</div>
@@ -220,70 +297,112 @@ export default function AJHome() {
       {/* Dressed by MM */}
       {projects.dressedByMM.length > 0 && <DressedByMMCarousel media={projects.dressedByMM} />}
 
-      {/* Trayectoria */}
-      <section className="w-full px-4 md:px-8 py-14">
-        <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">Trayectoria</h2>
-        <div className="space-y-4 text-black">
-          <details className="p-4 border rounded-md bg-gray-50 cursor-pointer">
-            <summary className="font-semibold text-lg">Colaboraciones y proyectos</summary>
-            <ul className="mt-2 list-disc list-inside space-y-1">
-              <li><strong>Juancho Marqués</strong> (2020–23) · Estilismo, diseño e imagen para giras y proyectos visuales.</li>
-              <li><strong>Adidas</strong> (2021) · Diseño de producto en colaboración especial.</li>
-              <li><strong>María Magdalena</strong> (2015–19) · Fundadora de la marca, colecciones conceptuales y universos visuales.</li>
-              <li><strong>Roberto Diz</strong> (2013) · Diseño en prácticas en atelier de alta costura.</li>
-            </ul>
-          </details>
-          <details className="p-4 border rounded-md bg-gray-50 cursor-pointer">
-            <summary className="font-semibold text-lg">Formación</summary>
-            <ul className="mt-2 list-disc list-inside space-y-1">
-              <li><strong>Astroterapéutica</strong> (2022-2024) · Astrología psicológica y evolutiva.</li>
-              <li><strong>Ceade Leonardo</strong> (2011–14) · Grado en Diseño y Gestión de la Moda.</li>
-            </ul>
-          </details>
-          <details className="p-4 border rounded-md bg-gray-50 cursor-pointer">
-            <summary className="font-semibold text-lg">Reconocimientos</summary>
-            <ul className="mt-2 list-disc list-inside space-y-1">
-              <li>Primer premio · Desencaja “Jóvenes diseñadores”, Andalucía de Moda.</li>
-              <li>Premio New Designers Awards · Neo2 by Sancal.</li>
-              <li>Mejor cortometraje internacional · <em>We Are Cattle</em>, México Fashion Film Festival.</li>
-              <li>Primer premio Fashion Film “Integración” · Madrid Fashion Film Festival.</li>
-            </ul>
-          </details>
-          <details className="p-4 border rounded-md bg-gray-50 cursor-pointer">
-            <summary className="font-semibold text-lg">Selecciones y nominaciones internacionales</summary>
-            <ul className="mt-2 list-disc list-inside space-y-1">
-              <li>BAFTA Aesthetica Film Festival – Official Selection</li>
-              <li>ShowStudio Awards – Official Selection</li>
-              <li>Copenhagen Fashion Film – Best New Talent Nominee</li>
-              <li>Fashion Film Festival Milano – Official Selection</li>
-              <li>La Jolla Fashion Film Festival – Best Director Nominee</li>
-              <li>Mercedes-Benz Bokeh South Africa FFF – Official Selection</li>
-              <li>Canadian International Fashion Film Festival – Official Selection</li>
-              <li>Cinemoi Fashion Film Festival – Best Director Nominee</li>
-              <li>Aurora Film Fest – Official Selection</li>
-              <li>FKM Festival de Cine Fantástico – Official Selection</li>
-              <li>Fantarifa International Film & TV Festival – Official Selection</li>
-            </ul>
-          </details>
-        </div>
-      </section>
+  
+   {/* Trayectoria */}
+<section className="w-full px-4 md:px-8 py-14 bg-black">
+  <h2 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
+    Trayectoria
+  </h2>
+
+  <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0 items-start text-white">
+    <div className="flex-1">
+      <AccordionItem title="Colaboraciones y proyectos">
+        <ul className="list-disc list-inside space-y-1">
+          <li><strong>Juancho Marqués</strong> (2020–23) · Estilismo, diseño e imagen para giras y proyectos visuales.</li>
+          <li><strong>Adidas</strong> (2021) · Diseño de producto en colaboración especial.</li>
+          <li><strong>María Magdalena</strong> (2015–19) · Fundadora de la marca, colecciones conceptuales y universos visuales.</li>
+          <li><strong>Roberto Diz</strong> (2013) · Diseño en prácticas en atelier de alta costura.</li>
+        </ul>
+      </AccordionItem>
+    </div>
+
+    <div className="flex-1">
+      <AccordionItem title="Formación">
+        <ul className="list-disc list-inside space-y-1">
+          <li><strong>Astroterapéutica</strong> (2022-2024) · Astrología psicológica y evolutiva.</li>
+          <li><strong>Ceade Leonardo</strong> (2011–14) · Grado en Diseño y Gestión de la Moda.</li>
+        </ul>
+      </AccordionItem>
+    </div>
+
+    <div className="flex-1">
+      <AccordionItem title="Reconocimientos">
+        <ul className="list-disc list-inside space-y-1">
+          <li>Primer premio · Desencaja “Jóvenes diseñadores”, Andalucía de Moda.</li>
+          <li>Premio New Designers Awards · Neo2 by Sancal.</li>
+          <li>Mejor cortometraje internacional · <em>We Are Cattle</em>, México Fashion Film Festival.</li>
+          <li>Primer premio Fashion Film “Integración” · Madrid Fashion Film Festival.</li>
+        </ul>
+      </AccordionItem>
+    </div>
+
+    <div className="flex-1">
+      <AccordionItem title="Selecciones y nominaciones">
+        <ul className="list-disc list-inside space-y-1">
+          <li>BAFTA Aesthetica Film Festival – Official Selection</li>
+          <li>ShowStudio Awards – Official Selection</li>
+          <li>Copenhagen Fashion Film – Best New Talent Nominee</li>
+          <li>Fashion Film Festival Milano – Official Selection</li>
+          <li>La Jolla Fashion Film Festival – Best Director Nominee</li>
+          <li>Mercedes-Benz Bokeh South Africa FFF – Official Selection</li>
+          <li>Canadian International Fashion Film Festival – Official Selection</li>
+          <li>Cinemoi Fashion Film Festival – Best Director Nominee</li>
+          <li>Aurora Film Fest – Official Selection</li>
+          <li>FKM Festival de Cine Fantástico – Official Selection</li>
+          <li>Fantarifa International Film & TV Festival – Official Selection</li>
+        </ul>
+      </AccordionItem>
+    </div>
+  </div>
+</section>
+
 
       {/* Sobre mí */}
-      <section className="w-full px-4 md:px-8 py-14 bg-gray-50">
-        <h2 className="text-3xl md:text-4xl font-bold text-black mb-6">Sobre mí</h2>
-        <p className="text-black mb-4">
-          Mi principal trabajo, inamovible e irremplazable, me acompaña desde siempre: observar lo que me atraviesa y traducirlo en palabras, formas, conceptos y símbolos. Me interesa dar cuerpo a lo no dicho, lo tabú, lo excepcional, lo doloroso y lo verdaderamente bello.
-        </p>
-        <p className="text-black mb-4">
-          Entre dos polos se mueven mis intereses: lo sutil y lo superficial. En ese vaivén voy descifrando, maravillándome y creando.
-        </p>
-        <p className="text-black mb-4">
-          A lo largo de los años he explorado distintos lenguajes para expandir esa mirada. La escritura ha sido siempre mi vehículo de cabecera, un preámbulo inevitable antes de transformarlo en imágenes, conceptos o proyectos. Desde ahí he tejido recorridos en la moda y el estilismo, en la dirección artística de proyectos y en la mentoría con artistas. Más recientemente he incorporado la astrología como herramienta simbólica que amplía mi manera de acompañar procesos creativos y vitales.
-        </p>
-        <p className="text-black">
-          Todo en mí nace de una necesidad inevitable de comunicar y expresar, de sacar hacia afuera lo que no puede quedarse quieto. El arte, en cualquiera de sus formas, ha sido siempre la vía para hacerlo: escribir, vestir, imaginar, interpretar símbolos. No lo concibo como adorno, sino como un lenguaje esencial para habitar el mundo y compartirlo con otros.
-        </p>
-      </section>
+    {/* Sobre mí */}
+<section className="w-full px-6 md:px-16 py-20 bg-black">
+  <motion.h2
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+    viewport={{ once: true }}
+    className="text-4xl md:text-5xl font-bold text-center text-white mb-12 relative inline-block"
+  >
+    Sobre mí
+    <span className="block w-20 h-1 bg-white mx-auto mt-3 rounded"></span>
+  </motion.h2>
+
+  <motion.div
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
+    transition={{ duration: 0.8, delay: 0.2 }}
+    viewport={{ once: true }}
+    className="prose prose-invert max-w-5xl mx-auto text-lg leading-relaxed text-white/90 columns-1 md:columns-2 gap-12 space-y-6"
+  >
+    <p>
+      Mi principal trabajo, inamovible e irremplazable, me acompaña desde siempre: observar lo que me atraviesa y traducirlo en palabras, formas, conceptos y símbolos. Me interesa dar cuerpo a lo no dicho, lo tabú, lo excepcional, lo doloroso y lo verdaderamente bello.
+    </p>
+    <p>
+      Entre dos polos se mueven mis intereses: lo sutil y lo superficial. En ese vaivén voy descifrando, maravillándome y creando.
+    </p>
+    <p>
+      A lo largo de los años he explorado distintos lenguajes para expandir esa mirada. La escritura ha sido siempre mi vehículo de cabecera, un preámbulo inevitable antes de transformarlo en imágenes, conceptos o proyectos. Desde ahí he tejido recorridos en la moda y el estilismo, en la dirección artística de proyectos y en la mentoría con artistas. Más recientemente he incorporado la astrología como herramienta simbólica que amplía mi manera de acompañar procesos creativos y vitales.
+    </p>
+    <p>
+      Todo en mí nace de una necesidad inevitable de comunicar y expresar, de sacar hacia afuera lo que no puede quedarse quieto. El arte, en cualquiera de sus formas, ha sido siempre la vía para hacerlo: escribir, vestir, imaginar, interpretar símbolos. No lo concibo como adorno, sino como un lenguaje esencial para habitar el mundo y compartirlo con otros.
+    </p>
+  </motion.div>
+
+  <motion.blockquote
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.4 }}
+    viewport={{ once: true }}
+    className="mt-12 text-center italic text-xl text-white/80 max-w-3xl mx-auto border-l-4 border-white/30 pl-6"
+  >
+    “El arte, en cualquiera de sus formas, ha sido siempre la vía para hacerlo: escribir, vestir, imaginar, interpretar símbolos.”
+  </motion.blockquote>
+</section>
+
 
       <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
     </SiteLayout>
