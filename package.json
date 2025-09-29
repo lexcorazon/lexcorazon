@@ -24,6 +24,8 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
-        "framer-motion": "^12.23.12"
+        "@studio-freight/lenis": "^1.0.42",
+        "framer-motion": "^12.23.12",
+        "lucide-react": "^0.544.0"
     }
 }
