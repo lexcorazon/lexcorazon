@@ -285,15 +285,46 @@ export const aj = {
   ],
 
   prensa: [
-    { medio: 'Harper’s Bazaar', url: 'https://www.harpersbazaar.com/es/moda/tendencias/g251495/jovenes-disenadores-marcas-espana/?slide=13' },
-    { medio: 'El País', url: 'https://elpais.com/elpais/2016/02/23/album/1456241604_001039.html#' },
-    { medio: 'Grazia', url: 'https://graziamagazine.com/es/articles/es-la-pasarela-ego-un-verdadero-relevo-generacional/' },
-    { medio: 'L’Officiel', url: 'https://www.lofficiel.es/moda/samsung-ego-maria-magdalena' },
-    { medio: 'Telva', url: 'https://www.telva.com/estilo-vida/album/2017/03/07/58bd4b67268e3e247e8b4571_22.html' },
-    { medio: 'Neo2', url: 'https://www.neo2.com/entrevista-con-maria-magdalena/' },
-    { medio: 'Smoda', url: 'https://elpais.com/smoda/moda/la-ley-de-la-calle.html' },
-    { medio: 'ICON', url: 'https://elpais.com/elpais/2020/06/03/icon/1591205859_965050.html' },
-    { medio: 'Metal Magazine', url: 'https://metalmagazine.eu/post/maria-magdalena-religion-y-dualidad' },
+    { 
+      medio: 'Harper’s Bazaar', 
+      url: 'https://www.harpersbazaar.com/es/moda/tendencias/g251495/jovenes-disenadores-marcas-espana/?slide=13',
+      image: '/images/prensa/prensa1.png'
+    },
+    { 
+      medio: 'El País', 
+      url: 'https://elpais.com/elpais/2016/02/23/album/1456241604_001039.html#',
+      image: '/images/prensa/prensa2.png'
+    },
+    { 
+      medio: 'Grazia', 
+      url: 'https://graziamagazine.com/es/articles/es-la-pasarela-ego-un-verdadero-relevo-generacional/',
+      image: '/images/prensa/prensa3.png'
+    },
+    { 
+      medio: 'L’Officiel', 
+      url: 'https://www.lofficiel.es/moda/samsung-ego-maria-magdalena',
+      image: '/images/prensa/prensa4.png'
+    },
+    { 
+      medio: 'Telva', 
+      url: 'https://www.telva.com/estilo-vida/album/2017/03/07/58bd4b67268e3e247e8b4571_22.html',
+      image: '/images/prensa/prensa5.png'
+    },
+    { 
+      medio: 'Neo2', 
+      url: 'https://www.neo2.com/entrevista-con-maria-magdalena/',
+      image: '/images/prensa/prensa6.png'
+    },
+    { 
+      medio: 'Smoda', 
+      url: 'https://elpais.com/smoda/moda/la-ley-de-la-calle.html',
+      image: '/images/prensa/prensa7.png'
+    },
+    { medio: 'ICON', 
+      url: 'https://elpais.com/elpais/2020/06/03/icon/1591205859_965050.html',
+      image: '/images/prensa/prensa8.png'
+    },
+  
   ],
 
   cv: {
