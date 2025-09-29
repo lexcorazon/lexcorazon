@@ -35,10 +35,11 @@ const itemVariants = {
 }
 
 /* ---------- Clipping de prensa ---------- */
+/* ---------- Clipping de prensa ---------- */
 function Clipping({ items }) {
   return (
     <div className="w-full">
-      <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 text-center">
+      <h2 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center">
         Clipping de prensa
       </h2>
       <motion.div
@@ -53,7 +54,7 @@ function Clipping({ items }) {
             variants={itemVariants}
             whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}
             transition={{ type: 'spring', stiffness: 120 }}
-            className="flex-1 min-w-[250px]"
+            className="flex-1 min-w-[250px] relative"
           >
             <a
               href={item.url}
@@ -64,8 +65,10 @@ function Clipping({ items }) {
               {item.image && (
                 <img src={item.image} alt={item.medio} className="w-full h-full object-cover" />
               )}
-              <div className="absolute bottom-0 left-0 w-full p-2 bg-black/50 text-white text-xs">
-                <span className="font-semibold">{item.medio}</span>
+
+              {/* Fondo rojo, texto blanco, ligeramente más pequeño */}
+              <div className="absolute bottom-2 left-2 px-4 py-1 bg-red-600 rounded-md text-white text-xl md:text-2xl font-extrabold shadow-lg">
+                {item.medio}
               </div>
             </a>
           </motion.div>
@@ -75,8 +78,10 @@ function Clipping({ items }) {
   )
 }
 
-/* ---------- AutoAspectTile ---------- */
-function AutoAspectTile({ title, href, media = [], images = [], onOpen }) {
+
+
+/* ---------- AutoAspectTile con modal ---------- */
+function AutoAspectTile({ title, media = [], images = [], onOpen, project }) {
   const sources = media.length ? media : images
   const [curIdx, setCurIdx] = useState(0)
   const [hover, setHover] = useState(false)
@@ -122,23 +127,40 @@ function AutoAspectTile({ title, href, media = [], images = [], onOpen }) {
 
   return (
     <motion.article
-      whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.6)' }}
-      className="relative w-full h-full overflow-hidden"
+      whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.6)', zIndex: 50 }}
+      className="relative w-full h-full overflow-visible cursor-pointer"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={() => onOpen(project)}
     >
       {renderMedia(sources[curIdx])}
+
+      {/* Overlay con título y ver proyecto */}
+      <AnimatePresence>
+        {hover && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center text-white p-2"
+          >
+            <span className="font-semibold text-lg">{title}</span>
+            <span className="mt-1 text-sm">Ver proyecto</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {hover && sources.length > 1 && (
         <>
           <button
-            onClick={prevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white px-2 py-1 z-10"
+            onClick={(e) => { e.stopPropagation(); prevImage() }}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50"
           >
             ‹
           </button>
           <button
-            onClick={nextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white px-2 py-1 z-10"
+            onClick={(e) => { e.stopPropagation(); nextImage() }}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50"
           >
             ›
           </button>
@@ -147,6 +169,7 @@ function AutoAspectTile({ title, href, media = [], images = [], onOpen }) {
     </motion.article>
   )
 }
+
 
 /* ---------- VideoCarousel3D ---------- */
 function VideoCarousel3D({ videos = [] }) {
@@ -210,8 +233,14 @@ function VideoCarousel3D({ videos = [] }) {
 function AccordionItem({ title, children }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="p-4 border-none bg-black cursor-pointer" onClick={() => setOpen(!open)}>
-      <div className="font-semibold text-lg flex justify-between items-center text-white">{title}<span className="ml-2">{open ? '−' : '+'}</span></div>
+    <div
+      className="p-4 bg-gray-100 border-none cursor-pointer mb-2 rounded-md"
+      onClick={() => setOpen(!open)}
+    >
+      <div className="flex items-center font-semibold text-lg text-black">
+        <span className="mr-3">{open ? '−' : '+'}</span>
+        {title}
+      </div>
       <AnimatePresence initial={false}>
         {open && (
           <motion.div
@@ -220,9 +249,9 @@ function AccordionItem({ title, children }) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="overflow-hidden"
+            className="overflow-hidden mt-2 text-black"
           >
-            <div className="mt-2 text-sm text-white">{children}</div>
+            {children}
           </motion.div>
         )}
       </AnimatePresence>
@@ -305,7 +334,15 @@ export default function AJHome() {
     }
   }, [])
 
-  const cell = (project) => project && <AutoAspectTile title={project.titulo} href={`/aj/portfolio#${slug(project.titulo)}`} media={project.media} images={project.images} onOpen={() => setActiveProject(project)} />
+  const cell = (project) => project && (
+    <AutoAspectTile 
+      title={project.titulo} 
+      media={project.media} 
+      images={project.images} 
+      project={project}
+      onOpen={(p) => setActiveProject(p)} 
+    />
+  )
 
   const colaboracionesVideos = [
     { id: 1, url: 'kqPHo2q-6nw', title: 'Control (Recycled J y Rels B)', thumbnail: 'https://img.youtube.com/vi/kqPHo2q-6nw/hqdefault.jpg' },
@@ -326,127 +363,132 @@ export default function AJHome() {
         <Clipping items={aj.prensa || []} />
       </motion.section>
 
-      {/* Portfolio */}
-      <motion.section id="portfolio" initial="hidden" animate="show" variants={containerVariants} className="px-
-4 md:px-8 py-20 bg-black text-white">
-<motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]">
-<motion.div variants={itemVariants}>{cell(projects.weAreCattleFilm)}</motion.div>
-<motion.div variants={itemVariants} className="row-span-3 col-start-1 row-start-2">{cell(projects.weAreCattleVogue)}</motion.div>
-<motion.div variants={itemVariants} className="row-span-4 col-start-2 row-start-1">{cell(projects.drogasMeditacion)}</motion.div>
-<motion.div variants={itemVariants} className="row-span-3 col-start-3 row-start-1">{cell(projects.integracionVogue)}</motion.div>
-<motion.div variants={itemVariants} className="col-start-3 row-start-4">{cell(projects.integracionFilm)}</motion.div>
-<motion.div variants={itemVariants} className="row-span-4 col-start-4 row-start-1">{cell(projects.shameOfSpain)}</motion.div>
-<motion.div variants={itemVariants} className="col-start-5 row-start-1">{cell(projects.vanishment)}</motion.div>
-<motion.div variants={itemVariants} className="col-start-5 row-start-2">{cell(projects.winterSeries)}</motion.div>
-<motion.div variants={itemVariants} className="row-span-2 col-start-5 row-start-3">{cell(projects.playForArt)}</motion.div>
-</motion.div>
-</motion.section>
+      {/* Portfolio Grid */}
+      <motion.section id="portfolio" initial="hidden" animate="show" variants={containerVariants} className="px-4 md:px-8 py-20 bg-black text-white">
+        <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]">
+          <motion.div variants={itemVariants}>{cell(projects.weAreCattleFilm)}</motion.div>
+          <motion.div variants={itemVariants} className="row-span-3 col-start-1 row-start-2">{cell(projects.weAreCattleVogue)}</motion.div>
+          <motion.div variants={itemVariants} className="row-span-4 col-start-2 row-start-1">{cell(projects.drogasMeditacion)}</motion.div>
+          <motion.div variants={itemVariants} className="row-span-3 col-start-3 row-start-1">{cell(projects.integracionVogue)}</motion.div>
+          <motion.div variants={itemVariants} className="col-start-3 row-start-4">{cell(projects.integracionFilm)}</motion.div>
+          <motion.div variants={itemVariants} className="row-span-4 col-start-4 row-start-1">{cell(projects.shameOfSpain)}</motion.div>
+          <motion.div variants={itemVariants} className="col-start-5 row-start-1">{cell(projects.vanishment)}</motion.div>
+          <motion.div variants={itemVariants} className="col-start-5 row-start-2">{cell(projects.winterSeries)}</motion.div>
+          <motion.div variants={itemVariants} className="row-span-2 col-start-5 row-start-3">{cell(projects.playForArt)}</motion.div>
+        </motion.div>
+      </motion.section>
 
-  {/* Dressed by MM */}
-  {projects.dressedByMM.length > 0 && (
-    <motion.section id="dressed" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="py-20 bg-black border-t border-gray-700">
-      <h2 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">Dressed by MM</h2>
-      <DressedByMMCarousel media={projects.dressedByMM} />
-    </motion.section>
-  )}
+      {/* Dressed by MM */}
+      {projects.dressedByMM.length > 0 && (
+        <motion.section id="dressed" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="py-20 bg-black border-t border-gray-700">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-10 text-center">Dressed by MM</h2>
+          <DressedByMMCarousel media={projects.dressedByMM} />
+        </motion.section>
+      )}
 
-  {/* Trayectoria */}
-  <motion.section id="trayectoria" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="px-4 md:px-8 py-28 bg-black border-t border-gray-700">
-    <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center">Trayectoria</h2>
-    <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0 items-start text-white">
-      <div className="flex-1">
-        <AccordionItem title="Colaboraciones y proyectos">
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>Juancho Marqués</strong> (2020–23) · Estilismo, diseño e imagen para giras y proyectos visuales.</li>
-            <li><strong>Adidas</strong> (2021) · Diseño de producto en colaboración especial.</li>
-            <li><strong>María Magdalena</strong> (2015–19) · Fundadora de la marca, colecciones conceptuales y universos visuales.</li>
-            <li><strong>Roberto Diz</strong> (2013) · Diseño en prácticas en atelier de alta costura.</li>
-          </ul>
-        </AccordionItem>
-      </div>
-      <div className="flex-1">
-        <AccordionItem title="Formación">
-          <ul className="list-disc list-inside space-y-1">
-            <li><strong>Astroterapéutica</strong> (2022-2024) · Astrología psicológica y evolutiva.</li>
-            <li><strong>Ceade Leonardo</strong> (2011–14) · Grado en Diseño y Gestión de la Moda.</li>
-          </ul>
-        </AccordionItem>
-      </div>
-      <div className="flex-1">
-        <AccordionItem title="Reconocimientos">
-          <ul className="list-disc list-inside space-y-1">
-            <li>Primer premio · Desencaja “Jóvenes diseñadores”, Andalucía de Moda.</li>
-            <li>Premio New Designers Awards · Neo2 by Sancal.</li>
-            <li>Mejor cortometraje internacional · <em>We Are Cattle</em>, México Fashion Film Festival.</li>
-            <li>Primer premio Fashion Film “Integración” · Madrid Fashion Film Festival.</li>
-          </ul>
-        </AccordionItem>
-      </div>
-      <div className="flex-1">
-        <AccordionItem title="Selecciones y nominaciones internacionales">
-          <ul className="list-disc list-inside space-y-1">
-            <li>BAFTA Aesthetica Film Festival – Official Selection</li>
-            <li>ShowStudio Awards – Official Selection</li>
-            <li>Copenhagen Fashion Film – Best New Talent Nominee</li>
-            <li>Fashion Film Festival Milano – Official Selection</li>
-            <li>La Jolla Fashion Film Festival – Best Director Nominee</li>
-            <li>Mercedes-Benz Bokeh South Africa FFF – Official Selection</li>
-            <li>Canadian International Fashion Film Festival – Official Selection</li>
-            <li>Cinemoi Fashion Film Festival – Best Director Nominee</li>
-            <li>Aurora Film Fest – Official Selection</li>
-            <li>FKM Festival de Cine Fantástico – Official Selection</li>
-            <li>Fantarifa International Film & TV Festival – Official Selection</li>
-          </ul>
-        </AccordionItem>
-      </div>
-    </div>
-  </motion.section>
+      {/* Trayectoria */}
+      <motion.section
+        id="trayectoria"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="px-4 md:px-8 py-28 bg-white text-black"
+      >
+        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Trayectoria</h2>
+        <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0 items-start">
+          <div className="flex-1">
+            <AccordionItem title="Colaboraciones y proyectos">
+              <ul className="list-disc list-inside space-y-1 text-black">
+                <li><strong>Juancho Marqués</strong> (2020–23) · Estilismo, diseño e imagen para giras y proyectos visuales.</li>
+                <li><strong>Adidas</strong> (2021) · Diseño de producto en colaboración especial.</li>
+                <li><strong>María Magdalena</strong> (2015–19) · Fundadora de la marca, colecciones conceptuales y universos visuales.</li>
+                <li><strong>Roberto Diz</strong> (2013) · Diseño en prácticas en atelier de alta costura.</li>
+              </ul>
+            </AccordionItem>
+          </div>
+          <div className="flex-1">
+            <AccordionItem title="Formación">
+              <ul className="list-disc list-inside space-y-1 text-black">
+                <li><strong>Astroterapéutica</strong> (2022-2024) · Astrología psicológica y evolutiva.</li>
+                <li><strong>Ceade Leonardo</strong> (2011–14) · Grado en Diseño y Gestión de la Moda.</li>
+              </ul>
+            </AccordionItem>
+          </div>
+          <div className="flex-1">
+            <AccordionItem title="Reconocimientos">
+              <ul className="list-disc list-inside space-y-1 text-black">
+                <li>Primer premio · Desencaja “Jóvenes diseñadores”, Andalucía de Moda.</li>
+                <li>Premio New Designers Awards · Neo2 by Sancal.</li>
+                <li>Mejor cortometraje internacional · <em>We Are Cattle</em>, México Fashion Film Festival.</li>
+                <li>Primer premio Fashion Film “Integración” · Madrid Fashion Film Festival.</li>
+              </ul>
+            </AccordionItem>
+          </div>
+          <div className="flex-1">
+            <AccordionItem title="Selecciones y nominaciones internacionales">
+              <ul className="list-disc list-inside space-y-1 text-black">
+                <li>BAFTA Aesthetica Film Festival – Official Selection</li>
+                <li>ShowStudio Awards – Official Selection</li>
+                <li>Copenhagen Fashion Film – Best New Talent Nominee</li>
+                <li>Fashion Film Festival Milano – Official Selection</li>
+                <li>La Jolla Fashion Film Festival – Best Director Nominee</li>
+                <li>Mercedes-Benz Bokeh South Africa FFF – Official Selection</li>
+                <li>Canadian International Fashion Film Festival – Official Selection</li>
+                <li>Cinemoi Fashion Film Festival – Best Director Nominee</li>
+                <li>Aurora Film Fest – Official Selection</li>
+                <li>FKM Festival de Cine Fantástico – Official Selection</li>
+                <li>Fantarifa International Film & TV Festival – Official Selection</li>
+              </ul>
+            </AccordionItem>
+          </div>
+        </div>
+      </motion.section>
 
-  {/* Colaboraciones Destacadas */}
-  <motion.section id="colaboraciones" initial="hidden" whileInView="show" viewport={{ once: true }} className="px-6 md:px-16 py-28 bg-black border-t border-gray-700">
-    <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold text-center text-white mb-12 relative inline-block">
-      Colaboraciones Destacadas
-      <span className="block w-20 h-1 bg-gray-600 mx-auto mt-3"></span>
-    </motion.h2>
+      {/* Colaboraciones Destacadas */}
+      <motion.section id="colaboraciones" initial="hidden" whileInView="show" viewport={{ once: true }} className="px-6 md:px-16 py-28 bg-black border-t border-gray-700">
+        <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold text-center text-white mb-12 relative inline-block">
+          Colaboraciones Destacadas
+          <span className="block w-20 h-1 bg-gray-600 mx-auto mt-3"></span>
+        </motion.h2>
 
-    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-      {/* Carrusel 1 */}
-      <div className="flex-1 w-full">
-        <h3 className="text-xl font-semibold text-white mb-4 text-center">Colaboraciones de MM en videoclips</h3>
-        <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
-      </div>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          {/* Carrusel 1 */}
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-white mb-4 text-center">Colaboraciones de MM en videoclips</h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
+          </div>
 
-      {/* Video suelto */}
-      <div className="flex-1 w-full">
-        <h3 className="text-xl font-semibold text-white mb-4 text-center">Dirección artística</h3>
-        <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
-      </div>
+          {/* Video suelto */}
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-white mb-4 text-center">Dirección artística</h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
+          </div>
 
-      {/* Carrusel 2 */}
-      <div className="flex-1 w-full">
-        <h3 className="text-xl font-semibold text-white mb-4 text-center">Estilismo y coordinación de vestuario</h3>
-        <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
-      </div>
-    </div>
-  </motion.section>
+          {/* Carrusel 2 */}
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-white mb-4 text-center">Estilismo y coordinación de vestuario</h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
+          </div>
+        </div>
+      </motion.section>
 
-  {/* Sobre mí */}
-  <motion.section id="sobre-mi" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="px-6 md:px-16 py-28 bg-black border-t border-gray-700">
-    <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold text-center text-white mb-12 relative inline-block">
-      Sobre mí
-      <span className="block w-20 h-1 bg-gray-600 mx-auto mt-3"></span>
-    </motion.h2>
-    <div className="prose prose-invert max-w-5xl mx-auto text-lg leading-relaxed text-white/90 columns-1 md:columns-2 gap-12 space-y-6">
-      <p>Mi principal trabajo, inamovible e irremplazable, me acompaña desde siempre: observar lo que me atraviesa y traducirlo en palabras, formas, conceptos y símbolos. Me interesa dar cuerpo a lo no dicho, lo tabú, lo excepcional, lo doloroso y lo verdaderamente bello.</p>
-      <p>Entre dos polos se mueven mis intereses: lo sutil y lo superficial. En ese vaivén voy descifrando, maravillándome y creando.</p>
-      <p>A lo largo de los años he explorado distintos lenguajes para expandir esa mirada. La escritura ha sido siempre mi vehículo de cabecera, un preámbulo inevitable antes de transformarlo en imágenes, conceptos o proyectos. Desde ahí he tejido recorridos en la moda y el estilismo, en la dirección artística de proyectos y en la mentoría con artistas. Más recientemente he incorporado la astrología como herramienta simbólica que amplía mi manera de acompañar procesos creativos y vitales.</p>
-      <p>Todo en mí nace de una necesidad inevitable de comunicar y expresar, de sacar hacia afuera lo que no puede quedarse quieto. El arte, en cualquiera de sus formas, ha sido siempre la vía para hacerlo: escribir, vestir, imaginar, interpretar símbolos. No lo concibo como adorno, sino como un lenguaje esencial para habitar el mundo y compartirlo con otros.</p>
-    </div>
-  </motion.section>
+      {/* Sobre mí */}
+      <motion.section id="sobre-mi" initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }} className="px-6 md:px-16 py-28 bg-black border-t border-gray-700">
+        <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-bold text-center text-white mb-12 relative inline-block">
+          Sobre mí
+          <span className="block w-20 h-1 bg-gray-600 mx-auto mt-3"></span>
+        </motion.h2>
+        <div className="prose prose-invert max-w-5xl mx-auto text-lg leading-relaxed text-white/90 columns-1 md:columns-2 gap-12 space-y-6">
+          <p>Mi principal trabajo, inamovible e irremplazable, me acompaña desde siempre: observar lo que me atraviesa y traducirlo en palabras, formas, conceptos y símbolos. Me interesa dar cuerpo a lo no dicho, lo tabú, lo excepcional, lo doloroso y lo verdaderamente bello.</p>
+          <p>Entre dos polos se mueven mis intereses: lo sutil y lo superficial. En ese vaivén voy descifrando, maravillándome y creando.</p>
+          <p>A lo largo de los años he explorado distintos lenguajes para expandir esa mirada. La escritura ha sido siempre mi vehículo de cabecera, un preámbulo inevitable antes de transformarlo en imágenes, conceptos o proyectos. Desde ahí he tejido recorridos en la moda y el estilismo, en la dirección artística de proyectos y en la mentoría con artistas. Más recientemente he incorporado la astrología como herramienta simbólica que amplía mi manera de acompañar procesos creativos y vitales.</p>
+          <p>Todo en mí nace de una necesidad inevitable de comunicar y expresar, de sacar hacia afuera lo que no puede quedarse quieto. El arte, en cualquiera de sus formas, ha sido siempre la vía para hacerlo: escribir, vestir, imaginar, interpretar símbolos. No lo concibo como adorno, sino como un lenguaje esencial para habitar el mundo y compartirlo con otros.</p>
+        </div>
+      </motion.section>
 
-  <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
-</SiteLayout>
+      {/* Project Modal */}
+      <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
+    </SiteLayout>
   )
 }
-
-// Note: The Navbar component referenced in the context is assumed to be in a separate file (resources/js/Shared/site/Navbar.jsx) and is not included here.
