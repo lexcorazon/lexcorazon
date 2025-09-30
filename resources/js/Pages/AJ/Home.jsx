@@ -74,9 +74,10 @@ function Clipping({ items }) {
                 />
               )}
               {/* Fondo blanco, texto negro */}
-              <div className="absolute bottom-2 left-2 px-4 py-1 bg-white rounded-md text-black text-2xl font-extrabold shadow-lg">
-                {item.medio}
-              </div>
+<div className="absolute bottom-2 left-2 px-4 py-1 bg-black rounded-md text-white text-2xl font-extrabold shadow-lg">
+  {item.medio}
+</div>
+
             </a>
           </motion.div>
         ))}
