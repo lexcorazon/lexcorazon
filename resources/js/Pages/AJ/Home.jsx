@@ -74,9 +74,9 @@ function Clipping({ items }) {
                 />
               )}
               {/* Fondo blanco, texto negro */}
-<div className="absolute bottom-2 left-2 px-4 py-1 bg-black rounded-md text-white text-2xl font-extrabold shadow-lg">
-  {item.medio}
-</div>
+              <div className="absolute bottom-2 left-2 px-4 py-1 bg-black rounded-md text-white text-2xl font-extrabold shadow-lg">
+                {item.medio}
+              </div>
 
             </a>
           </motion.div>
@@ -255,9 +255,6 @@ function VideoCarousel3D({ videos = [] }) {
   )
 }
 
-
-
-
 /* ---------- DressedByMMCarousel ---------- */
 function DressedByMMCarousel({ media = [] }) {
   const [curIdx, setCurIdx] = useState(0)
@@ -339,15 +336,6 @@ function DressedByMMCarousel({ media = [] }) {
     </div>
   )
 }
-
-
-
-
-
-
-
-
-
 
 /* ---------- AccordionItem ---------- */
 function AccordionItem({ title, children }) {
@@ -517,303 +505,281 @@ export default function AJHome() {
   return (
     <SiteLayout brand="aj" className="font-roboto bg-white text-black">
 
-            {/* Portfolio */}
-  <motion.section
-  id="portfolio"
-  initial="hidden"
-  animate="show"
-  variants={containerVariants}
-  className="px-4 md:px-8 py-10 bg-white text-black border-b border-gray-100"
->
-  <motion.div
-    variants={containerVariants}
-    initial="hidden"
-    animate="show"
-    className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]"
-  >
-    <motion.div variants={itemVariants}>
-      {cell(projects.weAreCattleFilm)}
-    </motion.div>
-
-    <motion.div
-      variants={itemVariants}
-      className="row-span-3 col-start-1 row-start-2"
-    >
-      {cell(projects.weAreCattleVogue)}
-    </motion.div>
-
-    <motion.div
-      variants={itemVariants}
-      className="row-span-4 col-start-2 row-start-1"
-    >
-      {cell(projects.drogasMeditacion)}
-    </motion.div>
-
-    <motion.div
-      variants={itemVariants}
-      className="row-span-3 col-start-3 row-start-1"
-    >
-      {cell(projects.integracionVogue)}
-    </motion.div>
-
-    <motion.div
-      variants={itemVariants}
-      className="col-start-3 row-start-4"
-    >
-      {cell(projects.integracionFilm)}
-    </motion.div>
-
-    {/* Play For Art ahora ocupa la posición de Shame of Spain */}
-    <motion.div
-      variants={itemVariants}
-      className="row-span-4 col-start-4 row-start-1"
-    >
-      {cell(projects.playForArt)}
-    </motion.div>
-
-    <motion.div
-      variants={itemVariants}
-      className="col-start-5 row-start-1"
-    >
-      {cell(projects.vanishment)}
-    </motion.div>
-
-    <motion.div
-      variants={itemVariants}
-      className="col-start-5 row-start-2"
-    >
-      {cell(projects.winterSeries)}
-    </motion.div>
-
-    {/* Shame of Spain ahora ocupa la posición de Play For Art */}
-    <motion.div
-      variants={itemVariants}
-      className="row-span-2 col-start-5 row-start-3"
-    >
-      {cell(projects.shameOfSpain)}
-    </motion.div>
-  </motion.div>
-</motion.section>
-
-
-
-
-
-      {/* Dressed by MM */}
-      {projects.dressedByMM.length > 0 && (
-        <motion.section
-          id="dressed"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="py-20 bg-white border-b border-gray-100"
-        >
-          <h2 className="text-2xl md:text-3xl font-bold text-black mb-10 text-center">
-            DRESSED BY MM
-          </h2>
-          <DressedByMMCarousel media={projects.dressedByMM} />
-        </motion.section>
-      )}
-
-      
-
-
-      {/* Colaboraciones Destacadas */}
+      {/* Portfolio */}
       <motion.section
-        id="colaboraciones"
+        id="portfolio"
         initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="px-6 md:px-16 py-28 bg-white border-t border-gray-100"
+        animate="show"
+        variants={containerVariants}
+        className="px-4 md:px-8 py-10 bg-white text-black border-b border-gray-100"
       >
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold text-center text-black mb-12 relative inline-block"
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-5 grid-rows-4 gap-1 h-[90vh]"
         >
-          COLABORACIONES DESTACADAS
-          <span className="block w-20 h-1 bg-gray-200 mx-auto mt-3"></span>
-        </motion.h2>
+          <motion.div variants={itemVariants}>
+            {cell(projects.weAreCattleFilm)}
+          </motion.div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex-1 w-full">
-            <h3 className="text-xl font-semibold text-black mb-4 text-center">
-              Colaboraciones de MM en videoclips
-            </h3>
-            <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
-          </div>
+          <motion.div
+            variants={itemVariants}
+            className="row-span-3 col-start-1 row-start-2"
+          >
+            {cell(projects.weAreCattleVogue)}
+          </motion.div>
 
-          <div className="flex-1 w-full">
-            <h3 className="text-xl font-semibold text-black mb-4 text-center">
-              Dirección artística
-            </h3>
-            <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
-          </div>
+          <motion.div
+            variants={itemVariants}
+            className="row-span-4 col-start-2 row-start-1"
+          >
+            {cell(projects.drogasMeditacion)}
+          </motion.div>
 
-          <div className="flex-1 w-full">
-            <h3 className="text-xl font-semibold text-black mb-4 text-center">
-              Estilismo y coordinación de vestuario
-            </h3>
-            <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
-          </div>
-        </div>
+          <motion.div
+            variants={itemVariants}
+            className="row-span-3 col-start-3 row-start-1"
+          >
+            {cell(projects.integracionVogue)}
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="col-start-3 row-start-4"
+          >
+            {cell(projects.integracionFilm)}
+          </motion.div>
+
+          {/* Play For Art ahora ocupa la posición de Shame of Spain */}
+          <motion.div
+            variants={itemVariants}
+            className="row-span-4 col-start-4 row-start-1"
+          >
+            {cell(projects.playForArt)}
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="col-start-5 row-start-1"
+          >
+            {cell(projects.vanishment)}
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            className="col-start-5 row-start-2"
+          >
+            {cell(projects.winterSeries)}
+          </motion.div>
+
+          {/* Shame of Spain ahora ocupa la posición de Play For Art */}
+          <motion.div
+            variants={itemVariants}
+            className="row-span-2 col-start-5 row-start-3"
+          >
+            {cell(projects.shameOfSpain)}
+          </motion.div>
+        </motion.div>
       </motion.section>
 
 
-      {/* Trayectoria */}
-<motion.section
-  id="trayectoria"
-  initial={{ opacity: 0, y: 40 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.8 }}
-  viewport={{ once: true }}
-  className="relative px-4 md:px-8 py-24 bg-white text-black border-b border-gray-100 overflow-visible flex flex-col items-center"
->
-  {/* Título principal subrayado */}
-  <motion.h2
-    className="text-4xl md:text-5xl font-bold text-center mb-12 relative inline-block"
-    initial={{ opacity: 0, y: -20 }}
+
+
+
+    
+{/* Dressed by MM */}
+{projects.dressedByMM.length > 0 && (
+  <motion.section
+    id="dressed"
+    initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8 }}
+    viewport={{ once: true }}
+    className="py-20 border-b border-gray-100"
+    style={{ backgroundColor: '#F06543' }}
   >
-    TRAYECTORIA
-    <span className="absolute left-1/2 bottom-0 -translate-x-1/2 block h-1 w-32 bg-gradient-to-r from-pink-500 via-yellow-400 to-pink-500 rounded-full" />
-  </motion.h2>
 
-  {/* Contenedor de tarjetas */}
-  <div className="relative z-10 max-w-4xl w-full flex flex-col gap-16 items-center">
-    {/* Barra central detrás, ajustada al contenedor */}
-    <div className="absolute left-1/2 top-0 bottom-0 transform -translate-x-1/2 w-0.5 z-0">
-      <motion.div
-        className="w-full h-full bg-gradient-to-b from-pink-500 to-yellow-400 rounded-full"
-        animate={{ backgroundPosition: ["0 0", "0 100%", "0 0"] }}
-        transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
-        style={{ backgroundSize: "100% 200%" }}
-      />
+    <DressedByMMCarousel media={projects.dressedByMM} />
+  </motion.section>
+)}
+
+
+{/* Colaboraciones Destacadas */}
+<motion.section
+  id="colaboraciones"
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true }}
+  className="px-6 md:px-16 py-28"
+  style={{ backgroundColor: '#FF69EB' }}
+>
+
+  <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+    <div className="flex-1 w-full">
+      <h3 className="text-xl font-semibold text-black mb-4 text-center">
+        Colaboraciones de MM en videoclips
+      </h3>
+      <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
     </div>
 
-    {/* Bloques de trayectoria */}
-    {[
-      {
-        title: "Lex Corazón – Fundadora y Mentora",
-        period: "Feb. 2023 – Actualidad",
-        content: [
-          <>Creación de un proyecto de <strong>mentoría creativa y coaching astrológico</strong>.</>,
-          <>Diseño del recorrido de 6 etapas: <em>Viaje a las tripas, Motín existencial, Caja de cerillas, Lex ID, Aesthetic Overdose, Carne y hueso</em>.</>,
-          <>Aplicación de astrología psicológica evolutiva para acompañar procesos de desbloqueo creativo y desarrollo personal.</>,
-          <>Desarrollo de metodología propia, acompañamiento individual y programas piloto.</>,
-        ],
-        achievements:
-          "Creación de un enfoque único que combina astrología, creatividad y estrategia; resultados tangibles en clientes en etapas iniciales de su marca o proyecto.",
-      },
-      {
-        title: "Juancho Marqués – Personal Stylist & Creative Consultant",
-        period: "Abr. 2021 – Feb. 2023 · En remoto",
-        content: [
-          "Estilismo en conciertos, eventos y videoclips.",
-          "Dirección de vestuario y concepto visual para videoclips.",
-          "Investigación de identidad de marca: inspiraciones, recursos visuales y conceptuales.",
-          "Diseño y dirección artística de merchandising (incl. colaboración <strong>Adidas x Juancho Marqués</strong>).",
-          "Creación del concepto <strong>Play for Art</strong> para la camiseta de fútbol.",
-        ],
-        achievements:
-          "Consolidación de la estética del artista; desarrollo de recursos visuales y merch innovador; colaboración internacional con Adidas.",
-      },
-      {
-        title: "María Magdalena Studio – Fundadora y Diseñadora",
-        period: "Jun. 2014 – Feb. 2019 · Sevilla",
-        content: [
-          "Diseño, patronaje y producción de colecciones.",
-          "Dirección creativa de fashion films, campañas y lookbooks.",
-          "Gestión de e-commerce y estrategia digital.",
-          "Coordinación de <strong>desfiles en Madrid Fashion Week</strong> y otros eventos.",
-          "Comunicación, redes y colaboraciones con artistas.",
-        ],
-        achievements:
-          "Presencia en eventos nacionales; premios en festivales de fashion film en Madrid y México; consolidación de identidad conceptual y filosófica de marca.",
-      },
-      {
-        title: "Roberto Diz Atelier – Prácticas en Diseño",
-        period: "Sept. 2014 – Dic. 2014 · Sevilla",
-        content: [
-          <>Apoyo en el diseño de la colección <strong>1492</strong>, presentada en Pasarela del Sur (Antiquarium, Sevilla).</>,
-          "Colaboración en bocetos, selección de tejidos y confección.",
-          "Atención al cliente en tienda.",
-        ],
-        achievements:
-          "Participación directa en el proceso creativo de una colección de alta costura y experiencia en desfile profesional.",
-      },
-      {
-        title: "Formación",
-        period: "",
-        content: [
-          "**Astrología Psicológica Evolutiva** – Astroterapéutica (*Abr. 2022 – Jun. 202)",
-          "**Diseño y Gestión de la Moda** – Centro Universitario San Isidoro (Sept. 2011 – Jun. 2014)",
-        ].map((line, i) => <span key={i} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />),
-      },
-      {
-        title: "Reconocimientos y Premios",
-        period: "",
-        content: [
-          "*Best Fashion Film by New Talent* – Madrid Fashion Film Festival (2018)",
-          "*Best Fashion Film by New Talent* – Mexico Fashion Film Festival (2018)",
-          "*New Designers Awards Neo2 by Sancal – Categoría Moda* (2018)",
-          "*Primer Premio del Certamen de Diseñadores Noveles* – Instituto Andaluz de la Juventud, Andalucía de Moda (2014)",
-        ].map((line, i) => <span key={i} dangerouslySetInnerHTML={{ __html: line.replace(/\*(.*?)\*/g, '<strong>$1</strong>') }} />),
-      },
-      {
-        title: "Selecciones y nominaciones internacionales",
-        period: "",
-        content: [
-          "BAFTA Aesthetica Film Festival – Official Selection",
-          "ShowStudio Awards – Official Selection",
-          "Copenhagen Fashion Film – Best New Talent Nominee",
-          "Fashion Film Festival Milano – Official Selection",
-          "La Jolla Fashion Film Festival – Best Director Nominee",
-          "Mercedes-Benz Bokeh South Africa FFF – Official Selection",
-          "Canadian International Fashion Film Festival – Official Selection",
-          "Cinemoi Fashion Film Festival – Best Director Nominee",
-          "Aurora Film Fest – Official Selection",
-          "FKM Festival de Cine Fantástico – Official Selection",
-          "Fantarifa International Film & TV Festival – Official Selection",
-        ],
-      },
-    ].map((item, i) => (
-      <motion.div
-        key={i}
-        initial={{ opacity: 0, x: i % 2 === 0 ? -200 : 200 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, delay: i * 0.15 }}
-        viewport={{ once: true }}
-        className={`relative w-full md:w-2/3 px-5 py-6 rounded-lg shadow-sm bg-white hover:-translate-y-1 hover:shadow-lg z-10 ${
-          i % 2 === 0 ? "ml-auto text-right" : "mr-auto text-left"
-        }`}
-      >
-        <h3 className="text-lg md:text-xl font-semibold mb-1">{item.title}</h3>
-        {item.period && (
-          <p className="text-sm text-gray-500 italic mb-2">{item.period}</p>
-        )}
-        <ul className="space-y-1 list-disc list-inside text-sm text-gray-700 mb-2">
-          {item.content.map((line, j) => (
-            <li key={j}>
-              {typeof line === "string" ? (
-                <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-              ) : (
-                line
-              )}
-            </li>
-          ))}
-        </ul>
-        {item.achievements && (
-          <p className="text-sm font-semibold mt-2">{item.achievements}</p>
-        )}
-      </motion.div>
-    ))}
+    <div className="flex-1 w-full">
+      <h3 className="text-xl font-semibold text-black mb-4 text-center">
+        Dirección artística
+      </h3>
+      <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
+    </div>
+
+    <div className="flex-1 w-full">
+      <h3 className="text-xl font-semibold text-black mb-4 text-center">
+        Estilismo y coordinación de vestuario
+      </h3>
+      <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
+    </div>
   </div>
 </motion.section>
+
+      {/* Trayectoria Profesional */}
+      <motion.section
+        id="trayectoria"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="relative px-4 md:px-8 py-24 bg-yellow-400 text-black border-b border-gray-100 overflow-visible flex flex-col items-center"
+      >
+
+        {/* Contenedor de tarjetas */}
+        <div className="relative z-10 max-w-4xl w-full flex flex-col gap-16 items-center">
+          {/* Barra central negra */}
+          <div className="absolute left-1/2 top-0 bottom-0 transform -translate-x-1/2 w-1 md:w-2 z-0">
+            <motion.div
+              className="w-full h-full bg-black"
+              animate={{ backgroundPosition: ["0 0", "0 100%", "0 0"] }}
+              transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+              style={{ backgroundSize: "100% 200%" }}
+            />
+          </div>
+
+          {/* Bloques de trayectoria */}
+          {[
+            {
+              title: "Lex Corazón – Fundadora y Mentora",
+              period: "Feb. 2023 – Actualidad",
+              content: [
+                <>Creación de un proyecto de <strong>mentoría creativa y coaching astrológico</strong>.</>,
+                <>Diseño del recorrido de 6 etapas: <em>Viaje a las tripas, Motín existencial, Caja de cerillas, Lex ID, Aesthetic Overdose, Carne y hueso</em>.</>,
+                <>Aplicación de astrología psicológica evolutiva para acompañar procesos de desbloqueo creativo y desarrollo personal.</>,
+                <>Desarrollo de metodología propia, acompañamiento individual y programas piloto.</>,
+              ],
+              achievements:
+                "Creación de un enfoque único que combina astrología, creatividad y estrategia; resultados tangibles en clientes en etapas iniciales de su marca o proyecto.",
+            },
+            {
+              title: "Juancho Marqués – Personal Stylist & Creative Consultant",
+              period: "Abr. 2021 – Feb. 2023 · En remoto",
+              content: [
+                "Estilismo en conciertos, eventos y videoclips.",
+                "Dirección de vestuario y concepto visual para videoclips.",
+                "Investigación de identidad de marca: inspiraciones, recursos visuales y conceptuales.",
+                "Diseño y dirección artística de merchandising (incl. colaboración <strong>Adidas x Juancho Marqués</strong>).",
+                "Creación del concepto <strong>Play for Art</strong> para la camiseta de fútbol.",
+              ],
+              achievements:
+                "Consolidación de la estética del artista; desarrollo de recursos visuales y merch innovador; colaboración internacional con Adidas.",
+            },
+            {
+              title: "María Magdalena Studio – Fundadora y Diseñadora",
+              period: "Jun. 2014 – Feb. 2019 · Sevilla",
+              content: [
+                "Diseño, patronaje y producción de colecciones.",
+                "Dirección creativa de fashion films, campañas y lookbooks.",
+                "Gestión de e-commerce y estrategia digital.",
+                "Coordinación de <strong>desfiles en Madrid Fashion Week</strong> y otros eventos.",
+                "Comunicación, redes y colaboraciones con artistas.",
+              ],
+              achievements:
+                "Presencia en eventos nacionales; premios en festivales de fashion film en Madrid y México; consolidación de identidad conceptual y filosófica de marca.",
+            },
+            {
+              title: "Roberto Diz Atelier – Prácticas en Diseño",
+              period: "Sept. 2014 – Dic. 2014 · Sevilla",
+              content: [
+                <>Apoyo en el diseño de la colección <strong>1492</strong>, presentada en Pasarela del Sur (Antiquarium, Sevilla).</>,
+                "Colaboración en bocetos, selección de tejidos y confección.",
+                "Atención al cliente en tienda.",
+              ],
+              achievements:
+                "Participación directa en el proceso creativo de una colección de alta costura y experiencia en desfile profesional.",
+            },
+            {
+              title: "Formación",
+              period: "",
+              content: [
+                "**Astrología Psicológica Evolutiva** – Astroterapéutica (*Abr. 2022 – Jun. 2024*)",
+                "**Diseño y Gestión de la Moda** – Centro Universitario San Isidoro (*Sept. 2011 – Jun. 2014*)",
+              ].map((line, i) => <span key={i} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />),
+            },
+            {
+              title: "Reconocimientos y Premios",
+              period: "",
+              content: [
+                "*Best Fashion Film by New Talent* – Madrid Fashion Film Festival (2018)",
+                "*Best Fashion Film by New Talent* – Mexico Fashion Film Festival (2018)",
+                "*New Designers Awards Neo2 by Sancal – Categoría Moda* (2018)",
+                "*Primer Premio del Certamen de Diseñadores Noveles* – Instituto Andaluz de la Juventud, Andalucía de Moda (2014)",
+              ].map((line, i) => <span key={i} dangerouslySetInnerHTML={{ __html: line.replace(/\*(.*?)\*/g, '<strong>$1</strong>') }} />),
+            },
+            {
+              title: "Selecciones y nominaciones internacionales",
+              period: "",
+              content: [
+                "BAFTA Aesthetica Film Festival – Official Selection",
+                "ShowStudio Awards – Official Selection",
+                "Copenhagen Fashion Film – Best New Talent Nominee",
+                "Fashion Film Festival Milano – Official Selection",
+                "La Jolla Fashion Film Festival – Best Director Nominee",
+                "Mercedes-Benz Bokeh South Africa FFF – Official Selection",
+                "Canadian International Fashion Film Festival – Official Selection",
+                "Cinemoi Fashion Film Festival – Best Director Nominee",
+                "Aurora Film Fest – Official Selection",
+                "FKM Festival de Cine Fantástico – Official Selection",
+                "Fantarifa International Film & TV Festival – Official Selection",
+              ],
+            },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -200 : 200 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: i * 0.15 }}
+              viewport={{ once: true }}
+              className={`relative w-full md:w-2/3 px-5 py-6 rounded-lg shadow-sm bg-white hover:-translate-y-1 hover:shadow-lg z-10 ${i % 2 === 0 ? "ml-auto text-right" : "mr-auto text-left"
+                }`}
+            >
+              <h3 className="text-lg md:text-xl font-semibold mb-1">{item.title}</h3>
+              {item.period && (
+                <p className="text-sm text-gray-500 italic mb-2">{item.period}</p>
+              )}
+              <ul className="space-y-1 list-disc list-inside text-sm text-gray-700 mb-2">
+                {item.content.map((line, j) => (
+                  <li key={j}>
+                    {typeof line === "string" ? (
+                      <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                    ) : (
+                      line
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {item.achievements && (
+                <p className="text-sm font-semibold mt-2">{item.achievements}</p>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+
 
       {/* Sobre mí */}
       <motion.section
@@ -822,12 +788,12 @@ export default function AJHome() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="relative px-6 md:px-16 py-28 bg-white text-black border-b border-gray-100 overflow-hidden"
+        className="relative px-6 md:px-16 py-28 bg-sky-300 text-black border-b border-gray-100 overflow-hidden"
       >
         <div className="max-w-5xl mx-auto flex relative">
-          {/* Línea lateral animada SOLO UNA VEZ */}
+          {/* Línea lateral negra */}
           <motion.div
-            className="absolute left-0 top-0 w-1 md:w-2 bg-gradient-to-b from-yellow-400 to-pink-500 rounded-full"
+            className="absolute left-0 top-0 w-1 md:w-2 bg-black rounded-full"
             initial={{ height: 0 }}
             whileInView={{ height: "100%" }}
             transition={{ duration: 2, ease: "easeInOut" }}
@@ -854,6 +820,7 @@ export default function AJHome() {
               Sobre mí
             </motion.h2>
 
+            {/* Contenido */}
             {[
               "Mi principal trabajo, inamovible e irremplazable, me acompaña desde siempre: observar lo que me atraviesa y traducirlo en palabras, formas, conceptos y símbolos. Me interesa dar cuerpo a lo no dicho, lo tabú, lo excepcional, lo doloroso y lo verdaderamente bello.",
               "Entre dos polos se mueven mis intereses: lo sutil y lo superficial. En ese vaivén voy descifrando, maravillándome y creando.",
@@ -871,17 +838,12 @@ export default function AJHome() {
               </motion.p>
             ))}
           </div>
-
-          {/* Fondo animado difuso */}
-          <motion.div
-            className="absolute top-20 right-0 w-72 h-72 rounded-full bg-gradient-to-tr from-pink-500/30 to-yellow-400/30 blur-3xl pointer-events-none"
-            animate={{ y: [0, 30, 0], x: [0, -30, 0] }}
-            transition={{ repeat: Infinity, duration: 12, ease: "easeInOut" }}
-          />
         </div>
       </motion.section>
 
-            {/* Clipping */}
+
+
+      {/* Clipping */}
       <motion.section
         id="clipping"
         initial="hidden"
