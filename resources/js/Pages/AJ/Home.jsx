@@ -195,6 +195,7 @@ function AutoAspectTile({
 }
 
 /* ---------- VideoCarousel3D ---------- */
+/* ---------- VideoCarousel3D ---------- */
 function VideoCarousel3D({ videos = [] }) {
   const [curIdx, setCurIdx] = useState(0)
   const prev = () => setCurIdx((curIdx - 1 + videos.length) % videos.length)
@@ -208,7 +209,7 @@ function VideoCarousel3D({ videos = [] }) {
   }
 
   return (
-    <div className="relative w-full flex flex-col items-center justify-center h-[250px] sm:h-[350px] md:h-[400px]">
+    <div className="relative w-full flex flex-col items-center justify-center h-[380px] sm:h-[460px] md:h-[540px]">
       <div className="relative w-full flex justify-center items-center h-full overflow-hidden">
         {videos.map((video, idx) => (
           <motion.a
@@ -224,7 +225,7 @@ function VideoCarousel3D({ videos = [] }) {
             <img
               src={video.thumbnail}
               alt={video.title}
-              className="w-full sm:max-w-[350px] md:max-w-[450px] h-40 sm:h-44 md:h-48 object-cover shadow-lg hover:scale-105 transition-transform"
+              className="w-full sm:max-w-[450px] md:max-w-[600px] h-64 sm:h-72 md:h-80 object-cover shadow-lg hover:scale-105 transition-transform"
             />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <span className="text-white text-center px-2">{video.title}</span>
@@ -255,6 +256,8 @@ function VideoCarousel3D({ videos = [] }) {
 }
 
 
+
+
 /* ---------- DressedByMMCarousel ---------- */
 function DressedByMMCarousel({ media = [] }) {
   const [curIdx, setCurIdx] = useState(0)
@@ -269,48 +272,45 @@ function DressedByMMCarousel({ media = [] }) {
     if (isHovered) return
     const interval = setInterval(
       () => setCurIdx((prev) => (prev + 1) % media.length),
-      5000 // un poco más lento
+      5000
     )
     return () => clearInterval(interval)
   }, [isHovered, media.length])
 
   const getPosition = (index) => {
     const diff = (index - curIdx + media.length) % media.length
-    if (diff === 0) return { scale: 1, opacity: 1, zIndex: 30, x: 0 }         
-    if (diff === 1) return { scale: 0.8, opacity: 0.6, zIndex: 20, x: '60%' }   
-    if (diff === 2) return { scale: 0.6, opacity: 0.15, zIndex: 10, x: '110%' } 
-    if (diff === media.length - 1) return { scale: 0.8, opacity: 0.6, zIndex: 20, x: '-60%' } 
-    if (diff === media.length - 2) return { scale: 0.6, opacity: 0.15, zIndex: 10, x: '-110%' } 
-    return { scale: 0.4, opacity: 0, zIndex: 5, x: 0 }                          
+    if (diff === 0) return { scale: 1, opacity: 1, zIndex: 30, x: 0 }
+    if (diff === 1) return { scale: 0.85, opacity: 0.7, zIndex: 20, x: '50%' }
+    if (diff === 2) return { scale: 0.65, opacity: 0.2, zIndex: 10, x: '100%' }
+    if (diff === media.length - 1) return { scale: 0.85, opacity: 0.7, zIndex: 20, x: '-50%' }
+    if (diff === media.length - 2) return { scale: 0.65, opacity: 0.2, zIndex: 10, x: '-100%' }
+    return { scale: 0.5, opacity: 0, zIndex: 5, x: 0 }
   }
 
-  // Función para avanzar o retroceder según donde se haga clic
   const handleClick = (e) => {
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - rect.left
     if (x > rect.width / 2) {
-      // clic en la mitad derecha → siguiente
       setCurIdx((curIdx + 1) % media.length)
     } else {
-      // clic en la mitad izquierda → anterior
       setCurIdx((curIdx - 1 + media.length) % media.length)
     }
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-full">
+    <div className="flex flex-col items-center w-full">
       <div
-        className="relative w-full flex items-center justify-center h-[500px] overflow-visible cursor-pointer"
+        className="relative w-full flex items-center justify-center h-[500px] sm:h-[600px] md:h-[650px] overflow-visible cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={handleClick} // detecta clic lateral
+        onClick={handleClick}
       >
         {media.map((src, idx) => {
           const isActive = idx === curIdx
           return (
             <motion.div
               key={idx}
-              className="absolute w-full sm:max-w-[350px] md:max-w-[450px] h-[500px] flex items-end justify-center"
+              className="absolute w-full sm:max-w-[600px] md:max-w-[800px] h-full flex items-end justify-center"
               initial={false}
               animate={getPosition(idx)}
               transition={{ duration: 0.8, ease: 'easeInOut' }}
@@ -353,6 +353,7 @@ function DressedByMMCarousel({ media = [] }) {
     </div>
   )
 }
+
 
 
 
@@ -524,18 +525,8 @@ export default function AJHome() {
 
   return (
     <SiteLayout brand="aj" className="font-roboto bg-white text-black">
-      {/* Clipping */}
-      <motion.section
-        id="clipping"
-        initial="hidden"
-        animate="show"
-        variants={containerVariants}
-        className="pt-10 pb-0 bg-white border-b border-gray-100"
-      >
-        <Clipping items={aj.prensa || []} />
-      </motion.section>
 
-      {/* Portfolio */}
+            {/* Portfolio */}
   <motion.section
   id="portfolio"
   initial="hidden"
@@ -614,6 +605,9 @@ export default function AJHome() {
 </motion.section>
 
 
+
+
+
       {/* Dressed by MM */}
       {projects.dressedByMM.length > 0 && (
         <motion.section
@@ -631,6 +625,53 @@ export default function AJHome() {
         </motion.section>
       )}
 
+      
+
+
+      {/* Colaboraciones Destacadas */}
+      <motion.section
+        id="colaboraciones"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="px-6 md:px-16 py-28 bg-white border-t border-gray-100"
+      >
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-bold text-center text-black mb-12 relative inline-block"
+        >
+          COLABORACIONES DESTACADAS
+          <span className="block w-20 h-1 bg-gray-200 mx-auto mt-3"></span>
+        </motion.h2>
+
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-black mb-4 text-center">
+              Colaboraciones de MM en videoclips
+            </h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
+          </div>
+
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-black mb-4 text-center">
+              Dirección artística
+            </h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
+          </div>
+
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-black mb-4 text-center">
+              Estilismo y coordinación de vestuario
+            </h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
+          </div>
+        </div>
+      </motion.section>
+
+
       {/* Trayectoria */}
 <motion.section
   id="trayectoria"
@@ -647,7 +688,7 @@ export default function AJHome() {
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.8 }}
   >
-    Trayectoria
+    TRAYECTORIA
     <span className="absolute left-1/2 bottom-0 -translate-x-1/2 block h-1 w-32 bg-gradient-to-r from-pink-500 via-yellow-400 to-pink-500 rounded-full" />
   </motion.h2>
 
@@ -783,16 +824,6 @@ export default function AJHome() {
   </div>
 </motion.section>
 
-
-
-
-
-
-
-
-
-
-
       {/* Sobre mí */}
       <motion.section
         id="sobre-mi"
@@ -859,48 +890,17 @@ export default function AJHome() {
         </div>
       </motion.section>
 
-      {/* Colaboraciones Destacadas */}
+            {/* Clipping */}
       <motion.section
-        id="colaboraciones"
+        id="clipping"
         initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="px-6 md:px-16 py-28 bg-white border-t border-gray-100"
+        animate="show"
+        variants={containerVariants}
+        className="pt-10 pb-0 bg-white border-b border-gray-100"
       >
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl font-bold text-center text-black mb-12 relative inline-block"
-        >
-          Colaboraciones Destacadas
-          <span className="block w-20 h-1 bg-gray-200 mx-auto mt-3"></span>
-        </motion.h2>
-
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex-1 w-full">
-            <h3 className="text-xl font-semibold text-black mb-4 text-center">
-              Colaboraciones de MM en videoclips
-            </h3>
-            <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
-          </div>
-
-          <div className="flex-1 w-full">
-            <h3 className="text-xl font-semibold text-black mb-4 text-center">
-              Dirección artística
-            </h3>
-            <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
-          </div>
-
-          <div className="flex-1 w-full">
-            <h3 className="text-xl font-semibold text-black mb-4 text-center">
-              Estilismo y coordinación de vestuario
-            </h3>
-            <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
-          </div>
-        </div>
+        <Clipping items={aj.prensa || []} />
       </motion.section>
+
 
       <ProjectModal
         project={activeProject}

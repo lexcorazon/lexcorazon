@@ -190,18 +190,19 @@ export const aj = {
       categoria: 'estilismo',
       descripcion: 'Proyecto de estilismo y dirección de arte bajo la marca María Magdalena.',
       media: [
+        '/images/dressed-by-mm/Princess Nokia.jpg',
+        '/images/dressed-by-mm/Bad Gyal.JPEG',
+         '/images/dressed-by-mm/Maria Jose LLergo.jpg',
         '/images/dressed-by-mm/Aliyah Morales.jpg',
         '/images/dressed-by-mm/Ana Rujas.jpg',
-        '/images/dressed-by-mm/Bad Gyal.JPEG',
         '/images/dressed-by-mm/Brisa Fenoy.jpg',
         '/images/dressed-by-mm/Campaña Rives.JPEG',
         '/images/dressed-by-mm/Campaña Rives Man.JPEG',
         '/images/dressed-by-mm/Eduardo Casanova.JPEG',
         '/images/dressed-by-mm/Juancho Marques.PNG',
-        '/images/dressed-by-mm/Maria Jose LLergo.jpg',
-        '/images/dressed-by-mm/Miss Nina.jpg',
         '/images/dressed-by-mm/Natalia Lacunza.jpg',
-        '/images/dressed-by-mm/Princess Nokia.jpg',
+        '/images/dressed-by-mm/Miss Nina.jpg',
+        
       ],
     },
 

@@ -32,7 +32,8 @@ export default function Navbar({ brand }) {
     <header className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <button onClick={scrollToTop} className="flex items-center">
-          <img src="/images/alejandra-jaime.png" alt="Alejandra Jaime" className="h-20 md:h-28 w-auto object-contain" />
+          <img src="/images/BAJ.png" alt="Alejandra Jaime"    className="h-6 md:h-8 w-auto object-contain"
+/>
         </button>
         <nav className="hidden md:flex gap-8">
           {links.map(({ label, href }) => (
