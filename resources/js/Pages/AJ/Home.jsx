@@ -582,7 +582,7 @@ export default function AJHome() {
           className="py-20 bg-white border-b border-gray-100"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-black mb-10 text-center">
-            Dressed by MM
+            DRESSED BY MM
           </h2>
           <DressedByMMCarousel media={projects.dressedByMM} />
         </motion.section>
@@ -607,7 +607,7 @@ export default function AJHome() {
         {/* Título con subrayado animado */}
         <div className="relative z-10 text-center mb-10">
           <h2 className="text-3xl md:text-5xl font-extrabold relative inline-block">
-            Trayectoria
+            TRAYECTORIA
             <motion.span
               className="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-pink-500 to-yellow-400"
               initial={{ scaleX: 0 }}
