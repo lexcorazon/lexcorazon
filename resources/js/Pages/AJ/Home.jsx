@@ -260,59 +260,102 @@ function DressedByMMCarousel({ media = [] }) {
   const [curIdx, setCurIdx] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
+  const titles = media.map((path) => {
+    const fileName = path.split('/').pop()
+    return fileName.replace(/\.[^/.]+$/, '')
+  })
+
   useEffect(() => {
     if (isHovered) return
     const interval = setInterval(
       () => setCurIdx((prev) => (prev + 1) % media.length),
-      4000
+      5000 // un poco más lento
     )
     return () => clearInterval(interval)
   }, [isHovered, media.length])
 
   const getPosition = (index) => {
     const diff = (index - curIdx + media.length) % media.length
-    if (diff === 0) return { scale: 1, opacity: 1, zIndex: 30, x: 0 }
-    if (diff === 1)
-      return { scale: 0.8, opacity: 0.6, zIndex: 20, x: '60%' }
-    if (diff === media.length - 1)
-      return { scale: 0.8, opacity: 0.6, zIndex: 20, x: '-60%' }
-    return { scale: 0.5, opacity: 0, zIndex: 10 }
+    if (diff === 0) return { scale: 1, opacity: 1, zIndex: 30, x: 0 }         
+    if (diff === 1) return { scale: 0.8, opacity: 0.6, zIndex: 20, x: '60%' }   
+    if (diff === 2) return { scale: 0.6, opacity: 0.15, zIndex: 10, x: '110%' } 
+    if (diff === media.length - 1) return { scale: 0.8, opacity: 0.6, zIndex: 20, x: '-60%' } 
+    if (diff === media.length - 2) return { scale: 0.6, opacity: 0.15, zIndex: 10, x: '-110%' } 
+    return { scale: 0.4, opacity: 0, zIndex: 5, x: 0 }                          
+  }
+
+  // Función para avanzar o retroceder según donde se haga clic
+  const handleClick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    if (x > rect.width / 2) {
+      // clic en la mitad derecha → siguiente
+      setCurIdx((curIdx + 1) % media.length)
+    } else {
+      // clic en la mitad izquierda → anterior
+      setCurIdx((curIdx - 1 + media.length) % media.length)
+    }
   }
 
   return (
-    <div
-      className="relative w-full max-w-full flex items-center justify-center h-[500px] sm:h-[450px] md:h-[500px]"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {media.map((src, idx) => (
-        <motion.img
-          key={idx}
-          src={src}
-          alt={`Look ${idx + 1}`}
-          className="absolute w-full sm:max-w-[350px] md:max-w-[450px] h-[250px] sm:h-[300px] md:h-[500px] object-contain shadow-lg"
-          initial={false}
-          animate={getPosition(idx)}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
-        />
-      ))}
-      <button
-        onClick={() =>
-          setCurIdx((curIdx - 1 + media.length) % media.length)
-        }
-        className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
+    <div className="flex flex-col items-center w-full max-w-full">
+      <div
+        className="relative w-full flex items-center justify-center h-[500px] overflow-visible cursor-pointer"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={handleClick} // detecta clic lateral
       >
-        ‹
-      </button>
-      <button
-        onClick={() => setCurIdx((curIdx + 1) % media.length)}
-        className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
-      >
-        ›
-      </button>
+        {media.map((src, idx) => {
+          const isActive = idx === curIdx
+          return (
+            <motion.div
+              key={idx}
+              className="absolute w-full sm:max-w-[350px] md:max-w-[450px] h-[500px] flex items-end justify-center"
+              initial={false}
+              animate={getPosition(idx)}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+            >
+              <img
+                src={src}
+                alt={titles[idx]}
+                className="w-full h-full object-contain rounded-lg"
+                style={{ background: 'transparent' }}
+              />
+              {isActive && isHovered && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, ease: 'easeInOut' }}
+                  className="absolute bottom-10 bg-black/60 px-4 py-2 rounded text-white text-2xl font-bold shadow-lg"
+                >
+                  {titles[idx]}
+                </motion.div>
+              )}
+            </motion.div>
+          )
+        })}
+
+        {/* Botones de navegación */}
+        <button
+          onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx - 1 + media.length) % media.length) }}
+          className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
+        >
+          ‹
+        </button>
+        <button
+          onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx + 1) % media.length) }}
+          className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
+        >
+          ›
+        </button>
+      </div>
     </div>
   )
 }
+
+
+
 
 /* ---------- AccordionItem ---------- */
 function AccordionItem({ title, children }) {
@@ -589,100 +632,141 @@ export default function AJHome() {
       )}
 
       {/* Trayectoria */}
-      <motion.section
-        id="trayectoria"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+
+<motion.section
+  id="trayectoria"
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  viewport={{ once: true }}
+  className="relative px-4 md:px-8 py-24 bg-white text-black border-b border-gray-100 overflow-hidden"
+>
+  {/* Barra central animada */}
+  <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full">
+    <motion.div
+      className="w-full h-full bg-gradient-to-b from-pink-500 to-yellow-400 rounded-full"
+      animate={{ backgroundPosition: ["0 0", "0 100%", "0 0"] }}
+      transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+      style={{ backgroundSize: "100% 200%" }}
+    />
+  </div>
+
+  {/* Bloques de trayectoria */}
+  <div className="relative z-10 max-w-4xl mx-auto flex flex-col gap-8">
+    {[
+      {
+        title: "Lex Corazón – Fundadora y Mentora",
+        period: "Feb. 2023 – Actualidad",
+        content: [
+          "Creación de un proyecto de **mentoría creativa y coaching astrológico**.",
+          "Diseño del recorrido de 6 etapas: *Viaje a las tripas, Motín existencial, Caja de cerillas, Lex ID, Aesthetic Overdose, Carne y hueso*.",
+          "Aplicación de astrología psicológica evolutiva para acompañar procesos de desbloqueo creativo y desarrollo personal.",
+          "Desarrollo de metodología propia, acompañamiento individual y programas piloto.",
+        ],
+        achievements:
+          "Creación de un enfoque único que combina astrología, creatividad y estrategia; resultados tangibles en clientes en etapas iniciales de su marca o proyecto.",
+      },
+      {
+        title: "Juancho Marqués – Personal Stylist & Creative Consultant",
+        period: "Abr. 2021 – Feb. 2023 · En remoto",
+        content: [
+          "Estilismo en conciertos, eventos y videoclips.",
+          "Dirección de vestuario y concepto visual para videoclips.",
+          "Investigación de identidad de marca: inspiraciones, recursos visuales y conceptuales.",
+          "Diseño y dirección artística de merchandising (incl. colaboración **Adidas x Juancho Marqués**).",
+          "Creación del concepto **Play for Art** para la camiseta de fútbol.",
+        ],
+        achievements:
+          "Consolidación de la estética del artista; desarrollo de recursos visuales y merch innovador; colaboración internacional con Adidas.",
+      },
+      {
+        title: "María Magdalena Studio – Fundadora y Diseñadora",
+        period: "Jun. 2014 – Feb. 2019 · Sevilla",
+        content: [
+          "Diseño, patronaje y producción de colecciones.",
+          "Dirección creativa de fashion films, campañas y lookbooks.",
+          "Gestión de e-commerce y estrategia digital.",
+          "Coordinación de **desfiles en Madrid Fashion Week** y otros eventos.",
+          "Comunicación, redes y colaboraciones con artistas.",
+        ],
+        achievements:
+          "Presencia en eventos nacionales; premios en festivales de fashion film en Madrid y México; consolidación de identidad conceptual y filosófica de marca.",
+      },
+      {
+        title: "Roberto Diz Atelier – Prácticas en Diseño",
+        period: "Sept. 2014 – Dic. 2014 · Sevilla",
+        content: [
+          "Apoyo en el diseño de la colección **#1492**, presentada en Pasarela del Sur (Antiquarium, Sevilla).",
+          "Colaboración en bocetos, selección de tejidos y confección.",
+          "Atención al cliente en tienda.",
+        ],
+        achievements:
+          "Participación directa en el proceso creativo de una colección de alta costura y experiencia en desfile profesional.",
+      },
+      {
+        title: "Formación",
+        period: "",
+        content: [
+          "**Astrología Psicológica Evolutiva** – Astroterapéutica (*Abr. 2022 – Jun. 2024*)",
+          "**Diseño y Gestión de la Moda** – Centro Universitario San Isidoro (*Sept. 2011 – Jun. 2014*)",
+        ],
+      },
+      {
+        title: "Reconocimientos y Premios",
+        period: "",
+        content: [
+          "*Best Fashion Film by New Talent* – Madrid Fashion Film Festival (2018)",
+          "*Best Fashion Film by New Talent* – Mexico Fashion Film Festival (2018)",
+          "*New Designers Awards Neo2 by Sancal – Categoría Moda* (2018)",
+          "*Primer Premio del Certamen de Diseñadores Noveles* – Instituto Andaluz de la Juventud, Andalucía de Moda (2014)",
+        ],
+      },
+      {
+        title: "Selecciones y nominaciones internacionales",
+        period: "",
+        content: [
+          "BAFTA Aesthetica Film Festival – Official Selection",
+          "ShowStudio Awards – Official Selection",
+          "Copenhagen Fashion Film – Best New Talent Nominee",
+          "Fashion Film Festival Milano – Official Selection",
+          "La Jolla Fashion Film Festival – Best Director Nominee",
+          "Mercedes-Benz Bokeh South Africa FFF – Official Selection",
+          "Canadian International Fashion Film Festival – Official Selection",
+          "Cinemoi Fashion Film Festival – Best Director Nominee",
+          "Aurora Film Fest – Official Selection",
+          "FKM Festival de Cine Fantástico – Official Selection",
+          "Fantarifa International Film & TV Festival – Official Selection",
+        ],
+      },
+    ].map((item, i) => (
+      <motion.div
+        key={i}
+        initial={{ opacity: 0, x: i % 2 === 0 ? -100 : 100 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: i * 0.2 }}
         viewport={{ once: true }}
-        className="relative px-4 md:px-8 py-24 bg-white text-black border-b border-gray-100 overflow-hidden"
+        className={`relative w-full md:w-1/2 px-5 py-6 mb-8 rounded-lg shadow-sm bg-white transition-transform transform hover:-translate-y-1 hover:shadow-lg ${
+          i % 2 === 0 ? "ml-auto" : "mr-auto"
+        }`}
       >
-        {/* Patrón geométrico animado en el fondo */}
-        <motion.div
-          className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_#e5e7eb_1px,_transparent_0)] [background-size:20px_20px]"
-          animate={{ backgroundPosition: ["0px 0px", "20px 20px"] }}
-          transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-        />
-
-        {/* Título con subrayado animado */}
-        <div className="relative z-10 text-center mb-10">
-          <h2 className="text-3xl md:text-5xl font-extrabold relative inline-block">
-            TRAYECTORIA
-            <motion.span
-              className="absolute left-0 bottom-0 w-full h-1 bg-gradient-to-r from-pink-500 to-yellow-400"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              transition={{ duration: 1, ease: "easeInOut" }}
-            />
-          </h2>
-        </div>
-
-        {/* Timeline */}
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gradient-to-b from-pink-500 to-yellow-400 h-full rounded-full"></div>
-
-          {[
-            {
-              title: "Colaboraciones y proyectos",
-              content: [
-                "Juancho Marqués (2020–23) · Estilismo, diseño e imagen para giras y proyectos visuales.",
-                "Adidas (2021) · Diseño de producto en colaboración especial.",
-                "María Magdalena (2015–19) · Fundadora de la marca, colecciones conceptuales y universos visuales.",
-                "Roberto Diz (2013) · Diseño en prácticas en atelier de alta costura.",
-              ],
-            },
-            {
-              title: "Formación",
-              content: [
-                "Astroterapéutica (2022-2024) · Astrología psicológica y evolutiva.",
-                "Ceade Leonardo (2011–14) · Grado en Diseño y Gestión de la Moda.",
-              ],
-            },
-            {
-              title: "Reconocimientos",
-              content: [
-                "Primer premio · Desencaja Jóvenes diseñadores, Andalucía de Moda.",
-                "Premio New Designers Awards · Neo2 by Sancal.",
-                "Mejor cortometraje internacional · We Are Cattle, México Fashion Film Festival.",
-                "Primer premio Fashion Film “Integración” · Madrid Fashion Film Festival.",
-              ],
-            },
-            {
-              title: "Selecciones internacionales",
-              content: [
-                "BAFTA Aesthetica Film Festival – Official Selection",
-                "ShowStudio Awards – Official Selection",
-                "Copenhagen Fashion Film – Best New Talent Nominee",
-                "Fashion Film Festival Milano – Official Selection",
-                "La Jolla Fashion Film Festival – Best Director Nominee",
-                "Mercedes-Benz Bokeh South Africa FFF – Official Selection",
-                "Canadian International Fashion Film Festival – Official Selection",
-                "Cinemoi Fashion Film Festival – Best Director Nominee",
-              ],
-            },
-          ].map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -100 : 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.2 }}
-              viewport={{ once: true }}
-              className={`relative w-full md:w-1/2 px-5 py-3 mb-6 rounded-lg shadow-sm bg-white transition-transform transform hover:-translate-y-1 hover:shadow-lg ${
-                i % 2 === 0 ? "ml-auto" : "mr-auto"
-              }`}
-            >
-              <h3 className="text-base md:text-lg font-semibold mb-2">
-                {item.title}
-              </h3>
-              <ul className="space-y-1 list-disc list-inside text-sm text-gray-700">
-                {item.content.map((line, j) => (
-                  <li key={j}>{line}</li>
-                ))}
-              </ul>
-            </motion.div>
+        <h3 className="text-lg md:text-xl font-semibold mb-1">{item.title}</h3>
+        {item.period && (
+          <p className="text-sm text-gray-500 italic mb-2">{item.period}</p>
+        )}
+        <ul className="space-y-1 list-disc list-inside text-sm text-gray-700 mb-2">
+          {item.content.map((line, j) => (
+            <li key={j}>{line}</li>
           ))}
-        </div>
-      </motion.section>
+        </ul>
+        {item.achievements && (
+          <p className="text-sm font-semibold mt-2">{item.achievements}</p>
+        )}
+      </motion.div>
+    ))}
+  </div>
+</motion.section>
+
+
 
       {/* Sobre mí */}
       <motion.section
