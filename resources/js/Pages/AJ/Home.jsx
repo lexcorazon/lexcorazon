@@ -573,15 +573,17 @@ export default function AJHome() {
       </motion.section>
 
       {/* Clipping */}
-      <motion.section
-        id="clipping"
-        initial="hidden"
-        animate="show"
-        variants={containerVariants}
-        className="pt-10 pb-0 bg-white border-b border-gray-100"
-      >
-        <Clipping items={aj.prensa || []} />
-      </motion.section>
+ {/* Clipping */}
+<motion.section
+  id="clipping"
+  initial="hidden"
+  animate="show"
+  variants={containerVariants}
+  className="pt-10 pb-10 bg-white border-b border-gray-100"
+>
+  <Clipping items={aj.prensa || []} />
+</motion.section>
+
 
       <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
 
