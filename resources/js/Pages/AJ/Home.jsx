@@ -73,11 +73,9 @@ function Clipping({ items }) {
                   className="w-full h-full object-cover"
                 />
               )}
-              {/* Fondo blanco, texto negro */}
               <div className="absolute bottom-2 left-2 px-4 py-1 bg-black rounded-md text-white text-2xl font-extrabold shadow-lg">
                 {item.medio}
               </div>
-
             </a>
           </motion.div>
         ))}
@@ -87,14 +85,7 @@ function Clipping({ items }) {
 }
 
 /* ---------- AutoAspectTile ---------- */
-function AutoAspectTile({
-  title,
-  href,
-  media = [],
-  images = [],
-  onOpen,
-  description,
-}) {
+function AutoAspectTile({ title, media = [], images = [], onOpen, description }) {
   const sources = media.length ? media : images
   const [curIdx, setCurIdx] = useState(0)
   const [hover, setHover] = useState(false)
@@ -122,79 +113,42 @@ function AutoAspectTile({
     }
 
     if (/\.(mp4|webm)$/i.test(src)) {
-      return (
-        <motion.video
-          key={src}
-          {...commonProps}
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
-      )
+      return <motion.video key={src} {...commonProps} src={src} autoPlay muted loop playsInline preload="auto" />
     }
     if (/vimeo\.com/i.test(src)) {
       const id = src.match(/vimeo\.com\/(\d+)/)?.[1] || src
-      return (
-        <motion.iframe
-          key={src}
-          {...commonProps}
-          src={`https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1`}
-          allow="autoplay; fullscreen; picture-in-picture"
-        />
-      )
+      return <motion.iframe key={src} {...commonProps} src={`https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1`} allow="autoplay; fullscreen; picture-in-picture" />
     }
     return <motion.img key={src} {...commonProps} src={src} alt={title} />
   }
 
   return (
     <motion.article
-      whileHover={{
-        scale: 1.05,
-        boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
-        zIndex: 50,
-      }}
+      whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.6)', zIndex: 50 }}
       className="relative w-full h-full overflow-visible"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       {renderMedia(sources[curIdx])}
-
       {hover && (
         <div
           className="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-white text-center p-4 z-50 cursor-pointer"
-          onClick={() =>
-            onOpen({ title, description, media: sources })
-          }
+          onClick={() => onOpen({ title, description, media: sources })}
         >
           <span className="text-2xl font-bold mb-2">{title}</span>
           <span className="text-lg underline">Ver proyecto</span>
         </div>
       )}
-
       {hover && sources.length > 1 && (
         <>
-          <button
-            onClick={prevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50"
-          >
-            ‹
-          </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50"
-          >
-            ›
-          </button>
+          <button onClick={prevImage} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50">‹</button>
+          <button onClick={nextImage} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50">›</button>
         </>
       )}
     </motion.article>
   )
 }
 
-/* ---------- VideoCarousel3D ---------- */
 /* ---------- VideoCarousel3D ---------- */
 function VideoCarousel3D({ videos = [] }) {
   const [curIdx, setCurIdx] = useState(0)
@@ -222,32 +176,16 @@ function VideoCarousel3D({ videos = [] }) {
             animate={getStyle(idx)}
             transition={{ duration: 0.8, ease: 'easeInOut' }}
           >
-            <img
-              src={video.thumbnail}
-              alt={video.title}
-              className="w-full sm:max-w-[450px] md:max-w-[600px] h-64 sm:h-72 md:h-80 object-cover shadow-lg hover:scale-105 transition-transform"
-            />
+            <img src={video.thumbnail} alt={video.title} className="w-full sm:max-w-[450px] md:max-w-[600px] h-64 sm:h-72 md:h-80 object-cover shadow-lg hover:scale-105 transition-transform" />
             <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <span className="text-white text-center px-2">{video.title}</span>
             </div>
           </motion.a>
         ))}
-
-        {/* Botones flechas */}
         {videos.length > 1 && (
           <>
-            <button
-              onClick={prev}
-              className="absolute left-1 top-1/2 -translate-y-1/2 text-black text-3xl z-40 hover:scale-125 transition-transform"
-            >
-              ‹
-            </button>
-            <button
-              onClick={next}
-              className="absolute right-1 top-1/2 -translate-y-1/2 text-black text-3xl z-40 hover:scale-125 transition-transform"
-            >
-              ›
-            </button>
+            <button onClick={prev} className="absolute left-1 top-1/2 -translate-y-1/2 text-black text-3xl z-40 hover:scale-125 transition-transform">‹</button>
+            <button onClick={next} className="absolute right-1 top-1/2 -translate-y-1/2 text-black text-3xl z-40 hover:scale-125 transition-transform">›</button>
           </>
         )}
       </div>
@@ -279,90 +217,19 @@ function DressedByMMCarousel({ media = [] }) {
   }
 
   return (
-    <div
-      className="relative w-full flex items-center justify-center h-[500px] sm:h-[600px] md:h-[650px] overflow-visible cursor-pointer"
-      onClick={handleClick}
-    >
-      {media.map((src, idx) => {
-        const isActive = idx === curIdx
-        return (
-          <motion.div
-            key={idx}
-            className="absolute flex items-end justify-center"
-            initial={false}
-            animate={getPosition(idx)}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-            onMouseEnter={() => setHoveredIdx(idx)}
-            onMouseLeave={() => setHoveredIdx(null)}
-          >
-            <img
-              src={src}
-              alt={titles[idx]}
-              className="block w-full sm:max-w-[600px] md:max-w-[800px] h-[500px] sm:h-[600px] md:h-[650px] object-cover"
-            />
-
-            {/* Overlay solo al hover, sobre la imagen */}
-            {hoveredIdx === idx && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="absolute inset-0 flex items-center justify-center"
-                style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
-              >
-                <span className="text-white text-3xl md:text-4xl font-bold text-center px-4">
-                  {titles[idx]}
-                </span>
-              </motion.div>
-            )}
-          </motion.div>
-        )
-      })}
-
-      {/* Botones de navegación */}
-      <button
-        onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx - 1 + media.length) % media.length) }}
-        className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
-      >
-        ‹
-      </button>
-      <button
-        onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx + 1) % media.length) }}
-        className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
-      >
-        ›
-      </button>
-    </div>
-  )
-}
-
-/* ---------- AccordionItem ---------- */
-function AccordionItem({ title, children }) {
-  const [open, setOpen] = useState(false)
-  return (
-    <div
-      className="p-4 bg-gray-50 border border-gray-100 cursor-pointer mb-2 rounded-md"
-      onClick={() => setOpen(!open)}
-    >
-      <div className="flex items-center font-semibold text-lg text-black">
-        <span className="mr-3">{open ? '−' : '+'}</span>
-        {title}
-      </div>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="overflow-hidden mt-2 text-black"
-          >
-            {children}
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="relative w-full flex items-center justify-center h-[500px] sm:h-[600px] md:h-[650px] overflow-visible cursor-pointer" onClick={handleClick}>
+      {media.map((src, idx) => (
+        <motion.div key={idx} className="absolute flex items-end justify-center" initial={false} animate={getPosition(idx)} transition={{ duration: 0.8, ease: 'easeInOut' }} onMouseEnter={() => setHoveredIdx(idx)} onMouseLeave={() => setHoveredIdx(null)}>
+          <img src={src} alt={titles[idx]} className="block w-full sm:max-w-[600px] md:max-w-[800px] h-[500px] sm:h-[600px] md:h-[650px] object-cover" />
+          {hoveredIdx === idx && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+              <span className="text-white text-3xl md:text-4xl font-bold text-center px-4">{titles[idx]}</span>
+            </motion.div>
+          )}
+        </motion.div>
+      ))}
+      <button onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx - 1 + media.length) % media.length) }} className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40">‹</button>
+      <button onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx + 1) % media.length) }} className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40">›</button>
     </div>
   )
 }
@@ -373,31 +240,12 @@ function ProjectModal({ project, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 font-roboto">
       <div className="relative w-full max-w-lg rounded-xl bg-white text-black p-6 shadow-2xl overflow-auto max-h-[90vh]">
-        <button
-          onClick={onClose}
-          className="absolute right-3 top-3 rounded-full px-2 py-1 text-sm hover:bg-black/10"
-        >
-          ✕
-        </button>
+        <button onClick={onClose} className="absolute right-3 top-3 rounded-full px-2 py-1 text-sm hover:bg-black/10">✕</button>
         <h3 className="text-xl font-semibold mb-4">{project.title}</h3>
-        {project.description && (
-          <div
-            className="text-sm text-neutral-700 leading-relaxed"
-            dangerouslySetInnerHTML={{
-              __html: project.description,
-            }}
-          />
-        )}
+        {project.description && <div className="text-sm text-neutral-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: project.description }} />}
         {project.media && project.media.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-            {project.media.map((src, idx) => (
-              <img
-                key={idx}
-                src={src}
-                alt={`${project.title}-${idx}`}
-                className="w-full object-cover"
-              />
-            ))}
+            {project.media.map((src, idx) => <img key={idx} src={src} alt={`${project.title}-${idx}`} className="w-full object-cover" />)}
           </div>
         )}
       </div>
@@ -411,14 +259,9 @@ export default function AJHome() {
   const [activeProject, setActiveProject] = useState(null)
 
   const projects = useMemo(() => {
-    const byTitle = (t) =>
-      aj.proyectos?.find((p) => p.titulo.toLowerCase() === t.toLowerCase())
+    const byTitle = (t) => aj.proyectos?.find((p) => p.titulo.toLowerCase() === t.toLowerCase())
     const like = (re) => aj.proyectos?.find((p) => re.test(p.titulo))
-    const vanishment = {
-      titulo: "It's All About Vanishment",
-      media: ['https://vimeo.com/437936022'],
-      description: `It’s All About Vanishment explora la idea de desaparecer...`,
-    }
+    const vanishment = { titulo: "It's All About Vanishment", media: ['https://vimeo.com/437936022'], description: `It’s All About Vanishment explora la idea de desaparecer...` }
     return {
       weAreCattleFilm: byTitle('we are cattle — fashion film'),
       weAreCattleVogue: byTitle('we are cattle — vogue'),
@@ -433,73 +276,18 @@ export default function AJHome() {
     }
   }, [])
 
-  const cell = (project) =>
-    project && (
-      <AutoAspectTile
-        title={project.titulo}
-        href={`/aj/portfolio#${slug(project.titulo)}`}
-        media={project.media}
-        images={project.images}
-        description={project.descripcion}
-        onOpen={setActiveProject}
-      />
-    )
+  const cell = (project) => project && <AutoAspectTile title={project.titulo} media={project.media} images={project.images} description={project.descripcion} onOpen={setActiveProject} />
 
   const colaboracionesVideos = [
-    {
-      id: 1,
-      url: 'kqPHo2q-6nw',
-      title: 'Control (Recycled J y Rels B)',
-      thumbnail: 'https://img.youtube.com/vi/kqPHo2q-6nw/hqdefault.jpg',
-    },
-    {
-      id: 2,
-      url: 'P1dI_LAN0fo',
-      title: 'Tu y yo (La Zowi)',
-      thumbnail: 'https://img.youtube.com/vi/P1dI_LAN0fo/hqdefault.jpg',
-    },
-    {
-      id: 3,
-      url: 'aWAlCbOGUXA',
-      title: 'A tu lado (Machete)',
-      thumbnail: 'https://img.youtube.com/vi/aWAlCbOGUXA/hqdefault.jpg',
-    },
-    {
-      id: 4,
-      url: 'v0JArnT7BMw',
-      title: 'Los ojos del nativo (Juancho Marqués)',
-      thumbnail: 'https://img.youtube.com/vi/v0JArnT7BMw/hqdefault.jpg',
-    },
-    {
-      id: 5,
-      url: 'vCHFKYgsz8g',
-      title: 'Nuevo mundo (Juancho Marqués y Fuel Fandango)',
-      thumbnail: 'https://img.youtube.com/vi/vCHFKYgsz8g/hqdefault.jpg',
-    },
-    {
-      id: 6,
-      url: 'eNRoiM5NHYQ',
-      title: 'Te acuerdas que (Juancho Marqués y Daniela Garsal)',
-      thumbnail: 'https://img.youtube.com/vi/eNRoiM5NHYQ/hqdefault.jpg',
-    },
-    {
-      id: 7,
-      url: 'mPjKPszMImU',
-      title: 'No pero sí (Juancho Marqués y Daniela Garsal)',
-      thumbnail: 'https://img.youtube.com/vi/mPjKPszMImU/hqdefault.jpg',
-    },
-    {
-      id: 8,
-      url: 'rTpDXH849hc',
-      title: 'Algo mejor (Juancho Marqués feat Maka)',
-      thumbnail: 'https://img.youtube.com/vi/rTpDXH849hc/hqdefault.jpg',
-    },
-    {
-      id: 9,
-      url: 'rBuvvqY4Ibs',
-      title: 'Vuelvo a la nena (Soto Asa)',
-      thumbnail: 'https://img.youtube.com/vi/rBuvvqY4Ibs/hqdefault.jpg',
-    },
+    { id: 1, url: 'kqPHo2q-6nw', title: 'Control (Recycled J y Rels B)', thumbnail: 'https://img.youtube.com/vi/kqPHo2q-6nw/hqdefault.jpg' },
+    { id: 2, url: 'P1dI_LAN0fo', title: 'Tu y yo (La Zowi)', thumbnail: 'https://img.youtube.com/vi/P1dI_LAN0fo/hqdefault.jpg' },
+    { id: 3, url: 'aWAlCbOGUXA', title: 'A tu lado (Machete)', thumbnail: 'https://img.youtube.com/vi/aWAlCbOGUXA/hqdefault.jpg' },
+    { id: 4, url: 'v0JArnT7BMw', title: 'Los ojos del nativo (Juancho Marqués)', thumbnail: 'https://img.youtube.com/vi/v0JArnT7BMw/hqdefault.jpg' },
+    { id: 5, url: 'vCHFKYgsz8g', title: 'Nuevo mundo (Juancho Marqués y Fuel Fandango)', thumbnail: 'https://img.youtube.com/vi/vCHFKYgsz8g/hqdefault.jpg' },
+    { id: 6, url: 'eNRoiM5NHYQ', title: 'Te acuerdas que (Juancho Marqués y Daniela Garsal)', thumbnail: 'https://img.youtube.com/vi/eNRoiM5NHYQ/hqdefault.jpg' },
+    { id: 7, url: 'mPjKPszMImU', title: 'No pero sí (Juancho Marqués y Daniela Garsal)', thumbnail: 'https://img.youtube.com/vi/mPjKPszMImU/hqdefault.jpg' },
+    { id: 8, url: 'rTpDXH849hc', title: 'Algo mejor (Juancho Marqués feat Maka)', thumbnail: 'https://img.youtube.com/vi/rTpDXH849hc/hqdefault.jpg' },
+    { id: 9, url: 'rBuvvqY4Ibs', title: 'Vuelvo a la nena (Soto Asa)', thumbnail: 'https://img.youtube.com/vi/rBuvvqY4Ibs/hqdefault.jpg' },
   ]
 
   return (
@@ -522,131 +310,85 @@ export default function AJHome() {
           <motion.div variants={itemVariants}>
             {cell(projects.weAreCattleFilm)}
           </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="row-span-3 col-start-1 row-start-2"
-          >
+          <motion.div variants={itemVariants} className="row-span-3 col-start-1 row-start-2">
             {cell(projects.weAreCattleVogue)}
           </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="row-span-4 col-start-2 row-start-1"
-          >
+          <motion.div variants={itemVariants} className="row-span-4 col-start-2 row-start-1">
             {cell(projects.drogasMeditacion)}
           </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="row-span-3 col-start-3 row-start-1"
-          >
+          <motion.div variants={itemVariants} className="row-span-3 col-start-3 row-start-1">
             {cell(projects.integracionVogue)}
           </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="col-start-3 row-start-4"
-          >
+          <motion.div variants={itemVariants} className="col-start-3 row-start-4">
             {cell(projects.integracionFilm)}
           </motion.div>
-
-          {/* Play For Art ahora ocupa la posición de Shame of Spain */}
-          <motion.div
-            variants={itemVariants}
-            className="row-span-4 col-start-4 row-start-1"
-          >
+          <motion.div variants={itemVariants} className="row-span-4 col-start-4 row-start-1">
             {cell(projects.playForArt)}
           </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="col-start-5 row-start-1"
-          >
+          <motion.div variants={itemVariants} className="col-start-5 row-start-1">
             {cell(projects.vanishment)}
           </motion.div>
-
-          <motion.div
-            variants={itemVariants}
-            className="col-start-5 row-start-2"
-          >
+          <motion.div variants={itemVariants} className="col-start-5 row-start-2">
             {cell(projects.winterSeries)}
           </motion.div>
-
-          {/* Shame of Spain ahora ocupa la posición de Play For Art */}
-          <motion.div
-            variants={itemVariants}
-            className="row-span-2 col-start-5 row-start-3"
-          >
+          <motion.div variants={itemVariants} className="row-span-2 col-start-5 row-start-3">
             {cell(projects.shameOfSpain)}
           </motion.div>
         </motion.div>
       </motion.section>
 
+      {/* Dressed by MM */}
+      {projects.dressedByMM.length > 0 && (
+        <motion.section
+          id="dressed"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="py-20 border-b border-gray-100 bg-white"
+        >
+          <DressedByMMCarousel media={projects.dressedByMM} />
+        </motion.section>
+      )}
 
+      {/* Colaboraciones Destacadas */}
+      <motion.section
+        id="colaboraciones"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="px-6 md:px-16 py-28 bg-white"
+      >
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-black mb-4 text-center">
+              Colaboraciones de MM en videoclips
+            </h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
+          </div>
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-black mb-4 text-center">
+              Dirección artística
+            </h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
+          </div>
+          <div className="flex-1 w-full">
+            <h3 className="text-xl font-semibold text-black mb-4 text-center">
+              Estilismo y coordinación de vestuario
+            </h3>
+            <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
+          </div>
+        </div>
+      </motion.section>
 
-
-
-    
-{/* Dressed by MM */}
-{projects.dressedByMM.length > 0 && (
-  <motion.section
-    id="dressed"
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.8 }}
-    viewport={{ once: true }}
-    className="py-20 border-b border-gray-100"
-    style={{ backgroundColor: '#F06543' }}
-  >
-
-    <DressedByMMCarousel media={projects.dressedByMM} />
-  </motion.section>
-)}
-
-
-{/* Colaboraciones Destacadas */}
-<motion.section
-  id="colaboraciones"
-  initial="hidden"
-  whileInView="show"
-  viewport={{ once: true }}
-  className="px-6 md:px-16 py-28"
-  style={{ backgroundColor: '#FF69EB' }}
->
-
-  <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-    <div className="flex-1 w-full">
-      <h3 className="text-xl font-semibold text-black mb-4 text-center">
-        Colaboraciones de MM en videoclips
-      </h3>
-      <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
-    </div>
-
-    <div className="flex-1 w-full">
-      <h3 className="text-xl font-semibold text-black mb-4 text-center">
-        Dirección artística
-      </h3>
-      <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
-    </div>
-
-    <div className="flex-1 w-full">
-      <h3 className="text-xl font-semibold text-black mb-4 text-center">
-        Estilismo y coordinación de vestuario
-      </h3>
-      <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
-    </div>
-  </div>
-</motion.section>
-
-      {/* Trayectoria Profesional */}
+         {/* Trayectoria Profesional */}
       <motion.section
         id="trayectoria"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
-        className="relative px-4 md:px-8 py-24 bg-yellow-400 text-black border-b border-gray-100 overflow-visible flex flex-col items-center"
+        className="relative px-4 md:px-8 py-24 bg-white text-black border-b border-gray-100 overflow-visible flex flex-col items-center"
       >
 
         {/* Contenedor de tarjetas */}
@@ -754,13 +496,10 @@ export default function AJHome() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: i * 0.15 }}
               viewport={{ once: true }}
-              className={`relative w-full md:w-2/3 px-5 py-6 rounded-lg shadow-sm bg-white hover:-translate-y-1 hover:shadow-lg z-10 ${i % 2 === 0 ? "ml-auto text-right" : "mr-auto text-left"
-                }`}
+              className={`relative w-full md:w-2/3 px-5 py-6 rounded-lg shadow-sm bg-white hover:-translate-y-1 hover:shadow-lg z-10 ${i % 2 === 0 ? "ml-auto text-right" : "mr-auto text-left"}`}
             >
               <h3 className="text-lg md:text-xl font-semibold mb-1">{item.title}</h3>
-              {item.period && (
-                <p className="text-sm text-gray-500 italic mb-2">{item.period}</p>
-              )}
+              {item.period && <p className="text-sm text-gray-500 italic mb-2">{item.period}</p>}
               <ul className="space-y-1 list-disc list-inside text-sm text-gray-700 mb-2">
                 {item.content.map((line, j) => (
                   <li key={j}>
@@ -772,14 +511,11 @@ export default function AJHome() {
                   </li>
                 ))}
               </ul>
-              {item.achievements && (
-                <p className="text-sm font-semibold mt-2">{item.achievements}</p>
-              )}
+              {item.achievements && <p className="text-sm font-semibold mt-2">{item.achievements}</p>}
             </motion.div>
           ))}
         </div>
       </motion.section>
-
 
       {/* Sobre mí */}
       <motion.section
@@ -788,10 +524,9 @@ export default function AJHome() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="relative px-6 md:px-16 py-28 bg-sky-300 text-black border-b border-gray-100 overflow-hidden"
+        className="relative px-6 md:px-16 py-28 bg-white text-black border-b border-gray-100 overflow-hidden"
       >
         <div className="max-w-5xl mx-auto flex relative">
-          {/* Línea lateral negra */}
           <motion.div
             className="absolute left-0 top-0 w-1 md:w-2 bg-black rounded-full"
             initial={{ height: 0 }}
@@ -799,19 +534,17 @@ export default function AJHome() {
             transition={{ duration: 2, ease: "easeInOut" }}
             viewport={{ once: true }}
           />
-
           <div className="ml-6 md:ml-12 space-y-6 relative z-10">
-            {/* Título con animación continua */}
             <motion.h2
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
               animate={{
                 scale: [1, 1.05, 1],
-                color: ["#000000", "#facc15", "#000000"],
+                color: ["#000000", "#000000", "#000000"],
                 textShadow: [
-                  "0px 0px 0px rgba(250, 204, 21, 0)",
-                  "0px 0px 12px rgba(250, 204, 21, 0.8)",
-                  "0px 0px 0px rgba(250, 204, 21, 0)",
+                  "0px 0px 0px rgba(0,0,0,0)",
+                  "0px 0px 0px rgba(0,0,0,0)",
+                  "0px 0px 0px rgba(0,0,0,0)",
                 ],
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -819,8 +552,6 @@ export default function AJHome() {
             >
               Sobre mí
             </motion.h2>
-
-            {/* Contenido */}
             {[
               "Mi principal trabajo, inamovible e irremplazable, me acompaña desde siempre: observar lo que me atraviesa y traducirlo en palabras, formas, conceptos y símbolos. Me interesa dar cuerpo a lo no dicho, lo tabú, lo excepcional, lo doloroso y lo verdaderamente bello.",
               "Entre dos polos se mueven mis intereses: lo sutil y lo superficial. En ese vaivén voy descifrando, maravillándome y creando.",
@@ -841,8 +572,6 @@ export default function AJHome() {
         </div>
       </motion.section>
 
-
-
       {/* Clipping */}
       <motion.section
         id="clipping"
@@ -854,11 +583,8 @@ export default function AJHome() {
         <Clipping items={aj.prensa || []} />
       </motion.section>
 
+      <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
 
-      <ProjectModal
-        project={activeProject}
-        onClose={() => setActiveProject(null)}
-      />
 
     </SiteLayout>
   )
