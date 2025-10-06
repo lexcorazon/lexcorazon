@@ -91,10 +91,16 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
   const [hover, setHover] = useState(false)
   const [direction, setDirection] = useState(1)
 
+  // Detectar si es vídeo
+  const isVideo =
+    sources.length > 0 &&
+    (/\.(mp4|webm)$/i.test(sources[0]) || /vimeo\.com/i.test(sources[0]))
+
   const nextImage = () => {
     setDirection(1)
     setCurIdx((prev) => (prev + 1) % sources.length)
   }
+
   const prevImage = () => {
     setDirection(-1)
     setCurIdx((prev) => (prev - 1 + sources.length) % sources.length)
@@ -113,41 +119,120 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
     }
 
     if (/\.(mp4|webm)$/i.test(src)) {
-      return <motion.video key={src} {...commonProps} src={src} autoPlay muted loop playsInline preload="auto" />
+      return (
+        <motion.video
+          key={src}
+          {...commonProps}
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+      )
     }
     if (/vimeo\.com/i.test(src)) {
       const id = src.match(/vimeo\.com\/(\d+)/)?.[1] || src
-      return <motion.iframe key={src} {...commonProps} src={`https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1`} allow="autoplay; fullscreen; picture-in-picture" />
+      return (
+        <motion.iframe
+          key={src}
+          {...commonProps}
+          src={`https://player.vimeo.com/video/${id}?background=1&autoplay=1&muted=1&loop=1`}
+          allow="autoplay; fullscreen; picture-in-picture"
+        />
+      )
     }
     return <motion.img key={src} {...commonProps} src={src} alt={title} />
   }
 
   return (
     <motion.article
-      whileHover={{ scale: 1.05, boxShadow: '0 20px 40px rgba(0,0,0,0.6)', zIndex: 50 }}
+      whileHover={{
+        scale: 1.05,
+        boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
+        zIndex: 50,
+      }}
       className="relative w-full h-full overflow-visible"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       {renderMedia(sources[curIdx])}
+
+      {/* 🔹 Overlay */}
       {hover && (
-        <div
-          className="absolute inset-0 bg-black/60 flex flex-col justify-center items-center text-white text-center p-4 z-50 cursor-pointer"
-          onClick={() => onOpen({ title, description, media: sources })}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 40 }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className={`${
+            isVideo ? "relative" : "absolute inset-0"
+          } bg-black/80 flex flex-col justify-center items-center text-white text-center p-6 z-50 ${
+            onOpen && !isVideo ? "cursor-pointer" : "cursor-default"
+          }`}
+          onClick={() =>
+            onOpen && !isVideo && onOpen({ title, description, media: sources })
+          }
         >
-          <span className="text-2xl font-bold mb-2">{title}</span>
-          <span className="text-lg underline">Ver proyecto</span>
-        </div>
+          {/* Título */}
+          <motion.span
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="text-2xl font-bold mb-4"
+          >
+            {title}
+          </motion.span>
+
+          {/* SOLO en vídeos mostramos la descripción */}
+          {isVideo && description && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="overflow-hidden text-sm md:text-base opacity-90 leading-relaxed space-y-3 max-w-[90%] text-left"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          )}
+
+          {/* SOLO en normales el CTA "Ver proyecto" */}
+          {!isVideo && onOpen && (
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-lg underline mt-4"
+            >
+              Ver proyecto
+            </motion.span>
+          )}
+        </motion.div>
       )}
+
+      {/* Botones navegación */}
       {hover && sources.length > 1 && (
         <>
-          <button onClick={prevImage} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50">‹</button>
-          <button onClick={nextImage} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50">›</button>
+          <button
+            onClick={prevImage}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50"
+          >
+            ‹
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white rounded-full px-2 py-1 z-50"
+          >
+            ›
+          </button>
         </>
       )}
     </motion.article>
   )
 }
+
+
 
 /* ---------- VideoCarousel3D ---------- */
 function VideoCarousel3D({ videos = [] }) {
@@ -261,7 +346,6 @@ export default function AJHome() {
   const projects = useMemo(() => {
     const byTitle = (t) => aj.proyectos?.find((p) => p.titulo.toLowerCase() === t.toLowerCase())
     const like = (re) => aj.proyectos?.find((p) => re.test(p.titulo))
-    const vanishment = { titulo: "It's All About Vanishment", media: ['https://vimeo.com/437936022'], description: `It’s All About Vanishment explora la idea de desaparecer...` }
     return {
       weAreCattleFilm: byTitle('we are cattle — fashion film'),
       weAreCattleVogue: byTitle('we are cattle — vogue'),
@@ -271,12 +355,31 @@ export default function AJHome() {
       playForArt: byTitle('Play For Art (Adidas x Juancho Marqués)'),
       drogasMeditacion: byTitle('drogas-meditacion'),
       winterSeries: byTitle('winter-series'),
-      vanishment,
+      vanishment: byTitle("It's All About Vanishment"), 
       dressedByMM: byTitle('Dressed by MM')?.media || [],
     }
+
   }, [])
 
-  const cell = (project) => project && <AutoAspectTile title={project.titulo} media={project.media} images={project.images} description={project.descripcion} onOpen={setActiveProject} />
+
+  const cell = (project) => {
+    if (!project) return null
+
+    const isVideo =
+      project.media &&
+      project.media.length > 0 &&
+      (/\.(mp4|webm)$/i.test(project.media[0]) || /vimeo\.com/i.test(project.media[0]))
+
+    return (
+      <AutoAspectTile
+        title={project.titulo}
+        media={project.media}
+        images={project.images}
+        description={project.descripcion}
+        onOpen={isVideo ? null : setActiveProject}
+      />
+    )
+  }
 
   const colaboracionesVideos = [
     { id: 1, url: 'kqPHo2q-6nw', title: 'Control (Recycled J y Rels B)', thumbnail: 'https://img.youtube.com/vi/kqPHo2q-6nw/hqdefault.jpg' },
@@ -381,7 +484,7 @@ export default function AJHome() {
         </div>
       </motion.section>
 
-         {/* Trayectoria Profesional */}
+      {/* Trayectoria Profesional */}
       <motion.section
         id="trayectoria"
         initial={{ opacity: 0, y: 40 }}
@@ -571,23 +674,18 @@ export default function AJHome() {
           </div>
         </div>
       </motion.section>
-
+      
       {/* Clipping */}
- {/* Clipping */}
-<motion.section
-  id="clipping"
-  initial="hidden"
-  animate="show"
-  variants={containerVariants}
-  className="pt-10 pb-10 bg-white border-b border-gray-100"
->
-  <Clipping items={aj.prensa || []} />
-</motion.section>
-
-
+      <motion.section
+        id="clipping"
+        initial="hidden"
+        animate="show"
+        variants={containerVariants}
+        className="pt-10 pb-10 bg-white border-b border-gray-100"
+      >
+        <Clipping items={aj.prensa || []} />
+      </motion.section>
       <ProjectModal project={activeProject} onClose={() => setActiveProject(null)} />
-
-
     </SiteLayout>
   )
 }

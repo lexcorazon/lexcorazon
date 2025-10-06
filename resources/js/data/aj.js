@@ -173,15 +173,18 @@ export const aj = {
       ]
     },
 
-    {
-      titulo: "Its all about Vanishment (Teresa Rofer)",
-      media: ["https://vimeo.com/437936022"],
-      descripcion: `
-    <p><strong>It’s All About Vanishment</strong> explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.
-    <p>Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.
+{
+  titulo: "It's All About Vanishment",
+  categoria: 'screenplay',
+  media: ["https://vimeo.com/437936022"],
+  descripcion: `
+    <p><strong>It’s All About Vanishment</strong></p>
+    <p>Cuando el dolor irrumpe, ya nada vuelve a ser lo mismo.</p>
+    <p>La desaparición no es solo ausencia: es una forma de habitar el vacío.</p>
+    <p>Un cuerpo que se exhibe mientras se esfuma, atrapado entre la belleza, el artificio y el hastío.</p>
+    <p>Coreografía del duelo, del exceso, del silencio que queda cuando todo lo demás se ha ido.</p>
   `,
-    },
-
+},
 
     {
       titulo: 'Dressed by MM',
@@ -365,16 +368,6 @@ const __norm = (s) =>
 
 const __descs = {
   // ——— Ya existentes ———
-  'integración — fashion film': `
-    Integración es una colección de ropa que mezcla opuestos. Rechaza lo rígido, lo estéril y lo separado. Reúne los contrastes del imaginario personal y los pone a convivir: lo puro y lo caótico, lo tradicional y lo espontáneo, lo espiritual y lo cotidiano.
-    La estética se inspira en la Sevilla de finales de los 90 y principios de los 2000, con guiños a las tribus urbanas que marcaban la época: canis y pijos. Dos estilos enfrentados que aquí se cruzan y se mezclan para crear algo nuevo.
-    Los tejidos elegantes se combinan con otros más crudos. Hay referencias al flamenco jondo, a la religión, a la sexualidad y a las diferencias de clase. Lo banal y lo profundo se encuentran en un universo textil pensado, pero sin rigidez.
-    La nostalgia funciona como herramienta de integración: entender el pasado, revisar patrones y abrir una etapa de madurez y diversión, en la que estar más cerca de la esencia se vuelve una elección.
-  `,
-  'we are cattle — fashion film': `
-    El hombre dentro de la sociedad como individuo que hay que idiotizar para que contribuya a sus reglas. En “We are cattle” se compara al ciudadano con el ganado. Al haberlo sometido a estrategias —cada vez más sutiles— de persuasión, se le va despojando del pensamiento crítico e identidad propia, alejándolo de los valores esenciales. El resultado es un ser humano convertido en cómplice y víctima de la patocracia.
-    “We are cattle” es una representación irónica y surrealista del panorama. El aspecto teatral de las prendas pretende transmitir de manera impactante un mensaje: necesidad de despertar.
-  `,
   'maría magdalena': `
     María Magdalena fue una marca de moda conceptual que se mueve entre lo religioso, lo filosófico y lo urbano. Su universo estético está profundamente influenciado por la iconografía cristiana, el folclore andaluz, la cultura popular y el streetwear, con una mirada crítica y poética a la vez.
     La marca propone un discurso dual: lo sagrado y lo profano, lo marginal y lo aspiracional, la devoción y la rebeldía, conviven en cada prenda como parte de una narrativa más amplia.
@@ -408,9 +401,26 @@ const __descs = {
     Integración — Vogue traduce la mezcla cani / pijo a fotografía: tejidos nobles junto a denim y deportivas, símbolos religiosos con elementos populares, Sevilla como telón y una paleta cálida que une contradicciones.
     Una editorial que condensa el concepto de la colección en imágenes: choque, cruce y madurez estética sin perder la calle.
     `,
-  "it's all about vanishment (teresa rofer)": `
-    <p><strong>It’s All About Vanishment</strong> explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.
-    <p>Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.
+  "it's all about vanishment": `
+    <p><strong>It’s All About Vanishment</strong></p>
+    <p>Cuando el dolor irrumpe, ya nada vuelve a ser lo mismo.</p>
+    <p>La desaparición no es solo ausencia: es una forma de habitar el vacío.</p>
+    <p>Un cuerpo que se exhibe mientras se esfuma, atrapado entre la belleza, el artificio y el hastío.</p>
+    <p>Coreografía del duelo, del exceso, del silencio que queda cuando todo lo demás se ha ido.</p>
+  `,
+
+  "integración — fashion film": `
+    <p><strong>Integración</strong> es una colección de ropa que mezcla opuestos. Rechaza lo rígido, lo estéril y lo separado. Reúne los contrastes del imaginario personal y los pone a convivir: lo puro y lo caótico, lo tradicional y lo espontáneo, lo espiritual y lo cotidiano.</p>
+    <p>La estética se inspira en la Sevilla de finales de los 90 y principios de los 2000, con guiños a las tribus urbanas que marcaban la época: canis y pijos. Dos estilos enfrentados que aquí se cruzan y se mezclan para crear algo nuevo.</p>
+    <p>Los tejidos elegantes se combinan con otros más crudos. Hay referencias al flamenco jondo, a la religión, a la sexualidad y a las diferencias de clase. Lo banal y lo profundo se encuentran en un universo textil pensado, pero sin rigidez.</p>
+    <p>La nostalgia funciona como herramienta de integración: entender el pasado, revisar patrones y abrir una etapa de madurez y diversión, en la que estar más cerca de la esencia se vuelve una elección.</p>
+  `,
+
+  "we are cattle — fashion film": `
+    <p>El hombre dentro de la sociedad como individuo que hay que idiotizar para que contribuya a sus reglas. En <em>We are cattle</em> se compara al ciudadano con el ganado.</p>
+    <p>Al haberlo sometido a estrategias —cada vez más sutiles— de persuasión, se le va despojando del pensamiento crítico e identidad propia, alejándolo de los valores esenciales. El resultado es un ser humano convertido en cómplice y víctima de la patocracia.</p>
+    <p><em>We are cattle</em> es una representación irónica y surrealista del panorama.</p>
+    <p>El aspecto teatral de las prendas pretende transmitir de manera impactante un mensaje: necesidad de despertar.</p>
   `,
 };
 
