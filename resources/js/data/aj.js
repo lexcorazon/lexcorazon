@@ -141,8 +141,6 @@ export const aj = {
     {
       titulo: 'Play for Art (Adidas x Juancho Marqués)',
       categoria: 'producto',
-
-
       // Solo imágenes (ejemplo):
       media: [
         '/images/play-for-art/DSC05813(1).jpg',
@@ -409,8 +407,11 @@ const __descs = {
   'integración — vogue': `
     Integración — Vogue traduce la mezcla cani / pijo a fotografía: tejidos nobles junto a denim y deportivas, símbolos religiosos con elementos populares, Sevilla como telón y una paleta cálida que une contradicciones.
     Una editorial que condensa el concepto de la colección en imágenes: choque, cruce y madurez estética sin perder la calle.
+    `,
+  "it's all about vanishment (teresa rofer)": `
+    <p><strong>It’s All About Vanishment</strong> explora la idea de desaparecer: del cuerpo en el encuadre, del sonido en el silencio, de la identidad en el gesto mínimo.
+    <p>Una pieza breve y contemplativa donde cámara, respiración y ritmo construyen tensión entre presencia y ausencia. Un estudio de lo que queda cuando todo se diluye.
   `,
-
 };
 
 if (Array.isArray(aj?.proyectos)) {
