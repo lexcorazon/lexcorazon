@@ -282,15 +282,19 @@ function VideoCarousel3D({ videos = [] }) {
 function DressedByMMCarousel({ media = [] }) {
   const [curIdx, setCurIdx] = useState(0)
   const [hoveredIdx, setHoveredIdx] = useState(null)
-  const titles = media.map((path) => path.split('/').pop().replace(/\.[^/.]+$/, ''))
+  const titles = media.map((path) =>
+    path.split("/").pop().replace(/\.[^/.]+$/, "")
+  )
 
   const getPosition = (index) => {
     const diff = (index - curIdx + media.length) % media.length
     if (diff === 0) return { scale: 1, opacity: 1, zIndex: 30, x: 0 }
-    if (diff === 1) return { scale: 0.85, opacity: 0.7, zIndex: 20, x: '50%' }
-    if (diff === 2) return { scale: 0.65, opacity: 0.2, zIndex: 10, x: '100%' }
-    if (diff === media.length - 1) return { scale: 0.85, opacity: 0.7, zIndex: 20, x: '-50%' }
-    if (diff === media.length - 2) return { scale: 0.65, opacity: 0.2, zIndex: 10, x: '-100%' }
+    if (diff === 1) return { scale: 0.85, opacity: 0.7, zIndex: 20, x: "50%" }
+    if (diff === 2) return { scale: 0.65, opacity: 0.2, zIndex: 10, x: "100%" }
+    if (diff === media.length - 1)
+      return { scale: 0.85, opacity: 0.7, zIndex: 20, x: "-50%" }
+    if (diff === media.length - 2)
+      return { scale: 0.65, opacity: 0.2, zIndex: 10, x: "-100%" }
     return { scale: 0.5, opacity: 0, zIndex: 5, x: 0 }
   }
 
@@ -302,19 +306,65 @@ function DressedByMMCarousel({ media = [] }) {
   }
 
   return (
-    <div className="relative w-full flex items-center justify-center h-[500px] sm:h-[600px] md:h-[650px] overflow-visible cursor-pointer" onClick={handleClick}>
+    <div
+      className="relative w-full flex items-center justify-center 
+                 h-[500px] sm:h-[600px] md:h-[650px] 
+                 overflow-hidden cursor-pointer"
+      onClick={handleClick}
+    >
       {media.map((src, idx) => (
-        <motion.div key={idx} className="absolute flex items-end justify-center" initial={false} animate={getPosition(idx)} transition={{ duration: 0.8, ease: 'easeInOut' }} onMouseEnter={() => setHoveredIdx(idx)} onMouseLeave={() => setHoveredIdx(null)}>
-          <img src={src} alt={titles[idx]} className="block w-full sm:max-w-[600px] md:max-w-[800px] h-[500px] sm:h-[600px] md:h-[650px] object-cover" />
+        <motion.div
+          key={idx}
+          className="absolute flex items-end justify-center max-w-full"
+          initial={false}
+          animate={getPosition(idx)}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          onMouseEnter={() => setHoveredIdx(idx)}
+          onMouseLeave={() => setHoveredIdx(null)}
+        >
+          <img
+            src={src}
+            alt={titles[idx]}
+            className="block w-full max-w-[90vw] sm:max-w-[600px] md:max-w-[800px] 
+                       h-[500px] sm:h-[600px] md:h-[650px] object-cover"
+          />
           {hoveredIdx === idx && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
-              <span className="text-white text-3xl md:text-4xl font-bold text-center px-4">{titles[idx]}</span>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-0 flex items-center justify-center bg-black/40"
+            >
+              <span className="text-white text-3xl md:text-4xl font-bold text-center px-4">
+                {titles[idx]}
+              </span>
             </motion.div>
           )}
         </motion.div>
       ))}
-      <button onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx - 1 + media.length) % media.length) }} className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40">‹</button>
-      <button onClick={(e) => { e.stopPropagation(); setCurIdx((curIdx + 1) % media.length) }} className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40">›</button>
+
+      {/* Botones navegación */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          setCurIdx((curIdx - 1 + media.length) % media.length)
+        }}
+        className="absolute left-2 md:left-6 top-1/2 transform -translate-y-1/2 
+                   bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
+      >
+        ‹
+      </button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          setCurIdx((curIdx + 1) % media.length)
+        }}
+        className="absolute right-2 md:right-6 top-1/2 transform -translate-y-1/2 
+                   bg-black/40 hover:bg-black/60 text-white px-3 py-1 rounded z-40"
+      >
+        ›
+      </button>
     </div>
   )
 }
@@ -323,20 +373,51 @@ function DressedByMMCarousel({ media = [] }) {
 function ProjectModal({ project, onClose }) {
   if (!project) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 font-roboto">
-      <div className="relative w-full max-w-lg rounded-xl bg-white text-black p-6 shadow-2xl overflow-auto max-h-[90vh]">
-        <button onClick={onClose} className="absolute right-3 top-3 rounded-full px-2 py-1 text-sm hover:bg-black/10">✕</button>
-        <h3 className="text-xl font-semibold mb-4">{project.title}</h3>
-        {project.description && <div className="text-sm text-neutral-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: project.description }} />}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 md:p-4 font-roboto">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 50 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 50 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
+        className="relative w-full max-w-md md:max-w-lg rounded-xl bg-white text-black p-6 shadow-2xl overflow-y-auto max-h-[85vh] flex flex-col"
+      >
+        {/* Botón de cierre */}
+        <button
+          onClick={onClose}
+          className="absolute right-3 top-3 rounded-full px-2 py-1 text-sm hover:bg-black/10"
+        >
+          ✕
+        </button>
+
+        {/* Título */}
+        <h3 className="text-xl font-semibold mb-4 text-center">{project.title}</h3>
+
+        {/* Descripción */}
+        {project.description && (
+          <div
+            className="text-sm text-neutral-700 leading-relaxed mb-4"
+            dangerouslySetInnerHTML={{ __html: project.description }}
+          />
+        )}
+
+        {/* Media */}
         {project.media && project.media.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
-            {project.media.map((src, idx) => <img key={idx} src={src} alt={`${project.title}-${idx}`} className="w-full object-cover" />)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {project.media.map((src, idx) => (
+              <img
+                key={idx}
+                src={src}
+                alt={`${project.title}-${idx}`}
+                className="w-full object-cover rounded"
+              />
+            ))}
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   )
 }
+
 
 /* ---------- AJHome ---------- */
 export default function AJHome() {
