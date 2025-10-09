@@ -33,7 +33,8 @@ Route::prefix('lex')->group(function () {
     Route::get('/contacto', fn() => Inertia::render('Lex/Contacto'))->name('lex.contacto');
     Route::get('/booking', fn() => Inertia::render('Lex/Booking'))->name('lex.booking');
     Route::get('/lex/booking', function () {return Inertia::render('Lex/BookingForm');})->name('lex.booking.form');
-    Route::post('/booking/send', [BookingController::class, 'send']); // ✅ corregido
+    Route::post('booking/send', [BookingController::class, 'send'])->name('lex.booking.send');
+
 });
 
 // API: Stripe checkout + verification

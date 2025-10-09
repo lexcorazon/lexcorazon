@@ -938,7 +938,7 @@ const handleSubmitBooking = async (e) => {
 {/* CTA */}
 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', marginTop: 20 }}>
   <a
-    href="https://wa.me/34XXXXXXXXX"
+    href="https://wa.me/34678776392"
     target="_blank"
     rel="noreferrer"
     style={{
