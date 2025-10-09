@@ -6,12 +6,13 @@ export default function Navbar({ brand }) {
   const [open, setOpen] = useState(false)
 
   const links = [
-    { label: 'Clipping de prensa', href: '#clipping' },
+
     { label: 'Portfolio', href: '#portfolio' },
     { label: 'Dressed by MM', href: '#dressed' },
-    { label: 'Trayectoria', href: '#trayectoria' },
     { label: 'Colaboraciones', href: '#colaboraciones' },
+    { label: 'Trayectoria', href: '#trayectoria' },
     { label: 'Sobre mí', href: '#sobre-mi' },
+    { label: 'Clipping de prensa', href: '#clipping' },
   ]
 
   const scrollTo = (id) => {

@@ -30,7 +30,14 @@ Route::prefix('lex')->group(function () {
     Route::get('/servicios', fn () => Inertia::render('Lex/Servicios'))->name('lex.servicios');
     Route::get('/portfolio', fn () => Inertia::render('Lex/Portfolio'))->name('lex.portfolio');
     Route::get('/contacto', fn () => Inertia::render('Lex/Contacto'))->name('lex.contacto');
+    Route::get('/booking', fn () => Inertia::render('Lex/Booking'))->name('lex.booking');
 });
+
+// API: Stripe checkout + verification
+Route::get('/api/stripe/public-key', [\App\Http\Controllers\StripeController::class, 'publicKey']);
+Route::get('/api/stripe/health', [\App\Http\Controllers\StripeController::class, 'health']);
+Route::post('/api/stripe/checkout', [\App\Http\Controllers\StripeController::class, 'checkout']);
+Route::get('/api/stripe/verify', [\App\Http\Controllers\StripeController::class, 'verify']);
 
 /**
  * DASHBOARD / AUTH (Breeze)
