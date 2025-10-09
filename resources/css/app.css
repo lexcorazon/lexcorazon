@@ -60,6 +60,14 @@
     grid-row-start: 2;
 }
         
-     
+  /* 🔥 Ocultar scrollbars sin romper scroll vertical */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE y Edge */
+  scrollbar-width: none; /* Firefox */
+}
+   
 
         
