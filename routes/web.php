@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\LexBookingController;
+use App\Http\Controllers\BookingController;
 
 /**
  * LANDING (raíz)
@@ -33,7 +33,7 @@ Route::prefix('lex')->group(function () {
     Route::get('/contacto', fn() => Inertia::render('Lex/Contacto'))->name('lex.contacto');
     Route::get('/booking', fn() => Inertia::render('Lex/Booking'))->name('lex.booking');
     Route::get('/lex/booking', function () {return Inertia::render('Lex/BookingForm');})->name('lex.booking.form');
-    Route::post('/lex/booking', [LexBookingController::class, 'store'])->name('lex.booking.store');
+    Route::post('/booking/send', [BookingController::class, 'send']); // ✅ corregido
 });
 
 // API: Stripe checkout + verification

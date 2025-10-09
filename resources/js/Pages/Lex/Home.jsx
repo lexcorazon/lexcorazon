@@ -33,26 +33,39 @@ export default function LexHome() {
     setBookingOpen(true)
   }
 
-  const handleSubmitBooking = async (e) => {
-    e.preventDefault()
-    try {
-      setSending(true)
-      const res = await fetch('/lex/booking', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
-        },
-        body: JSON.stringify(form),
-      })
-      const data = await res.json()
-      setSentOk(Boolean(data.ok))
-    } catch (err) {
-      setSentOk(false)
-    } finally {
-      setSending(false)
-    }
+const handleSubmitBooking = async (e) => {
+  e.preventDefault()
+  console.log('🚀 Enviando formulario...') // <-- añade esto
+  setSending(true)
+  setSentOk(null)
+
+  try {
+const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+const res = await fetch('/lex/booking/send', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'X-CSRF-TOKEN': token || '', // ✅ aquí va el token
+    'Accept': 'application/json',
+  },
+  body: JSON.stringify(form),
+});
+
+
+    const data = await res.json()
+    console.log('📬 Respuesta backend:', data)
+
+    setSending(false)
+    setSentOk(data.ok)
+  } catch (err) {
+    console.error('❌ Error en fetch:', err)
+    setSending(false)
+    setSentOk(false)
   }
+}
+
+
 
 
   /* ---------- Scroll cinematográfico ---------- */
@@ -590,275 +603,312 @@ export default function LexHome() {
           </div>
         </motion.section>
 
-        {/* ---------- MODAL DE RESERVA ---------- */}
-        <AnimatePresence>
-{bookingOpen && (
-  <div
-    style={{
-      position: 'fixed',
-      inset: 0,
-      background: 'rgba(0,0,0,0.7)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 200,
-    }}
-  >
-    <div
+{/* ---------- MODAL DE RESERVA (FUNCIONAL Y ANIMADO) ---------- */}
+<AnimatePresence>
+  {bookingOpen && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
       style={{
-        width: 'min(720px, 92vw)',
-        background: '#0b0b0b',
-        color: '#fff',
-        border: '1px solid #222',
-        borderRadius: 12,
-        padding: 28,
-        position: 'relative',
-        maxHeight: '90vh',
-        overflowY: 'auto',
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
+        background: 'rgba(0,0,0,0.92)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 200,
+        overflow: 'hidden',
+        backdropFilter: 'blur(12px)',
       }}
     >
-      {/* Botón cerrar */}
-      <button
-        onClick={() => setBookingOpen(false)}
+      <motion.div
+        initial={{ opacity: 0, y: 60, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 60, scale: 0.96 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
         style={{
-          position: 'absolute',
-          right: 14,
-          top: 12,
-          background: 'transparent',
-          color: '#aaa',
-          border: 'none',
-          fontSize: 24,
-          cursor: 'pointer',
+          width: '92vw',
+          height: '92vh',
+          background: 'linear-gradient(120deg, #0b0b0b 0%, #171717 100%)',
+          color: '#fff',
+          display: 'grid',
+          gridTemplateColumns: '1.1fr 1fr',
+          overflow: 'hidden',
+          position: 'relative',
+          borderRadius: 12,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
         }}
       >
-        ×
-      </button>
+        {/* ❌ Botón cerrar */}
+        <button
+          onClick={() => setBookingOpen(false)}
+          style={{
+            position: 'absolute',
+            right: 40,
+            top: 28,
+            background: 'transparent',
+            color: '#aaa',
+            border: 'none',
+            fontSize: 40,
+            cursor: 'pointer',
+            zIndex: 10,
+            transition: 'color 0.3s ease',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#aaa')}
+        >
+          ×
+        </button>
 
-      <h3 style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 800 }}>Reserva tu sesión</h3>
-      {form.session_title && (
-        <div style={{ color: '#bbb', fontSize: 14, marginBottom: 18 }}>
-          Sesión seleccionada: <strong style={{ color: '#fff' }}>{form.session_title}</strong>
-        </div>
-      )}
-
-      {/* -------- FORMULARIO -------- */}
-      <form onSubmit={handleSubmitBooking} style={{ display: 'grid', gap: 12 }}>
-        <div style={{ display: 'grid', gap: 8 }}>
-          <label style={{ color: '#ccc', fontSize: 14 }}>Fecha de nacimiento*</label>
-          <input
-            name="birth_date"
-            placeholder="DD/MM/AAAA"
-            value={form.birth_date}
-            onChange={handleChange}
-            required
+        {/* 💫 Panel izquierdo */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{
+            padding: '100px 80px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            borderRight: '1px solid #222',
+            background:
+              'radial-gradient(circle at top left, rgba(255,255,255,0.05) 0%, transparent 70%)',
+          }}
+        >
+          <h2
             style={{
-              background: '#000',
-              color: '#fff',
-              border: '1px solid #222',
-              borderRadius: 8,
-              padding: '12px 14px',
+              fontSize: 'clamp(2.8rem, 4vw, 4.2rem)',
+              fontWeight: 900,
+              marginBottom: 28,
+              textTransform: 'uppercase',
+              letterSpacing: 1,
+              lineHeight: 1.1,
             }}
-          />
-        </div>
-
-        <div style={{ display: 'grid', gap: 8 }}>
-          <label style={{ color: '#ccc', fontSize: 14 }}>Lugar de nacimiento (Ciudad, País)*</label>
-          <input
-            name="birth_place"
-            placeholder="Ciudad, País"
-            value={form.birth_place}
-            onChange={handleChange}
-            required
+          >
+            {form.session_title || 'Sesión Creativa Lex Corazón'}
+          </h2>
+          <p
             style={{
-              background: '#000',
-              color: '#fff',
-              border: '1px solid #222',
-              borderRadius: 8,
-              padding: '12px 14px',
+              fontSize: 22,
+              lineHeight: 1.9,
+              color: '#ddd',
+              maxWidth: 640,
+              textAlign: 'justify',
+              marginBottom: 24,
             }}
-          />
-        </div>
+          >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+            tristique nunc eget placerat tincidunt. Nulla facilisi.
+            <br />
+            <br />
+            Esta sesión abre un espacio simbólico y creativo donde la astrología, la introspección y el arte se entrelazan para dar forma a lo invisible.
+            Te acompañaré a mirar con profundidad, a ordenar lo caótico y a traducir lo interno en algo tangible: tu propio lenguaje creativo.
+          </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-          <div style={{ display: 'grid', gap: 8 }}>
-            <label style={{ color: '#ccc', fontSize: 14 }}>Hora de nacimiento (HH:MM)*</label>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            style={{
+              fontSize: 16,
+              color: '#888',
+              fontStyle: 'italic',
+            }}
+          >
+            “Lo simbólico se convierte en materia, y la emoción se vuelve estructura.”
+          </motion.div>
+        </motion.div>
+
+        {/* 🤍 Panel derecho */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+          style={{
+            padding: '80px 60px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <h3 style={{ fontSize: 30, fontWeight: 800, marginBottom: 20 }}>
+            Completa tus datos
+          </h3>
+
+          {/* ✅ FORMULARIO FUNCIONAL */}
+          <form
+            onSubmit={handleSubmitBooking}
+            style={{
+              display: 'grid',
+              gap: 18,
+              width: '100%',
+            }}
+          >
+            {/* Campos */}
+            <input
+              name="birth_date"
+              placeholder="Fecha de nacimiento (DD/MM/AAAA)*"
+              value={form.birth_date}
+              onChange={handleChange}
+              required
+              style={{
+                background: '#000',
+                color: '#fff',
+                border: '1px solid #333',
+                borderRadius: 10,
+                padding: '14px 16px',
+                fontSize: 16,
+              }}
+            />
+            <input
+              name="birth_place"
+              placeholder="Lugar de nacimiento (Ciudad, País)*"
+              value={form.birth_place}
+              onChange={handleChange}
+              required
+              style={{
+                background: '#000',
+                color: '#fff',
+                border: '1px solid #333',
+                borderRadius: 10,
+                padding: '14px 16px',
+                fontSize: 16,
+              }}
+            />
             <input
               name="birth_time"
-              placeholder="14:30"
+              placeholder="Hora de nacimiento (HH:MM)*"
               value={form.birth_time}
               onChange={handleChange}
               required
               style={{
                 background: '#000',
                 color: '#fff',
-                border: '1px solid #222',
-                borderRadius: 8,
-                padding: '12px 14px',
+                border: '1px solid #333',
+                borderRadius: 10,
+                padding: '14px 16px',
+                fontSize: 16,
               }}
             />
-          </div>
-          <label
-            style={{
-              alignSelf: 'end',
-              color: '#ddd',
-              display: 'flex',
-              gap: 8,
-              alignItems: 'center',
-              fontSize: 14,
-            }}
-          >
-            <input type="checkbox" name="time_exact" checked={form.time_exact} onChange={handleChange} />
-            Hora exacta
-          </label>
-        </div>
+            <input
+              name="expectations"
+              placeholder="¿Qué esperas de la sesión?"
+              value={form.expectations}
+              onChange={handleChange}
+              style={{
+                background: '#000',
+                color: '#fff',
+                border: '1px solid #333',
+                borderRadius: 10,
+                padding: '14px 16px',
+                fontSize: 16,
+              }}
+            />
+            <textarea
+              name="life_point"
+              placeholder="¿En qué punto vital te encuentras?"
+              rows={3}
+              value={form.life_point}
+              onChange={handleChange}
+              style={{
+                background: '#000',
+                color: '#fff',
+                border: '1px solid #333',
+                borderRadius: 10,
+                padding: '14px 16px',
+                fontSize: 16,
+              }}
+            />
+            <textarea
+              name="creativity"
+              placeholder="¿Qué relación tienes con la creatividad?"
+              rows={3}
+              value={form.creativity}
+              onChange={handleChange}
+              style={{
+                background: '#000',
+                color: '#fff',
+                border: '1px solid #333',
+                borderRadius: 10,
+                padding: '14px 16px',
+                fontSize: 16,
+              }}
+            />
 
-        <div style={{ display: 'grid', gap: 8 }}>
-          <label style={{ color: '#ccc', fontSize: 14 }}>¿Qué esperas de la sesión?</label>
-          <input
-            name="expectations"
-            value={form.expectations}
-            onChange={handleChange}
-            style={{
-              background: '#000',
-              color: '#fff',
-              border: '1px solid #222',
-              borderRadius: 8,
-              padding: '12px 14px',
-            }}
-          />
-        </div>
+            {/* CTA */}
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 10 }}>
+              <a
+                href="https://wa.me/34XXXXXXXXX"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  background: '#25D366',
+                  color: '#000',
+                  borderRadius: 10,
+                  padding: '12px 18px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontSize: 17,
+                }}
+              >
+                💬 WhatsApp
+              </a>
+              <a
+                href="/stripe/checkout"
+                style={{
+                  background: '#fff',
+                  color: '#000',
+                  borderRadius: 10,
+                  padding: '12px 18px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontSize: 17,
+                }}
+              >
+                💳 Pagar con Stripe
+              </a>
+              <button
+                type="submit"
+                disabled={sending}
+                style={{
+                  background: '#fff',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: 8,
+                  padding: '12px 18px',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {sending ? 'Enviando…' : 'Enviar formulario'}
+              </button>
+            </div>
 
-        <label
-          style={{
-            color: '#ddd',
-            display: 'flex',
-            gap: 8,
-            alignItems: 'center',
-            fontSize: 14,
-          }}
-        >
-          <input type="checkbox" name="knows_astrology" checked={form.knows_astrology} onChange={handleChange} />
-          Tengo conocimientos de astrología
-        </label>
-
-        <div style={{ display: 'grid', gap: 8 }}>
-          <label style={{ color: '#ccc', fontSize: 14 }}>¿En qué punto vital te encuentras?</label>
-          <textarea
-            name="life_point"
-            rows={3}
-            value={form.life_point}
-            onChange={handleChange}
-            style={{
-              background: '#000',
-              color: '#fff',
-              border: '1px solid #222',
-              borderRadius: 8,
-              padding: '12px 14px',
-              resize: 'vertical',
-            }}
-          />
-        </div>
-
-        <div style={{ display: 'grid', gap: 8 }}>
-          <label style={{ color: '#ccc', fontSize: 14 }}>¿Qué relación tienes con la creatividad?</label>
-          <textarea
-            name="creativity"
-            rows={3}
-            value={form.creativity}
-            onChange={handleChange}
-            style={{
-              background: '#000',
-              color: '#fff',
-              border: '1px solid #222',
-              borderRadius: 8,
-              padding: '12px 14px',
-              resize: 'vertical',
-            }}
-          />
-        </div>
-
-        {/* CTA WhatsApp + Stripe + Enviar */}
-        <div
-          style={{
-            display: 'flex',
-            gap: 12,
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            marginTop: 8,
-          }}
-        >
-          <a
-            href="https://wa.me/34XXXXXXXXX"
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              display: 'inline-flex',
-              gap: 10,
-              alignItems: 'center',
-              background: '#25D366',
-              color: '#000',
-              borderRadius: 8,
-              padding: '10px 16px',
-              fontWeight: 700,
-              textDecoration: 'none',
-            }}
-          >
-            💬 Agenda por WhatsApp
-          </a>
-
-          <a
-            href="/stripe/checkout"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              background: '#fff',
-              color: '#000',
-              borderRadius: 8,
-              padding: '10px 16px',
-              fontWeight: 700,
-              textDecoration: 'none',
-            }}
-          >
-            💳 Pagar con Stripe
-          </a>
-
-          <button
-            type="submit"
-            disabled={sending}
-            style={{
-              marginLeft: 'auto',
-              background: '#fff',
-              color: '#000',
-              border: 'none',
-              borderRadius: 8,
-              padding: '12px 18px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              opacity: sending ? 0.6 : 1,
-            }}
-          >
-            {sending ? 'Enviando…' : 'Enviar formulario'}
-          </button>
-        </div>
-
-        {sentOk === true && (
-          <div style={{ color: '#7CFFB2', fontSize: 14, marginTop: 8 }}>
-            ¡Listo! Tus datos se han enviado a <strong>lexcorazon@gmail.com</strong>.
-          </div>
-        )}
-        {sentOk === false && (
-          <div style={{ color: '#FF8A8A', fontSize: 14, marginTop: 8 }}>
-            Hubo un problema al enviar. Revisa los campos o inténtalo de nuevo.
-          </div>
-        )}
-      </form>
-    </div>
-  </div>
-)}
+            {sentOk === true && (
+              <div style={{ color: '#7CFFB2', fontSize: 15, marginTop: 8 }}>
+                ¡Listo! Tus datos se han enviado a <strong>lexcorazon@gmail.com</strong>.
+              </div>
+            )}
+            {sentOk === false && (
+              <div style={{ color: '#FF8A8A', fontSize: 15, marginTop: 8 }}>
+                Hubo un problema al enviar. Revisa los campos o inténtalo de nuevo.
+              </div>
+            )}
+          </form>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
 
 
 
-        </AnimatePresence>
+
 
         {/* ---------- RESEÑAS ---------- */}
         <motion.section
