@@ -33,37 +33,52 @@ export default function LexHome() {
     setBookingOpen(true)
   }
 
+// 📨 Envío del formulario de reserva
 const handleSubmitBooking = async (e) => {
-  e.preventDefault()
-  console.log('🚀 Enviando formulario...') // <-- añade esto
-  setSending(true)
-  setSentOk(null)
+  e.preventDefault();
+  console.log('🚀 Enviando formulario...');
+  setSending(true);
+  setSentOk(null);
 
   try {
-const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    const res = await fetch('/lex/booking/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '',
+      },
+      body: JSON.stringify(form),
+    });
 
-const res = await fetch('/lex/booking/send', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-CSRF-TOKEN': token || '', // ✅ aquí va el token
-    'Accept': 'application/json',
-  },
-  body: JSON.stringify(form),
-});
+    if (res.ok) {
+      console.log('✅ Envío correcto');
+      setSentOk(true);
+      setSending(false);
 
-
-    const data = await res.json()
-    console.log('📬 Respuesta backend:', data)
-
-    setSending(false)
-    setSentOk(data.ok)
-  } catch (err) {
-    console.error('❌ Error en fetch:', err)
-    setSending(false)
-    setSentOk(false)
+      // Limpia los campos pero mantiene la sesión
+      setForm({
+        birth_date: '',
+        birth_place: '',
+        birth_time: '',
+        time_exact: false,
+        expectations: '',
+        knows_astrology: '',
+        life_point: '',
+        creativity: '',
+        session_title: form.session_title,
+      });
+    } else {
+      console.error('❌ Error HTTP:', res.status);
+      setSentOk(false);
+      setSending(false);
+    }
+  } catch (error) {
+    console.error('❌ Error en fetch:', error);
+    setSentOk(false);
+    setSending(false);
   }
-}
+};
+
 
 
 
@@ -603,7 +618,7 @@ const res = await fetch('/lex/booking/send', {
           </div>
         </motion.section>
 
-{/* ---------- MODAL DE RESERVA (FUNCIONAL Y ANIMADO) ---------- */}
+{/* ---------- MODAL DE RESERVA ---------- */}
 <AnimatePresence>
   {bookingOpen && (
     <motion.div
@@ -616,57 +631,62 @@ const res = await fetch('/lex/booking/send', {
         inset: 0,
         width: '100vw',
         height: '100vh',
-        background: 'rgba(0,0,0,0.92)',
+        overflow: 'hidden',
+        background: 'rgba(0,0,0,0.9)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 200,
-        overflow: 'hidden',
-        backdropFilter: 'blur(12px)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: 60, scale: 0.96 }}
+        initial={{ opacity: 0, y: 80, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 60, scale: 0.96 }}
-        transition={{ duration: 0.6, ease: 'easeOut' }}
+        exit={{ opacity: 0, y: 80, scale: 0.96 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
         style={{
-          width: '92vw',
-          height: '92vh',
-          background: 'linear-gradient(120deg, #0b0b0b 0%, #171717 100%)',
+          width: '90vw',
+          height: '90vh',
+          background: 'linear-gradient(120deg, #0b0b0b 0%, #151515 100%)',
           color: '#fff',
           display: 'grid',
           gridTemplateColumns: '1.1fr 1fr',
+          border: 'none',
+          borderRadius: 14,
           overflow: 'hidden',
-          position: 'relative',
-          borderRadius: 12,
-          boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+          boxShadow: '0 0 60px rgba(255,255,255,0.1)',
         }}
       >
         {/* ❌ Botón cerrar */}
-        <button
-          onClick={() => setBookingOpen(false)}
-          style={{
-            position: 'absolute',
-            right: 40,
-            top: 28,
-            background: 'transparent',
-            color: '#aaa',
-            border: 'none',
-            fontSize: 40,
-            cursor: 'pointer',
-            zIndex: 10,
-            transition: 'color 0.3s ease',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = '#aaa')}
-        >
-          ×
-        </button>
+<button
+  onClick={() => {
+    setBookingOpen(false);
+    setSentOk(null);
+    setSending(false);
+  }}
+  style={{
+    position: 'absolute',
+    right: 36,
+    top: 28,
+    background: 'transparent',
+    color: '#aaa',
+    border: 'none',
+    fontSize: 40,
+    cursor: 'pointer',
+    zIndex: 10,
+    transition: 'color 0.3s ease',
+  }}
+  onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
+  onMouseLeave={(e) => (e.currentTarget.style.color = '#aaa')}
+>
+  ×
+</button>
+
 
         {/* 💫 Panel izquierdo */}
         <motion.div
-          initial={{ opacity: 0, x: -50 }}
+          initial={{ opacity: 0, x: -60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           style={{
@@ -676,12 +696,12 @@ const res = await fetch('/lex/booking/send', {
             justifyContent: 'center',
             borderRight: '1px solid #222',
             background:
-              'radial-gradient(circle at top left, rgba(255,255,255,0.05) 0%, transparent 70%)',
+              'radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%)',
           }}
         >
           <h2
             style={{
-              fontSize: 'clamp(2.8rem, 4vw, 4.2rem)',
+              fontSize: 'clamp(2.5rem, 4vw, 4rem)',
               fontWeight: 900,
               marginBottom: 28,
               textTransform: 'uppercase',
@@ -702,10 +722,9 @@ const res = await fetch('/lex/booking/send', {
             }}
           >
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-            tristique nunc eget placerat tincidunt. Nulla facilisi.
-            <br />
-            <br />
-            Esta sesión abre un espacio simbólico y creativo donde la astrología, la introspección y el arte se entrelazan para dar forma a lo invisible.
+            tristique nunc eget placerat tincidunt. Nulla facilisi.  
+            Esta sesión abre un espacio simbólico y creativo donde la astrología, la introspección y el arte se entrelazan para dar forma a lo invisible.  
+            <br /><br />
             Te acompañaré a mirar con profundidad, a ordenar lo caótico y a traducir lo interno en algo tangible: tu propio lenguaje creativo.
           </p>
 
@@ -715,31 +734,33 @@ const res = await fetch('/lex/booking/send', {
             transition={{ delay: 0.4, duration: 0.6 }}
             style={{
               fontSize: 16,
-              color: '#888',
+              color: '#999',
               fontStyle: 'italic',
             }}
           >
-            “Lo simbólico se convierte en materia, y la emoción se vuelve estructura.”
+            “Lo simbólico se convierte en materia,  
+            y la emoción se vuelve estructura.”
           </motion.div>
         </motion.div>
 
         {/* 🤍 Panel derecho */}
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
+          initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
           style={{
-            padding: '80px 60px',
+            padding: '80px 80px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+            overflowY: 'auto',
           }}
+          className="no-scrollbar"
         >
-          <h3 style={{ fontSize: 30, fontWeight: 800, marginBottom: 20 }}>
+          <h3 style={{ fontSize: 28, fontWeight: 800, marginBottom: 20 }}>
             Completa tus datos
           </h3>
 
-          {/* ✅ FORMULARIO FUNCIONAL */}
           <form
             onSubmit={handleSubmitBooking}
             style={{
@@ -748,314 +769,427 @@ const res = await fetch('/lex/booking/send', {
               width: '100%',
             }}
           >
-            {/* Campos */}
-            <input
-              name="birth_date"
-              placeholder="Fecha de nacimiento (DD/MM/AAAA)*"
-              value={form.birth_date}
-              onChange={handleChange}
-              required
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '14px 16px',
-                fontSize: 16,
-              }}
-            />
-            <input
-              name="birth_place"
-              placeholder="Lugar de nacimiento (Ciudad, País)*"
-              value={form.birth_place}
-              onChange={handleChange}
-              required
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '14px 16px',
-                fontSize: 16,
-              }}
-            />
-            <input
-              name="birth_time"
-              placeholder="Hora de nacimiento (HH:MM)*"
-              value={form.birth_time}
-              onChange={handleChange}
-              required
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '14px 16px',
-                fontSize: 16,
-              }}
-            />
-            <input
-              name="expectations"
-              placeholder="¿Qué esperas de la sesión?"
-              value={form.expectations}
-              onChange={handleChange}
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '14px 16px',
-                fontSize: 16,
-              }}
-            />
-            <textarea
-              name="life_point"
-              placeholder="¿En qué punto vital te encuentras?"
-              rows={3}
-              value={form.life_point}
-              onChange={handleChange}
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '14px 16px',
-                fontSize: 16,
-              }}
-            />
-            <textarea
-              name="creativity"
-              placeholder="¿Qué relación tienes con la creatividad?"
-              rows={3}
-              value={form.creativity}
-              onChange={handleChange}
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #333',
-                borderRadius: 10,
-                padding: '14px 16px',
-                fontSize: 16,
-              }}
-            />
-
-            {/* CTA */}
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginTop: 10 }}>
-              <a
-                href="https://wa.me/34XXXXXXXXX"
-                target="_blank"
-                rel="noreferrer"
+            {/* Fecha nacimiento */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>Fecha de nacimiento*</label>
+              <input
+                name="birth_date"
+                placeholder="DD/MM/AAAA"
+                value={form.birth_date}
+                onChange={handleChange}
+                required
                 style={{
-                  background: '#25D366',
-                  color: '#000',
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
                   borderRadius: 10,
-                  padding: '12px 18px',
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  fontSize: 17,
+                  padding: '14px 16px',
+                  fontSize: 16,
                 }}
-              >
-                💬 WhatsApp
-              </a>
-              <a
-                href="/stripe/checkout"
-                style={{
-                  background: '#fff',
-                  color: '#000',
-                  borderRadius: 10,
-                  padding: '12px 18px',
-                  fontWeight: 700,
-                  textDecoration: 'none',
-                  fontSize: 17,
-                }}
-              >
-                💳 Pagar con Stripe
-              </a>
-              <button
-                type="submit"
-                disabled={sending}
-                style={{
-                  background: '#fff',
-                  color: '#000',
-                  border: 'none',
-                  borderRadius: 8,
-                  padding: '12px 18px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                {sending ? 'Enviando…' : 'Enviar formulario'}
-              </button>
+              />
             </div>
 
-            {sentOk === true && (
-              <div style={{ color: '#7CFFB2', fontSize: 15, marginTop: 8 }}>
-                ¡Listo! Tus datos se han enviado a <strong>lexcorazon@gmail.com</strong>.
+            {/* Lugar nacimiento */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>Lugar de nacimiento (Ciudad, País)*</label>
+              <input
+                name="birth_place"
+                placeholder="Ciudad, País"
+                value={form.birth_place}
+                onChange={handleChange}
+                required
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* Hora nacimiento */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12 }}>
+              <div style={{ display: 'grid', gap: 8 }}>
+                <label style={{ color: '#ccc', fontSize: 16 }}>Hora de nacimiento*</label>
+                <input
+                  name="birth_time"
+                  placeholder="14:30"
+                  value={form.birth_time}
+                  onChange={handleChange}
+                  required
+                  style={{
+                    background: '#000',
+                    color: '#fff',
+                    border: '1px solid #333',
+                    borderRadius: 10,
+                    padding: '14px 16px',
+                    fontSize: 16,
+                  }}
+                />
               </div>
-            )}
-            {sentOk === false && (
-              <div style={{ color: '#FF8A8A', fontSize: 15, marginTop: 8 }}>
-                Hubo un problema al enviar. Revisa los campos o inténtalo de nuevo.
+              <label
+                style={{
+                  alignSelf: 'end',
+                  color: '#ddd',
+                  display: 'flex',
+                  gap: 8,
+                  alignItems: 'center',
+                  fontSize: 15,
+                }}
+              >
+                <input
+                  type="checkbox"
+                  name="time_exact"
+                  checked={form.time_exact}
+                  onChange={handleChange}
+                />
+                Hora exacta
+              </label>
+            </div>
+
+            {/* Expectativas */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué esperas de la sesión?</label>
+              <input
+                name="expectations"
+                value={form.expectations}
+                onChange={handleChange}
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* 🌙 Conocimientos de astrología (radio buttons) */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿Tienes conocimientos de astrología?</label>
+              <div style={{ display: 'flex', gap: 16 }}>
+                {['Sí', 'No'].map((option) => (
+                  <label
+                    key={option}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      cursor: 'pointer',
+                      fontSize: 15,
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="knows_astrology"
+                      value={option}
+                      checked={form.knows_astrology === option}
+                      onChange={handleChange}
+                      style={{ accentColor: '#fff', transform: 'scale(1.2)' }}
+                    />
+                    {option}
+                  </label>
+                ))}
               </div>
-            )}
-          </form>
-        </motion.div>
-      </motion.div>
+            </div>
+
+            {/* Punto vital */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿En qué punto vital te encuentras?</label>
+              <textarea
+                name="life_point"
+                rows={3}
+                value={form.life_point}
+                onChange={handleChange}
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* Relación creatividad */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué relación tienes con la creatividad?</label>
+              <textarea
+                name="creativity"
+                rows={3}
+                value={form.creativity}
+                onChange={handleChange}
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+           
+{/* CTA */}
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', marginTop: 20 }}>
+  <a
+    href="https://wa.me/34XXXXXXXXX"
+    target="_blank"
+    rel="noreferrer"
+    style={{
+      background: '#25D366',
+      color: '#000',
+      borderRadius: 10,
+      padding: '12px 18px',
+      fontWeight: 700,
+      textDecoration: 'none',
+      fontSize: 17,
+      transition: 'transform 0.2s ease',
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+  >
+    💬 WhatsApp
+  </a>
+
+  <a
+    href="/stripe/checkout"
+    style={{
+      background: '#fff',
+      color: '#000',
+      borderRadius: 10,
+      padding: '12px 18px',
+      fontWeight: 700,
+      textDecoration: 'none',
+      fontSize: 17,
+      transition: 'transform 0.2s ease',
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+    onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+  >
+    💳 Pagar con Stripe
+  </a>
+
+  <button
+    type="submit"
+    disabled={sending || sentOk === true}
+    style={{
+      background: sentOk
+        ? '#7CFFB2'
+        : sending
+        ? '#ccc'
+        : '#fff',
+      color: '#000',
+      border: 'none',
+      borderRadius: 10,
+      padding: '12px 18px',
+      fontWeight: 700,
+      cursor: sentOk ? 'not-allowed' : 'pointer',
+      fontSize: 17,
+      transition: 'all 0.3s ease',
+    }}
+  >
+    {sentOk
+      ? '✅ Enviado'
+      : sending
+      ? 'Enviando…'
+      : 'Enviar formulario'}
+  </button>
+</div>
+
+
+{/* ✅ Mensajes de estado unificados y sin duplicados */}
+<AnimatePresence mode="wait">
+  {sentOk !== null && !sending && (
+    <motion.div
+      key={sentOk ? 'success' : 'error'}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.4 }}
+      style={{
+        color: sentOk ? '#7CFFB2' : '#FF8A8A',
+        fontSize: 15,
+        marginTop: 12,
+        background: sentOk
+          ? 'rgba(124,255,178,0.08)'
+          : 'rgba(255,138,138,0.08)',
+        padding: '8px 12px',
+        borderRadius: 6,
+        textAlign: 'center',
+        position: 'relative',
+        zIndex: 1,
+      }}
+    >
+      {sentOk ? (
+        <>
+          ✅ ¡Listo! Tus datos se han enviado correctamente a{' '}
+          <strong>lexcorazon@gmail.com</strong>.
+        </>
+      ) : (
+        <>❌ Hubo un problema al enviar. Revisa los campos o inténtalo de nuevo.</>
+      )}
     </motion.div>
   )}
 </AnimatePresence>
+</form>
+</motion.div>
+</motion.div>
+</motion.div>
+)}
+</AnimatePresence>
 
+{/* ---------- RESEÑAS ---------- */}
+<motion.section
+  {...fadeUp}
+  id="reviews"
+  style={{
+    width: '100vw',
+    background: '#000',
+    color: '#fff',
+    padding: '120px 0',
+    overflow: 'hidden',
+    position: 'relative',
+  }}
+>
+  <h2
+    style={{
+      textAlign: 'center',
+      fontSize: 36,
+      fontWeight: 700,
+      marginBottom: 60,
+      letterSpacing: 1,
+    }}
+  >
+    Lo que dicen quienes vivieron Lex Corazón
+  </h2>
 
-
-
-
-        {/* ---------- RESEÑAS ---------- */}
-        <motion.section
-          {...fadeUp}
-          id="reviews"
+  <div
+    style={{
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }}
+  >
+    <motion.div
+      style={{
+        display: 'flex',
+        gap: 34,
+        overflow: 'hidden',
+        width: '70%',
+        scrollBehavior: 'smooth',
+      }}
+      className="no-scrollbar"
+    >
+      {[
+        { name: 'Ana', text: 'Una experiencia transformadora. Me ayudó a ver mis procesos creativos con una claridad brutal.' },
+        { name: 'Luis', text: 'Lex Corazón no es una metodología, es una experiencia que me devolvió las ganas de crear desde lo auténtico.' },
+        { name: 'María', text: 'Su acompañamiento fue un espejo de honestidad. Salí con una identidad creativa completamente nueva.' },
+        { name: 'Valeria', text: 'Nunca imaginé que mi historia pudiera tener una voz tan estética. Lex Corazón me ayudó a encontrarla.' },
+        { name: 'Diego', text: 'Cada sesión fue una revelación. De lo simbólico a lo concreto, todo cobró sentido.' },
+        { name: 'Lucía', text: 'Hay algo profundamente humano en este proceso. No se trata solo de crear, sino de recordarte por qué empezaste.' },
+        { name: 'Carmen', text: 'Sentí que me devolvía a mí misma. Una alquimia entre arte, emoción y estrategia que transforma de verdad.' },
+      ].map((r, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: i * 0.15 }}
+          viewport={{ once: true }}
           style={{
-            width: '100vw',
-            background: '#000',
-            color: '#fff',
-            padding: '120px 0',
-            overflow: 'hidden',
+            flex: '0 0 420px',
+            background: '#fff',
+            color: '#000',
+            borderRadius: 12,
+            padding: '32px 28px',
+            boxShadow: '0 10px 25px rgba(255,255,255,0.05)',
+            scrollSnapAlign: 'center',
             position: 'relative',
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          }}
+          whileHover={{
+            scale: 1.03,
+            boxShadow: '0 12px 30px rgba(255,255,255,0.15)',
           }}
         >
-          <h2
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
             style={{
-              textAlign: 'center',
-              fontSize: 36,
-              fontWeight: 700,
-              marginBottom: 60,
-              letterSpacing: 1,
+              fontStyle: 'italic',
+              fontSize: 20,
+              lineHeight: 1.6,
+              marginBottom: 20,
             }}
           >
-            Lo que dicen quienes vivieron Lex Corazón
-          </h2>
-
-          <div
+            “{r.text}”
+          </motion.p>
+          <footer
             style={{
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
+              fontWeight: 600,
+              color: '#333',
+              fontSize: 16,
+              textAlign: 'right',
             }}
           >
-            <motion.div
-              style={{
-                display: 'flex',
-                gap: 34,
-                overflow: 'hidden',
-                width: '70%',
-                scrollBehavior: 'smooth',
-              }}
-              className="no-scrollbar"
-            >
-              {[
-                { name: 'Ana', text: 'Una experiencia transformadora. Me ayudó a ver mis procesos creativos con una claridad brutal.' },
-                { name: 'Luis', text: 'Lex Corazón no es una metodología, es una experiencia que me devolvió las ganas de crear desde lo auténtico.' },
-                { name: 'María', text: 'Su acompañamiento fue un espejo de honestidad. Salí con una identidad creativa completamente nueva.' },
-                { name: 'Valeria', text: 'Nunca imaginé que mi historia pudiera tener una voz tan estética. Lex Corazón me ayudó a encontrarla.' },
-                { name: 'Diego', text: 'Cada sesión fue una revelación. De lo simbólico a lo concreto, todo cobró sentido.' },
-                { name: 'Lucía', text: 'Hay algo profundamente humano en este proceso. No se trata solo de crear, sino de recordarte por qué empezaste.' },
-                { name: 'Carmen', text: 'Sentí que me devolvía a mí misma. Una alquimia entre arte, emoción y estrategia que transforma de verdad.' },
-              ].map((r, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 60 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: i * 0.15 }}
-                  viewport={{ once: true }}
-                  style={{
-                    flex: '0 0 420px',
-                    background: '#fff',
-                    color: '#000',
-                    borderRadius: 12,
-                    padding: '32px 28px',
-                    boxShadow: '0 10px 25px rgba(255,255,255,0.05)',
-                    scrollSnapAlign: 'center',
-                    position: 'relative',
-                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  }}
-                  whileHover={{
-                    scale: 1.03,
-                    boxShadow: '0 12px 30px rgba(255,255,255,0.15)',
-                  }}
-                >
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    style={{
-                      fontStyle: 'italic',
-                      fontSize: 20,
-                      lineHeight: 1.6,
-                      marginBottom: 20,
-                    }}
-                  >
-                    “{r.text}”
-                  </motion.p>
-                  <footer
-                    style={{
-                      fontWeight: 600,
-                      color: '#333',
-                      fontSize: 16,
-                      textAlign: 'right',
-                    }}
-                  >
-                    — {r.name}
-                  </footer>
+            — {r.name}
+          </footer>
 
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '6px',
-                      background: 'linear-gradient(90deg, #fff 0%, #999 100%)',
-                      borderRadius: '12px 12px 0 0',
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* 🔸 Sombra decorativa inferior */}
           <div
             style={{
               position: 'absolute',
-              bottom: 0,
+              top: 0,
               left: 0,
               width: '100%',
-              height: '120px',
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)',
-              pointerEvents: 'none',
+              height: '6px',
+              background: 'linear-gradient(90deg, #fff 0%, #999 100%)',
+              borderRadius: '12px 12px 0 0',
             }}
           />
-        </motion.section>
+        </motion.div>
+      ))}
+    </motion.div>
+  </div>
 
-        {/* ---------- FOOTER ---------- */}
-        <motion.footer
-          style={{
-            width: '100vw',
-            background: '#000',
-            color: '#fff',
-            padding: '40px 16px',
-            textAlign: 'center',
-            borderTop: '1px solid #111',
-          }}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <p>© {new Date().getFullYear()} Lex Corazón — Todos los derechos reservados</p>
-        </motion.footer>
-      </main>
-    </div>
-  )
+  {/* 🔸 Sombra decorativa inferior */}
+  <div
+    style={{
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      width: '100%',
+      height: '120px',
+      background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)',
+      pointerEvents: 'none',
+    }}
+  />
+</motion.section>
+
+{/* ---------- FOOTER ---------- */}
+<motion.footer
+  style={{
+    width: '100vw',
+    background: '#000',
+    color: '#fff',
+    padding: '40px 16px',
+    textAlign: 'center',
+    borderTop: '1px solid #111',
+  }}
+  initial={{ opacity: 0, y: 40 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, delay: 0.2 }}
+  viewport={{ once: true }}
+>
+  <p>© {new Date().getFullYear()} Lex Corazón — Todos los derechos reservados</p>
+</motion.footer>
+</main>
+</div>
+)
 }
