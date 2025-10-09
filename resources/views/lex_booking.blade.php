@@ -2,138 +2,191 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>📬 Nueva reserva — Lex Corazón</title>
+    <title>Lex Corazón — Nueva Reserva</title>
     <style>
         body {
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #f4f4f6;
-            color: #222;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #f5f6f8;
+            color: #1a1a1a;
             margin: 0;
             padding: 40px 0;
         }
+
         .container {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
             background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-radius: 10px;
+            box-shadow: 0 2px 25px rgba(0,0,0,0.08);
             overflow: hidden;
         }
+
         .header {
-            background: #000;
-            color: #fff;
+            background: #0b0b0b;
+            color: #f5f5f5;
             padding: 28px 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            border-bottom: 3px solid #c7a76c;
         }
+
         .header h1 {
             font-size: 22px;
             margin: 0;
-            letter-spacing: 1px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
         }
-        .content {
+
+        .meta {
+            font-size: 13px;
+            color: #bcbcbc;
+            margin-top: 6px;
+        }
+
+        .section {
             padding: 36px 40px;
+            border-bottom: 1px solid #e9e9e9;
         }
-        .section-title {
-            font-size: 18px;
+
+        .section h2 {
+            font-size: 17px;
             font-weight: 700;
-            color: #000;
-            margin-bottom: 16px;
-            border-left: 4px solid #000;
+            margin: 0 0 18px;
+            color: #0b0b0b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-left: 4px solid #c7a76c;
             padding-left: 10px;
         }
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        li {
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 10px;
+        }
+
+        td {
+            padding: 8px 0;
+            font-size: 15px;
+            vertical-align: top;
+        }
+
+        td.label {
+            width: 42%;
+            color: #555;
+            font-weight: 600;
+        }
+
+        td.value {
+            width: 58%;
+            color: #111;
+        }
+
+        .highlight {
+            background: #fafafa;
+            border-left: 3px solid #c7a76c;
+            padding: 14px 16px;
+            border-radius: 6px;
+            margin-top: 10px;
             line-height: 1.6;
+            font-size: 15px;
         }
-        li strong {
-            color: #000;
-        }
+
         .footer {
-            background: #f1f1f1;
+            background: #fafafa;
             color: #555;
             font-size: 13px;
             text-align: center;
-            padding: 20px;
-            border-top: 1px solid #e5e5e5;
+            padding: 18px;
         }
-        .highlight {
-            background: #fafafa;
-            border-radius: 8px;
-            padding: 14px 18px;
-            border: 1px solid #eee;
+
+        .footer a {
+            color: #000;
+            text-decoration: none;
+            font-weight: 600;
         }
+
         .badge {
-            display: inline-block;
-            background: #000;
+            background: #c7a76c;
             color: #fff;
-            padding: 4px 10px;
             font-size: 12px;
-            border-radius: 6px;
-            margin-left: 8px;
+            padding: 3px 8px;
+            border-radius: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }
-        .divider {
-            height: 1px;
-            background: #eee;
-            margin: 24px 0;
-        }
-        .quote {
-            font-style: italic;
-            color: #777;
-            margin-top: 16px;
-            border-left: 3px solid #000;
-            padding-left: 12px;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
-            <h1>🪶 Nueva reserva — Lex Corazón</h1>
-            <span class="badge">{{ now()->format('d/m/Y H:i') }}</span>
+            <h1>Nueva Reserva — Lex Corazón</h1>
+            <div class="meta">
+                Recibida el {{ now()->format('d/m/Y H:i') }}
+            </div>
         </div>
 
-        <div class="content">
-            <p>Has recibido una nueva solicitud de sesión desde el formulario de <strong>Lex Corazón</strong>.</p>
+        <!-- SESIÓN -->
+        <div class="section">
+            <h2>Datos de la sesión</h2>
+            <table>
+                <tr>
+                    <td class="label">Tipo de sesión</td>
+                    <td class="value">{{ $session_title ?? '—' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Expectativas</td>
+                    <td class="value">{{ $expectations ?? '—' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Conocimientos de astrología</td>
+                    <td class="value">{{ $knows_astrology ?? 'No indicado' }}</td>
+                </tr>
+            </table>
+        </div>
 
-            <div class="divider"></div>
+        <!-- CLIENTE -->
+        <div class="section">
+            <h2>Datos personales</h2>
+            <table>
+                <tr>
+                    <td class="label">Fecha de nacimiento</td>
+                    <td class="value">{{ $birth_date ?? '—' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Lugar de nacimiento</td>
+                    <td class="value">{{ $birth_place ?? '—' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Hora de nacimiento</td>
+                    <td class="value">{{ $birth_time ?? '—' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Hora exacta</td>
+                    <td class="value">{{ !empty($time_exact) ? 'Sí' : 'No' }}</td>
+                </tr>
+            </table>
+        </div>
 
-            <h2 class="section-title">🗓️ Datos de la sesión</h2>
-            <ul>
-                <li><strong>Sesión:</strong> {{ $session_title ?? '—' }}</li>
-                <li><strong>Expectativas:</strong> {{ $expectations ?? '—' }}</li>
-                <li><strong>Conocimientos de astrología:</strong> {{ $knows_astrology ?? 'No indicado' }}</li>
-            </ul>
+        <!-- REFLEXIONES -->
+        <div class="section">
+            <h2>Información adicional</h2>
 
-            <div class="divider"></div>
-
-            <h2 class="section-title">🌙 Datos personales</h2>
-            <ul>
-                <li><strong>Fecha de nacimiento:</strong> {{ $birth_date ?? '—' }}</li>
-                <li><strong>Lugar de nacimiento:</strong> {{ $birth_place ?? '—' }}</li>
-                <li><strong>Hora de nacimiento:</strong> {{ $birth_time ?? '—' }}</li>
-                <li><strong>Hora exacta:</strong> {{ !empty($time_exact) ? 'Sí' : 'No' }}</li>
-            </ul>
-
-            <div class="divider"></div>
-
-            <h2 class="section-title">💭 Reflexiones del cliente</h2>
             <div class="highlight">
-                <p><strong>¿En qué punto vital se encuentra?</strong><br>
-                    {{ $life_point ?? '—' }}</p>
-
-                <p><strong>¿Qué relación tiene con la creatividad?</strong><br>
-                    {{ $creativity ?? '—' }}</p>
+                <strong>¿En qué punto vital se encuentra?</strong><br>
+                {{ $life_point ?? '—' }}
             </div>
 
+            <div class="highlight">
+                <strong>¿Qué relación tiene con la creatividad?</strong><br>
+                {{ $creativity ?? '—' }}
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            Este mensaje fue generado automáticamente por el sistema de reservas de 
+            <strong>Lex Corazón</strong>.<br>
+            Puedes responder a <a href="mailto:lexcorazon@gmail.com">lexcorazon@gmail.com</a>.
         </div>
     </div>
 </body>
