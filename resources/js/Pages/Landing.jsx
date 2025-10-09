@@ -83,25 +83,6 @@ export default function Landing() {
               <span className="block w-3 h-3 bg-black/40 dark:bg-white/40 rounded-full animate-pulse"></span>
             </div>
 
-            {/* Bullet AJ */}
-            <AnimatePresence>
-              {hovered === 'aj' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  transition={overlayTransition}
-                  className="mx-auto mt-6 max-w-md rounded-2xl bg-ink/5 px-5 py-4 text-sm text-ink/90 text-left shadow-soft"
-                >
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Arte y marca personal con dirección creativa.</li>
-                    <li>Mentoría creativa: introspección e identidad.</li>
-                    <li>Portfolio y blog de procesos e ideas.</li>
-                  </ul>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             {/* CTA AJ – botón negro con sombra */}
             <AnimatePresence>
               {hovered === 'aj' && (
@@ -139,7 +120,7 @@ export default function Landing() {
       >
         {/* Fondo Lex */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-black to-zinc-700"
+          className="absolute inset-0 bg-black"
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={entryTransition}
@@ -166,25 +147,6 @@ export default function Landing() {
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 md:hidden">
               <span className="block w-3 h-3 bg-white/40 rounded-full animate-pulse"></span>
             </div>
-
-            {/* Bullet Lex */}
-            <AnimatePresence>
-              {hovered === 'lex' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  transition={overlayTransition}
-                  className="mx-auto mt-6 max-w-md rounded-2xl bg-white/10 backdrop-blur-sm px-5 py-4 text-sm text-white/95 text-left shadow-soft"
-                >
-                  <ul className="list-disc pl-5 space-y-1">
-                    <li>Mentoría creativa: identidad conceptual y visual.</li>
-                    <li>Coaching astrológico: lectura y consultas.</li>
-                    <li>Enfoque minimalista, claro y práctico.</li>
-                  </ul>
-                </motion.div>
-              )}
-            </AnimatePresence>
 
             {/* CTA Lex */}
             <AnimatePresence>
