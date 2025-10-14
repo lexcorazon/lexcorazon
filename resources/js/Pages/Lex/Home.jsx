@@ -165,9 +165,6 @@ function ReviewCard({ review }) {
   );
 }
 
-
-
-
   /* ---------- Scroll cinematográfico ---------- */
   useEffect(() => {
     const lenis = new Lenis({
@@ -279,8 +276,9 @@ const cardVariant = {
       </header>
 
       <main style={{ paddingTop: 0 }}>
+
+        
         {/* ---------- HERO ---------- */}
-        {/* ---------- HERO (fondo negro + texto blanco completo) ---------- */}
         <motion.section
           id="hero"
           style={{
@@ -785,431 +783,557 @@ const cardVariant = {
   </div>
 </motion.section>
 
-        {/* ---------- MODAL DE RESERVA ---------- */}
-        <AnimatePresence>
-          {bookingOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              style={{
-                position: 'fixed',
-                inset: 0,
-                width: '100vw',
-                height: '100vh',
-                overflow: 'hidden',
-                background: 'rgba(0,0,0,0.9)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 200,
-                backdropFilter: 'blur(10px)',
-              }}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 80, scale: 0.96 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 80, scale: 0.96 }}
-                transition={{ duration: 0.7, ease: 'easeOut' }}
+{/* ---------- MODAL DE RESERVA ---------- */}
+<AnimatePresence>
+  {bookingOpen && (
+    <motion.div
+      className="booking-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        width: '100vw',
+        height: '100vh',
+        overflowY: 'auto',
+        background: 'rgba(0,0,0,0.85)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 200,
+        backdropFilter: 'blur(10px)',
+        padding: '40px 0',
+      }}
+    >
+      <motion.div
+        className="booking-modal"
+        initial={{ opacity: 0, y: 80, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 80, scale: 0.96 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
+        style={{
+          width: '96vw',
+          height: '92vh',
+          maxWidth: 'none',
+          background: 'linear-gradient(120deg, #0b0b0b 0%, #151515 100%)',
+          color: '#fff',
+          display: 'grid',
+          gridTemplateColumns: '1.1fr 1fr',
+          borderRadius: 18,
+          overflow: 'hidden',
+          boxShadow: '0 0 80px rgba(255,255,255,0.1)',
+          position: 'relative',
+        }}
+      >
+        {/* ❌ Botón cerrar */}
+        <button
+          onClick={() => {
+            setBookingOpen(false);
+            setSentOk(null);
+            setSending(false);
+          }}
+          style={{
+            position: 'absolute',
+            right: 30,
+            top: 20,
+            background: 'transparent',
+            color: '#aaa',
+            border: 'none',
+            fontSize: 40,
+            cursor: 'pointer',
+            zIndex: 10,
+            transition: 'color 0.3s ease',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = '#aaa')}
+        >
+          ×
+        </button>
+
+        {/* 💫 Panel izquierdo */}
+        <motion.div
+          className="booking-left"
+          initial={{ opacity: 0, x: -60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{
+            padding: '100px 80px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            borderRight: '1px solid #222',
+            background:
+              'radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%)',
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 'clamp(2.5rem, 4vw, 4rem)',
+              fontWeight: 900,
+              marginBottom: 28,
+              textTransform: 'uppercase',
+              letterSpacing: 1,
+              lineHeight: 1.1,
+            }}
+          >
+            {form.session_title || 'Sesión Creativa Lex Corazón'}
+          </h2>
+          <p
+            style={{
+              fontSize: 22,
+              lineHeight: 1.9,
+              color: '#ddd',
+              maxWidth: 640,
+              textAlign: 'justify',
+              marginBottom: 24,
+            }}
+          >
+            Esta sesión abre un espacio simbólico y creativo donde la astrología,
+            la introspección y el arte se entrelazan para dar forma a lo invisible.
+            <br /><br />
+            Te acompañaré a mirar con profundidad, a ordenar lo caótico y a
+            traducir lo interno en algo tangible: tu propio lenguaje creativo.
+          </p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            style={{
+              fontSize: 16,
+              color: '#999',
+              fontStyle: 'italic',
+            }}
+          >
+            “Lo simbólico se convierte en materia,
+            y la emoción se vuelve estructura.”
+          </motion.div>
+        </motion.div>
+
+        {/* 🤍 Panel derecho */}
+        <motion.div
+          className="booking-right"
+          initial={{ opacity: 0, x: 60 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
+          style={{
+            padding: '80px 80px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            overflowY: 'auto',
+          }}
+        >
+          <h3 style={{ fontSize: 28, fontWeight: 800, marginBottom: 20 }}>
+            Completa tus datos
+          </h3>
+
+          <form
+            onSubmit={handleSubmitBooking}
+            style={{
+              display: 'grid',
+              gap: 18,
+              width: '100%',
+            }}
+          >
+            {/* Fecha nacimiento */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>Fecha de nacimiento*</label>
+              <input
+                name="birth_date"
+                placeholder="DD/MM/AAAA"
+                value={form.birth_date}
+                onChange={handleChange}
+                required
                 style={{
-                  width: '90vw',
-                  height: '90vh',
-                  background: 'linear-gradient(120deg, #0b0b0b 0%, #151515 100%)',
+                  background: '#000',
                   color: '#fff',
-                  display: 'grid',
-                  gridTemplateColumns: '1.1fr 1fr',
-                  border: 'none',
-                  borderRadius: 14,
-                  overflow: 'hidden',
-                  boxShadow: '0 0 60px rgba(255,255,255,0.1)',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* Lugar nacimiento */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>Lugar de nacimiento (Ciudad, País)*</label>
+              <input
+                name="birth_place"
+                placeholder="Ciudad, País"
+                value={form.birth_place}
+                onChange={handleChange}
+                required
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* Hora nacimiento */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12 }}>
+              <div style={{ display: 'grid', gap: 8 }}>
+                <label style={{ color: '#ccc', fontSize: 16 }}>Hora de nacimiento*</label>
+                <input
+                  name="birth_time"
+                  placeholder="14:30"
+                  value={form.birth_time}
+                  onChange={handleChange}
+                  required
+                  style={{
+                    background: '#000',
+                    color: '#fff',
+                    border: '1px solid #333',
+                    borderRadius: 10,
+                    padding: '14px 16px',
+                    fontSize: 16,
+                  }}
+                />
+              </div>
+              <label
+                style={{
+                  alignSelf: 'end',
+                  color: '#ddd',
+                  display: 'flex',
+                  gap: 8,
+                  alignItems: 'center',
+                  fontSize: 15,
                 }}
               >
-                {/* ❌ Botón cerrar */}
-                <button
-                  onClick={() => {
-                    setBookingOpen(false);
-                    setSentOk(null);
-                    setSending(false);
-                  }}
-                  style={{
-                    position: 'absolute',
-                    right: 36,
-                    top: 28,
-                    background: 'transparent',
-                    color: '#aaa',
-                    border: 'none',
-                    fontSize: 40,
-                    cursor: 'pointer',
-                    zIndex: 10,
-                    transition: 'color 0.3s ease',
-                  }}
-                  onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = '#aaa')}
-                >
-                  ×
-                </button>
+                <input
+                  type="checkbox"
+                  name="time_exact"
+                  checked={form.time_exact}
+                  onChange={handleChange}
+                />
+                Hora exacta
+              </label>
+            </div>
 
+            {/* Expectativas */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué esperas de la sesión?</label>
+              <input
+                name="expectations"
+                value={form.expectations}
+                onChange={handleChange}
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
 
-                {/* 💫 Panel izquierdo */}
+            {/* Conocimientos astrología */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿Tienes conocimientos de astrología?</label>
+              <div style={{ display: 'flex', gap: 16 }}>
+                {['Sí', 'No'].map((option) => (
+                  <label
+                    key={option}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 8,
+                      cursor: 'pointer',
+                      fontSize: 15,
+                    }}
+                  >
+                    <input
+                      type="radio"
+                      name="knows_astrology"
+                      value={option}
+                      checked={form.knows_astrology === option}
+                      onChange={handleChange}
+                      style={{ accentColor: '#fff', transform: 'scale(1.2)' }}
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Punto vital */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿En qué punto vital te encuentras?</label>
+              <textarea
+                name="life_point"
+                rows={3}
+                value={form.life_point}
+                onChange={handleChange}
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* Relación creatividad */}
+            <div style={{ display: 'grid', gap: 8 }}>
+              <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué relación tienes con la creatividad?</label>
+              <textarea
+                name="creativity"
+                rows={3}
+                value={form.creativity}
+                onChange={handleChange}
+                style={{
+                  background: '#000',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  borderRadius: 10,
+                  padding: '14px 16px',
+                  fontSize: 16,
+                }}
+              />
+            </div>
+
+            {/* CTA */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', marginTop: 20 }}>
+              <a
+                href="https://wa.me/34678776392"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  background: '#25D366',
+                  color: '#000',
+                  borderRadius: 10,
+                  padding: '12px 18px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontSize: 17,
+                  transition: 'transform 0.2s ease',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                💬 AGENDAR
+              </a>
+
+              <a
+                href="/stripe/checkout"
+                style={{
+                  background: '#fff',
+                  color: '#000',
+                  borderRadius: 10,
+                  padding: '12px 18px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  fontSize: 17,
+                  transition: 'transform 0.2s ease',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+              >
+                💳 Pagar con Stripe
+              </a>
+
+              <button
+                type="submit"
+                disabled={sending || sentOk === true}
+                style={{
+                  background: sentOk
+                    ? '#7CFFB2'
+                    : sending
+                      ? '#ccc'
+                      : '#fff',
+                  color: '#000',
+                  border: 'none',
+                  borderRadius: 10,
+                  padding: '12px 18px',
+                  fontWeight: 700,
+                  cursor: sentOk ? 'not-allowed' : 'pointer',
+                  fontSize: 17,
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {sentOk
+                  ? '✅ Enviado'
+                  : sending
+                    ? 'Enviando…'
+                    : 'Enviar formulario'}
+              </button>
+            </div>
+
+            {/* ✅ Mensajes de estado */}
+            <AnimatePresence mode="wait">
+              {sentOk !== null && !sending && (
                 <motion.div
-                  initial={{ opacity: 0, x: -60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  key={sentOk ? 'success' : 'error'}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.4 }}
                   style={{
-                    padding: '100px 80px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    borderRight: '1px solid #222',
-                    background:
-                      'radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%)',
+                    color: sentOk ? '#7CFFB2' : '#FF8A8A',
+                    fontSize: 15,
+                    marginTop: 12,
+                    background: sentOk
+                      ? 'rgba(124,255,178,0.08)'
+                      : 'rgba(255,138,138,0.08)',
+                    padding: '8px 12px',
+                    borderRadius: 6,
+                    textAlign: 'center',
                   }}
                 >
-                  <h2
-                    style={{
-                      fontSize: 'clamp(2.5rem, 4vw, 4rem)',
-                      fontWeight: 900,
-                      marginBottom: 28,
-                      textTransform: 'uppercase',
-                      letterSpacing: 1,
-                      lineHeight: 1.1,
-                    }}
-                  >
-                    {form.session_title || 'Sesión Creativa Lex Corazón'}
-                  </h2>
-                  <p
-                    style={{
-                      fontSize: 22,
-                      lineHeight: 1.9,
-                      color: '#ddd',
-                      maxWidth: 640,
-                      textAlign: 'justify',
-                      marginBottom: 24,
-                    }}
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    tristique nunc eget placerat tincidunt. Nulla facilisi.
-                    Esta sesión abre un espacio simbólico y creativo donde la astrología, la introspección y el arte se entrelazan para dar forma a lo invisible.
-                    <br /><br />
-                    Te acompañaré a mirar con profundidad, a ordenar lo caótico y a traducir lo interno en algo tangible: tu propio lenguaje creativo.
-                  </p>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
-                    style={{
-                      fontSize: 16,
-                      color: '#999',
-                      fontStyle: 'italic',
-                    }}
-                  >
-                    “Lo simbólico se convierte en materia,
-                    y la emoción se vuelve estructura.”
-                  </motion.div>
+                  {sentOk ? (
+                    <>
+                      ✅ ¡Listo! Tus datos se han enviado correctamente a{' '}
+                      <strong>lexcorazon@gmail.com</strong>.
+                    </>
+                  ) : (
+                    <>❌ Hubo un problema al enviar. Revisa los campos o inténtalo de nuevo.</>
+                  )}
                 </motion.div>
+              )}
+            </AnimatePresence>
+          </form>
+        </motion.div>
+      </motion.div>
 
-                {/* 🤍 Panel derecho */}
-                <motion.div
-                  initial={{ opacity: 0, x: 60 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
-                  style={{
-                    padding: '80px 80px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    overflowY: 'auto',
-                  }}
-                  className="no-scrollbar"
-                >
-                  <h3 style={{ fontSize: 28, fontWeight: 800, marginBottom: 20 }}>
-                    Completa tus datos
-                  </h3>
+      {/* 💎 Estilos responsive */}
+      <style>{`
+  /* ----- Ajuste de la X para que no se superponga en móvil ----- */
+  @media (max-width: 1024px) {
+    .booking-modal button[style*="font-size: 40px"] {
+      top: 12px !important;
+      right: 16px !important;
+      font-size: 36px !important;
+      background: rgba(0, 0, 0, 0.4) !important;
+      border-radius: 50% !important;
+      width: 46px !important;
+      height: 46px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: #fff !important;
+    }
 
-                  <form
-                    onSubmit={handleSubmitBooking}
-                    style={{
-                      display: 'grid',
-                      gap: 18,
-                      width: '100%',
-                    }}
-                  >
-                    {/* Fecha nacimiento */}
-                    <div style={{ display: 'grid', gap: 8 }}>
-                      <label style={{ color: '#ccc', fontSize: 16 }}>Fecha de nacimiento*</label>
-                      <input
-                        name="birth_date"
-                        placeholder="DD/MM/AAAA"
-                        value={form.birth_date}
-                        onChange={handleChange}
-                        required
-                        style={{
-                          background: '#000',
-                          color: '#fff',
-                          border: '1px solid #333',
-                          borderRadius: 10,
-                          padding: '14px 16px',
-                          fontSize: 16,
-                        }}
-                      />
-                    </div>
+    .booking-modal button[style*="font-size: 40px"]:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
 
-                    {/* Lugar nacimiento */}
-                    <div style={{ display: 'grid', gap: 8 }}>
-                      <label style={{ color: '#ccc', fontSize: 16 }}>Lugar de nacimiento (Ciudad, País)*</label>
-                      <input
-                        name="birth_place"
-                        placeholder="Ciudad, País"
-                        value={form.birth_place}
-                        onChange={handleChange}
-                        required
-                        style={{
-                          background: '#000',
-                          color: '#fff',
-                          border: '1px solid #333',
-                          borderRadius: 10,
-                          padding: '14px 16px',
-                          fontSize: 16,
-                        }}
-                      />
-                    </div>
+  @media (max-width: 600px) {
+    .booking-modal button[style*="font-size: 40px"] {
+      top: 10px !important;
+      right: 10px !important;
+      width: 42px !important;
+      height: 42px !important;
+      font-size: 32px !important;
+    }
+  }
+`}</style>
+      <style>{`
+        @media (max-width: 1024px) {
+          .booking-modal {
+            grid-template-columns: 1fr !important;
+            grid-template-rows: auto auto !important;
+            height: auto !important;
+            width: 95vw !important;
+            max-height: none !important;
+            overflow: visible !important;
+          }
 
-                    {/* Hora nacimiento */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12 }}>
-                      <div style={{ display: 'grid', gap: 8 }}>
-                        <label style={{ color: '#ccc', fontSize: 16 }}>Hora de nacimiento*</label>
-                        <input
-                          name="birth_time"
-                          placeholder="14:30"
-                          value={form.birth_time}
-                          onChange={handleChange}
-                          required
-                          style={{
-                            background: '#000',
-                            color: '#fff',
-                            border: '1px solid #333',
-                            borderRadius: 10,
-                            padding: '14px 16px',
-                            fontSize: 16,
-                          }}
-                        />
-                      </div>
-                      <label
-                        style={{
-                          alignSelf: 'end',
-                          color: '#ddd',
-                          display: 'flex',
-                          gap: 8,
-                          alignItems: 'center',
-                          fontSize: 15,
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          name="time_exact"
-                          checked={form.time_exact}
-                          onChange={handleChange}
-                        />
-                        Hora exacta
-                      </label>
-                    </div>
+          .booking-left {
+            order: 1;
+            padding: 60px 40px !important;
+            border-right: none !important;
+            border-bottom: 1px solid #222 !important;
+            text-align: center !important;
+          }
 
-                    {/* Expectativas */}
-                    <div style={{ display: 'grid', gap: 8 }}>
-                      <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué esperas de la sesión?</label>
-                      <input
-                        name="expectations"
-                        value={form.expectations}
-                        onChange={handleChange}
-                        style={{
-                          background: '#000',
-                          color: '#fff',
-                          border: '1px solid #333',
-                          borderRadius: 10,
-                          padding: '14px 16px',
-                          fontSize: 16,
-                        }}
-                      />
-                    </div>
+          .booking-right {
+            order: 2;
+            padding: 40px 32px !important;
+            background: none !important;
+            overflow-y: visible !important;
+          }
 
-                    {/* 🌙 Conocimientos de astrología (radio buttons) */}
-                    <div style={{ display: 'grid', gap: 8 }}>
-                      <label style={{ color: '#ccc', fontSize: 16 }}>¿Tienes conocimientos de astrología?</label>
-                      <div style={{ display: 'flex', gap: 16 }}>
-                        {['Sí', 'No'].map((option) => (
-                          <label
-                            key={option}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 8,
-                              cursor: 'pointer',
-                              fontSize: 15,
-                            }}
-                          >
-                            <input
-                              type="radio"
-                              name="knows_astrology"
-                              value={option}
-                              checked={form.knows_astrology === option}
-                              onChange={handleChange}
-                              style={{ accentColor: '#fff', transform: 'scale(1.2)' }}
-                            />
-                            {option}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
+          .booking-left h2 {
+            font-size: clamp(2rem, 6vw, 2.8rem) !important;
+          }
 
-                    {/* Punto vital */}
-                    <div style={{ display: 'grid', gap: 8 }}>
-                      <label style={{ color: '#ccc', fontSize: 16 }}>¿En qué punto vital te encuentras?</label>
-                      <textarea
-                        name="life_point"
-                        rows={3}
-                        value={form.life_point}
-                        onChange={handleChange}
-                        style={{
-                          background: '#000',
-                          color: '#fff',
-                          border: '1px solid #333',
-                          borderRadius: 10,
-                          padding: '14px 16px',
-                          fontSize: 16,
-                        }}
-                      />
-                    </div>
+          .booking-left p {
+            font-size: 17px !important;
+            line-height: 1.7 !important;
+          }
 
-                    {/* Relación creatividad */}
-                    <div style={{ display: 'grid', gap: 8 }}>
-                      <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué relación tienes con la creatividad?</label>
-                      <textarea
-                        name="creativity"
-                        rows={3}
-                        value={form.creativity}
-                        onChange={handleChange}
-                        style={{
-                          background: '#000',
-                          color: '#fff',
-                          border: '1px solid #333',
-                          borderRadius: 10,
-                          padding: '14px 16px',
-                          fontSize: 16,
-                        }}
-                      />
-                    </div>
+          .booking-right h3 {
+            font-size: 22px !important;
+            text-align: center;
+            margin-bottom: 18px;
+          }
+
+          .booking-right input,
+          .booking-right textarea {
+            font-size: 15px !important;
+            padding: 12px 14px !important;
+          }
+
+          .booking-right button,
+          .booking-right a {
+            font-size: 15px !important;
+            padding: 10px 16px !important;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .booking-left {
+            padding: 40px 22px !important;
+          }
+
+          .booking-left h2 {
+            font-size: 1.8rem !important;
+          }
+
+          .booking-right {
+            padding: 32px 20px !important;
+          }
+
+          .booking-right input,
+          .booking-right textarea {
+            font-size: 14px !important;
+            padding: 10px 12px !important;
+          }
+
+          .booking-right button,
+          .booking-right a {
+            font-size: 14px !important;
+            padding: 10px 14px !important;
+          }
+        }
+
+        @media (min-width: 1200px) {
+          .booking-modal {
+            width: 96vw !important;
+            height: 92vh !important;
+            max-width: none !important;
+            border-radius: 18px !important;
+          }
+        }
+      `}</style>
+    </motion.div>
+  )}
+</AnimatePresence>
 
 
-                    {/* CTA */}
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', marginTop: 20 }}>
-                      <a
-                        href="https://wa.me/34678776392"
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          background: '#25D366',
-                          color: '#000',
-                          borderRadius: 10,
-                          padding: '12px 18px',
-                          fontWeight: 700,
-                          textDecoration: 'none',
-                          fontSize: 17,
-                          transition: 'transform 0.2s ease',
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                      >
-                        💬 AGENDAR
-                      </a>
-
-                      <a
-                        href="/stripe/checkout"
-                        style={{
-                          background: '#fff',
-                          color: '#000',
-                          borderRadius: 10,
-                          padding: '12px 18px',
-                          fontWeight: 700,
-                          textDecoration: 'none',
-                          fontSize: 17,
-                          transition: 'transform 0.2s ease',
-                        }}
-                        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
-                        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                      >
-                        💳 Pagar con Stripe
-                      </a>
-
-                      <button
-                        type="submit"
-                        disabled={sending || sentOk === true}
-                        style={{
-                          background: sentOk
-                            ? '#7CFFB2'
-                            : sending
-                              ? '#ccc'
-                              : '#fff',
-                          color: '#000',
-                          border: 'none',
-                          borderRadius: 10,
-                          padding: '12px 18px',
-                          fontWeight: 700,
-                          cursor: sentOk ? 'not-allowed' : 'pointer',
-                          fontSize: 17,
-                          transition: 'all 0.3s ease',
-                        }}
-                      >
-                        {sentOk
-                          ? '✅ Enviado'
-                          : sending
-                            ? 'Enviando…'
-                            : 'Enviar formulario'}
-                      </button>
-                    </div>
-
-
-                    {/* ✅ Mensajes de estado unificados y sin duplicados */}
-                    <AnimatePresence mode="wait">
-                      {sentOk !== null && !sending && (
-                        <motion.div
-                          key={sentOk ? 'success' : 'error'}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.4 }}
-                          style={{
-                            color: sentOk ? '#7CFFB2' : '#FF8A8A',
-                            fontSize: 15,
-                            marginTop: 12,
-                            background: sentOk
-                              ? 'rgba(124,255,178,0.08)'
-                              : 'rgba(255,138,138,0.08)',
-                            padding: '8px 12px',
-                            borderRadius: 6,
-                            textAlign: 'center',
-                            position: 'relative',
-                            zIndex: 1,
-                          }}
-                        >
-                          {sentOk ? (
-                            <>
-                              ✅ ¡Listo! Tus datos se han enviado correctamente a{' '}
-                              <strong>lexcorazon@gmail.com</strong>.
-                            </>
-                          ) : (
-                            <>❌ Hubo un problema al enviar. Revisa los campos o inténtalo de nuevo.</>
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </form>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        
 
 {/* ---------- RESEÑAS ---------- */}
 <section
