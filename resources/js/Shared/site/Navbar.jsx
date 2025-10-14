@@ -6,7 +6,6 @@ export default function Navbar({ brand }) {
   const [open, setOpen] = useState(false)
 
   const links = [
-
     { label: 'Portfolio', href: '#portfolio' },
     { label: 'Dressed by MM', href: '#dressed' },
     { label: 'Colaboraciones', href: '#colaboraciones' },
@@ -33,6 +32,32 @@ export default function Navbar({ brand }) {
   return (
     <header className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-white/10 w-full">
       <div className="flex items-center justify-between px-6 py-2 w-full">
+        {/* 🔗 Redes sociales izquierda */}
+        <div className="hidden lg:flex items-center gap-4">
+          <a
+            href="https://www.instagram.com/lex.corazon/?igsh=MTcwMm5leXM2bmY3MA%3D%3D#"
+            target="_blank"
+            rel="noreferrer"
+            className="transition transform hover:scale-110"
+          >
+            <img src="/images/icons/insta.svg" alt="Instagram" className="w-5 h-5 opacity-75 hover:opacity-100" />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/alejandrajaime"
+            target="_blank"
+            rel="noreferrer"
+            className="transition transform hover:scale-110"
+          >
+            <img src="/images/icons/linkedin.svg" alt="LinkedIn" className="w-5 h-5 opacity-75 hover:opacity-100" />
+          </a>
+          <a
+            href="mailto:lexcorazon@gmail.com"
+            className="transition transform hover:scale-110"
+          >
+            <img src="/images/icons/mail.svg" alt="Email" className="w-5 h-5 opacity-75 hover:opacity-100" />
+          </a>
+        </div>
+
         {/* Centro: Logo + Links */}
         <div className="flex-1 flex items-center justify-center gap-8">
           <button onClick={scrollToTop} className="flex items-center">
@@ -88,8 +113,34 @@ export default function Navbar({ brand }) {
               </button>
             ))}
 
+            {/* 🌐 Redes sociales dentro del menú móvil */}
+            <div className="flex gap-6 mt-6">
+              <a
+                href="https://www.instagram.com/lex.corazon/?igsh=MTcwMm5leXM2bmY3MA%3D%3D#"
+                target="_blank"
+                rel="noreferrer"
+                className="transition transform hover:scale-110"
+              >
+                <img src="/images/icons/insta.svg" alt="Instagram" className="w-6 h-6 opacity-80 hover:opacity-100" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/alejandrajaime"
+                target="_blank"
+                rel="noreferrer"
+                className="transition transform hover:scale-110"
+              >
+                <img src="/images/icons/linkedin.svg" alt="LinkedIn" className="w-6 h-6 opacity-80 hover:opacity-100" />
+              </a>
+              <a
+                href="mailto:lexcorazon@gmail.com"
+                className="transition transform hover:scale-110"
+              >
+                <img src="/images/icons/mail.svg" alt="Email" className="w-6 h-6 opacity-80 hover:opacity-100" />
+              </a>
+            </div>
+
             {/* Imagen Lex Corazón Mobile centrada */}
-            <div className="mt-4">
+            <div className="mt-6">
               <Link href="/lex">
                 <img
                   src="/images/lex-corazon.png"
