@@ -453,8 +453,7 @@ export default function LexHome() {
           </motion.div>
         </motion.section>
 
-
-        {/* ---------- SESIONES ---------- */}
+{/* ---------- SESIONES ---------- */}
 <motion.section
   {...fadeUp}
   id="sessions"
@@ -466,13 +465,15 @@ export default function LexHome() {
     position: 'relative',
   }}
 >
+  {/* Primera fila 50/50 */}
   <div
     style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
+      gridTemplateColumns: 'repeat(2, 1fr)',
       gap: 8,
       borderTop: '1px solid #111',
       borderLeft: '1px solid #111',
+      marginBottom: 8,
     }}
   >
     {[
@@ -482,43 +483,14 @@ export default function LexHome() {
         desc: 'Una lectura profunda de tu carta natal para comprender tus patrones internos, talentos y desafíos vitales.',
       },
       {
-        title: 'Viaje a las tripas',
-        category: 'Sesiones introspectivas',
-        desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.',
-      },
-      {
-        title: 'Motín existencial',
-        category: 'Talentos y propósito',
-        desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.',
-      },
-      {
-        title: 'Caja de cerillas',
-        category: 'Experimentación creativa',
-        desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.',
-      },
-      {
-        title: 'Lex ID',
-        category: 'ADN de marca',
-        desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.',
-      },
-      {
-        title: 'Aesthetic Overdose',
-        category: 'Estética y concepto',
-        desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.',
-      },
-      {
-        title: 'Carne y hueso',
-        category: 'Creación de producto',
-        desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.',
-      },
-      {
         title: 'Pack de sesiones',
         category: 'Programas completos',
         desc: 'Un acompañamiento integral en varias sesiones, combinando introspección y acción para una transformación sostenida.',
       },
     ].map((c, i) => {
-      const isCartaNatal = i === 0;
+      const isCartaNatal = c.title === 'Carta Natal';
       const isPack = c.title === 'Pack de sesiones';
+      const isEtapa = false;
 
       return (
         <motion.article
@@ -528,18 +500,15 @@ export default function LexHome() {
             borderBottom: '1px solid #111',
             background: isCartaNatal
               ? '#000'
-              : isPack
-              ? '#FFD500'
-              : '#fff',
-            color: isCartaNatal
-              ? '#fff'
-              : '#000',
+              : '#FFD500',
+            color: isCartaNatal ? '#fff' : '#000',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             height: 460,
             padding: 32,
-            transition: 'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease',
+            transition:
+              'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease',
             cursor: 'pointer',
           }}
           onMouseEnter={(e) => {
@@ -550,11 +519,6 @@ export default function LexHome() {
             e.currentTarget.style.transform = 'scale(1)';
             e.currentTarget.style.boxShadow = 'none';
           }}
-          variants={cardVariant}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          custom={i}
         >
           <div style={{ minHeight: 240 }}>
             <div
@@ -595,8 +559,15 @@ export default function LexHome() {
             </p>
           </div>
 
-          {/* Contenedor del botón + etapa */}
-          <div style={{ display: 'flex', alignItems: 'center', marginTop: 20, gap: 16 }}>
+          {/* Contenedor botón + ETAPA */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginTop: 'auto',
+            }}
+          >
             <button
               onClick={() => openBookingFor(c.title)}
               style={{
@@ -613,12 +584,11 @@ export default function LexHome() {
               }}
               onMouseEnter={(e) => {
                 if (isCartaNatal) {
-                  e.currentTarget.style.background = '#f3f3f3';
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
+                  e.currentTarget.style.background = '#FFD500'; // amarillo
+                  e.currentTarget.style.color = '#fff';
                 } else if (isPack) {
-                  e.currentTarget.style.transform = 'scale(1.05)';
-                  e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
+                  e.currentTarget.style.background = '#fff'; // blanco
+                  e.currentTarget.style.color = '#000';
                 } else {
                   e.currentTarget.style.background = '#fff';
                   e.currentTarget.style.color = '#000';
@@ -627,11 +597,10 @@ export default function LexHome() {
               onMouseLeave={(e) => {
                 if (isCartaNatal) {
                   e.currentTarget.style.background = '#fff';
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.color = '#000';
                 } else if (isPack) {
-                  e.currentTarget.style.transform = 'scale(1)';
-                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.background = '#000';
+                  e.currentTarget.style.color = '#fff';
                 } else {
                   e.currentTarget.style.background = '#000';
                   e.currentTarget.style.color = '#fff';
@@ -641,20 +610,172 @@ export default function LexHome() {
               AGENDAR +INFO
             </button>
 
-  {/* ETAPAS abajo a la derecha */}
-  {i >= 1 && i <= 6 && (
-    <div style={{ marginTop: 'auto', textAlign: 'right' }}>
-      <span style={{ fontWeight: 700, fontSize: 18, color: '#000' }}>
-        ETAPA{i}
-      </span>
-    </div>
-  )}
+            {/* ETAPA (no hay en primera fila) */}
+          </div>
+        </motion.article>
+      );
+    })}
+  </div>
+
+  {/* Filas 2 y 3 (3 columnas cada una) */}
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: 8,
+      borderTop: '1px solid #111',
+      borderLeft: '1px solid #111',
+    }}
+  >
+    {[
+      {
+        title: 'Viaje a las tripas',
+        category: 'Sesiones introspectivas',
+        desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.',
+      },
+      {
+        title: 'Motín existencial',
+        category: 'Talentos y propósito',
+        desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.',
+      },
+      {
+        title: 'Caja de cerillas',
+        category: 'Experimentación creativa',
+        desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.',
+      },
+      {
+        title: 'Lex ID',
+        category: 'ADN de marca',
+        desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.',
+      },
+      {
+        title: 'Aesthetic Overdose',
+        category: 'Estética y concepto',
+        desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.',
+      },
+      {
+        title: 'Carne y hueso',
+        category: 'Creación de producto',
+        desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.',
+      },
+    ].map((c, i) => {
+      const isEtapa = true;
+
+      return (
+        <motion.article
+          key={i}
+          style={{
+            borderRight: '1px solid #111',
+            borderBottom: '1px solid #111',
+            background: '#fff',
+            color: '#000',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: 460,
+            padding: 32,
+            transition:
+              'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease',
+            cursor: 'pointer',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+        >
+          <div style={{ minHeight: 240 }}>
+            <div
+              style={{
+                color: '#6b7280',
+                fontSize: 14,
+                textTransform: 'uppercase',
+                marginBottom: 6,
+                fontWeight: 500,
+                letterSpacing: 0.5,
+              }}
+            >
+              {c.category}
+            </div>
+
+            <h3
+              style={{
+                margin: '0 0 12px',
+                fontSize: 38,
+                fontWeight: 700,
+                color: '#000',
+                lineHeight: 1.2,
+                minHeight: 80,
+              }}
+            >
+              {c.title}
+            </h3>
+
+            <p
+              style={{
+                margin: 0,
+                fontSize: 18,
+                lineHeight: 1.5,
+                color: '#222',
+              }}
+            >
+              {c.desc}
+            </p>
+          </div>
+
+          {/* Contenedor botón + ETAPA */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              marginTop: 'auto',
+            }}
+          >
+            <button
+              onClick={() => openBookingFor(c.title)}
+              style={{
+                background: '#000',
+                color: '#fff',
+                border: '1px solid #000',
+                padding: '10px 18px',
+                borderRadius: 26,
+                fontSize: 20,
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                letterSpacing: 0.5,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#fff';
+                e.currentTarget.style.color = '#000';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#000';
+                e.currentTarget.style.color = '#fff';
+              }}
+            >
+              AGENDAR +INFO
+            </button>
+
+            {/* ETAPA */}
+            <span style={{ fontWeight: 700, fontSize: 18, color: '#000' }}>
+              ETAPA{i + 1}
+            </span>
           </div>
         </motion.article>
       );
     })}
   </div>
 </motion.section>
+
+
+
+
+
 
 
 
