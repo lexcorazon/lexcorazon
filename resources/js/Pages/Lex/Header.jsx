@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // función de scroll suave
   const scrollTo = (id) => {
     const el = document.querySelector(id)
     if (el) {
@@ -38,36 +37,23 @@ export default function Header() {
           width: '100%',
         }}
       >
-        {/* 🌐 Redes sociales izquierda */}
+        {/* 🌐 Redes sociales izquierda (imágenes) */}
         <div
           className="header-socials"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 20,
+            gap: 18,
           }}
         >
-          <a
-            href="https://www.linkedin.com/in/alejandrajaime"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#bbb', fontSize: 18 }}
-          >
-            <i className="fa-brands fa-linkedin"></i>
+          <a href="https://www.instagram.com/lex.corazon/?igsh=MTcwMm5leXM2bmY3MA%3D%3D#" target="_blank" rel="noreferrer" className="icon-link">
+            <img src="/images/icons/insta.svg" alt="Instagram" className="social-icon" />
           </a>
-          <a
-            href="https://www.instagram.com/lexcorazon"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#bbb', fontSize: 18 }}
-          >
-            <i className="fa-brands fa-instagram"></i>
+          <a href="https://www.linkedin.com/in/alejandrajaime" target="_blank" rel="noreferrer" className="icon-link">
+            <img src="/images/icons/linkedin.svg" alt="LinkedIn" className="social-icon" />
           </a>
-          <a
-            href="mailto:lexcorazon@gmail.com"
-            style={{ color: '#bbb', fontSize: 18 }}
-          >
-            <i className="fa-regular fa-envelope"></i>
+          <a href="mailto:lexcorazon@gmail.com" className="icon-link">
+            <img src="/images/icons/mail.svg" alt="Email" className="social-icon" />
           </a>
         </div>
 
@@ -136,15 +122,8 @@ export default function Header() {
             gap: 16,
           }}
         >
-          {/* AJ solo visible en desktop */}
-          <a
-            href="/aj"
-            className="aj-desktop"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-            }}
-          >
+          {/* AJ visible solo en desktop */}
+          <a href="/aj" className="aj-desktop" style={{ display: 'inline-flex', alignItems: 'center' }}>
             <img
               src="/images/BAJ.png"
               alt="Volver a AJ"
@@ -202,29 +181,16 @@ export default function Header() {
             Contacto
           </button>
 
-          {/* Redes sociales visibles en el menú móvil */}
+          {/* Redes sociales (imágenes) dentro del menú móvil */}
           <div style={{ display: 'flex', gap: 24, marginTop: 8 }}>
-            <a
-              href="https://www.linkedin.com/in/alejandrajaime"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: '#fff', fontSize: 22 }}
-            >
-              <i className="fa-brands fa-linkedin"></i>
+            <a href="https://www.instagram.com/lex.corazon/?igsh=MTcwMm5leXM2bmY3MA%3D%3D#" target="_blank" rel="noreferrer" className="icon-link">
+              <img src="/images/icons/insta.svg" alt="Instagram" className="social-icon" />
             </a>
-            <a
-              href="https://www.instagram.com/lexcorazon"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: '#fff', fontSize: 22 }}
-            >
-              <i className="fa-brands fa-instagram"></i>
+            <a href="https://www.linkedin.com/in/alejandrajaime" target="_blank" rel="noreferrer" className="icon-link">
+              <img src="/images/icons/linkedin.svg" alt="LinkedIn" className="social-icon" />
             </a>
-            <a
-              href="mailto:lexcorazon@gmail.com"
-              style={{ color: '#fff', fontSize: 22 }}
-            >
-              <i className="fa-regular fa-envelope"></i>
+            <a href="mailto:lexcorazon@gmail.com" className="icon-link">
+              <img src="/images/icons/mail.svg" alt="Email" className="social-icon" />
             </a>
           </div>
 
@@ -245,8 +211,21 @@ export default function Header() {
         </motion.div>
       )}
 
-      {/* 🎨 Estilos responsive */}
+      {/* 🎨 Estilos + animaciones */}
       <style>{`
+        .social-icon {
+          width: 22px;
+          height: 22px;
+          opacity: 0.75;
+          transition: transform 0.25s ease, opacity 0.25s ease, filter 0.25s ease;
+        }
+
+        .icon-link:hover .social-icon {
+          opacity: 1;
+          transform: scale(1.2);
+          filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+        }
+
         @media (max-width: 1024px) {
           .header-socials,
           .nav-links,
@@ -277,7 +256,6 @@ export default function Header() {
   )
 }
 
-// 🔹 estilos reutilizables
 const linkStyle = {
   background: 'none',
   border: 'none',
