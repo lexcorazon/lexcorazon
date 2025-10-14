@@ -139,14 +139,14 @@ export default function LexHome() {
     viewport: { once: true },
   }
 
-  const cardVariant = {
-    hidden: { opacity: 0, y: 40 },
-    visible: (i) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.15, duration: 0.6, ease: 'easeOut' },
-    }),
-  }
+const cardVariant = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: 'easeOut' },
+  }),
+};
 
   return (
     <div style={{ overflow: 'hidden', width: '100%', minHeight: '100vh' }}>
@@ -453,29 +453,47 @@ export default function LexHome() {
           </motion.div>
         </motion.section>
 
+
 {/* ---------- SESIONES ---------- */}
 <motion.section
   {...fadeUp}
   id="sessions"
   style={{
-    width: '100vw',
+    width: '100%',
     background: '#000',
-    padding: '0 0 80px 0',
+    padding: '0 16px 80px 16px',
     margin: 0,
     position: 'relative',
   }}
 >
+  <style>
+    {`
+      .grid-responsive {
+        display: grid;
+        gap: 8px;
+        border-top: 1px solid #111;
+        border-left: 1px solid #111;
+      }
+      @media (min-width: 769px) {
+        .grid-responsive.first-row {
+          grid-template-columns: repeat(2, 1fr);
+          margin-bottom: 8px;
+        }
+        .grid-responsive.other-rows {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .grid-responsive {
+          grid-template-columns: 1fr !important;
+          margin-bottom: 8px;
+        }
+      }
+    `}
+  </style>
+
   {/* Primera fila 50/50 */}
-  <div
-    style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: 8,
-      borderTop: '1px solid #111',
-      borderLeft: '1px solid #111',
-      marginBottom: 8,
-    }}
-  >
+  <div className="grid-responsive first-row">
     {[
       {
         title: 'Carta Natal',
@@ -495,25 +513,27 @@ export default function LexHome() {
       return (
         <motion.article
           key={i}
+          variants={cardVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          custom={i}
           style={{
             borderRight: '1px solid #111',
             borderBottom: '1px solid #111',
-            background: isCartaNatal
-              ? '#000'
-              : '#FFD500',
+            background: isCartaNatal ? '#000' : '#FFD500',
             color: isCartaNatal ? '#fff' : '#000',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             height: 460,
             padding: 32,
-            transition:
-              'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease',
+            transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
             cursor: 'pointer',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)';
+            e.currentTarget.style.transform = 'scale(1.03)';
+            e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
@@ -533,7 +553,6 @@ export default function LexHome() {
             >
               {c.category}
             </div>
-
             <h3
               style={{
                 margin: '0 0 12px',
@@ -546,7 +565,6 @@ export default function LexHome() {
             >
               {c.title}
             </h3>
-
             <p
               style={{
                 margin: 0,
@@ -559,7 +577,6 @@ export default function LexHome() {
             </p>
           </div>
 
-          {/* Contenedor botón + ETAPA */}
           <div
             style={{
               display: 'flex',
@@ -584,12 +601,9 @@ export default function LexHome() {
               }}
               onMouseEnter={(e) => {
                 if (isCartaNatal) {
-                  e.currentTarget.style.background = '#FFD500'; // amarillo
+                  e.currentTarget.style.background = '#FFD500';
                   e.currentTarget.style.color = '#fff';
                 } else if (isPack) {
-                  e.currentTarget.style.background = '#fff'; // blanco
-                  e.currentTarget.style.color = '#000';
-                } else {
                   e.currentTarget.style.background = '#fff';
                   e.currentTarget.style.color = '#000';
                 }
@@ -601,69 +615,37 @@ export default function LexHome() {
                 } else if (isPack) {
                   e.currentTarget.style.background = '#000';
                   e.currentTarget.style.color = '#fff';
-                } else {
-                  e.currentTarget.style.background = '#000';
-                  e.currentTarget.style.color = '#fff';
                 }
               }}
             >
               AGENDAR +INFO
             </button>
-
-            {/* ETAPA (no hay en primera fila) */}
           </div>
         </motion.article>
       );
     })}
   </div>
 
-  {/* Filas 2 y 3 (3 columnas cada una) */}
-  <div
-    style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
-      gap: 8,
-      borderTop: '1px solid #111',
-      borderLeft: '1px solid #111',
-    }}
-  >
+  {/* Filas 2 y 3 */}
+  <div className="grid-responsive other-rows">
     {[
-      {
-        title: 'Viaje a las tripas',
-        category: 'Sesiones introspectivas',
-        desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.',
-      },
-      {
-        title: 'Motín existencial',
-        category: 'Talentos y propósito',
-        desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.',
-      },
-      {
-        title: 'Caja de cerillas',
-        category: 'Experimentación creativa',
-        desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.',
-      },
-      {
-        title: 'Lex ID',
-        category: 'ADN de marca',
-        desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.',
-      },
-      {
-        title: 'Aesthetic Overdose',
-        category: 'Estética y concepto',
-        desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.',
-      },
-      {
-        title: 'Carne y hueso',
-        category: 'Creación de producto',
-        desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.',
-      },
+      { title: 'Viaje a las tripas', category: 'Sesiones introspectivas', desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.' },
+      { title: 'Motín existencial', category: 'Talentos y propósito', desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.' },
+      { title: 'Caja de cerillas', category: 'Experimentación creativa', desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.' },
+      { title: 'Lex ID', category: 'ADN de marca', desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.' },
+      { title: 'Aesthetic Overdose', category: 'Estética y concepto', desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.' },
+      { title: 'Carne y hueso', category: 'Creación de producto', desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.' },
     ].map((c, i) => {
       const isEtapa = true;
 
       return (
         <motion.article
           key={i}
+          variants={cardVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          custom={i}
           style={{
             borderRight: '1px solid #111',
             borderBottom: '1px solid #111',
@@ -674,13 +656,12 @@ export default function LexHome() {
             justifyContent: 'space-between',
             height: 460,
             padding: 32,
-            transition:
-              'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease',
+            transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
             cursor: 'pointer',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'scale(1.02)';
-            e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)';
+            e.currentTarget.style.transform = 'scale(1.03)';
+            e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.2)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'scale(1)';
@@ -688,80 +669,27 @@ export default function LexHome() {
           }}
         >
           <div style={{ minHeight: 240 }}>
-            <div
-              style={{
-                color: '#6b7280',
-                fontSize: 14,
-                textTransform: 'uppercase',
-                marginBottom: 6,
-                fontWeight: 500,
-                letterSpacing: 0.5,
-              }}
-            >
+            <div style={{ color: '#6b7280', fontSize: 14, textTransform: 'uppercase', marginBottom: 6, fontWeight: 500, letterSpacing: 0.5 }}>
               {c.category}
             </div>
-
-            <h3
-              style={{
-                margin: '0 0 12px',
-                fontSize: 38,
-                fontWeight: 700,
-                color: '#000',
-                lineHeight: 1.2,
-                minHeight: 80,
-              }}
-            >
+            <h3 style={{ margin: '0 0 12px', fontSize: 38, fontWeight: 700, color: '#000', lineHeight: 1.2, minHeight: 80 }}>
               {c.title}
             </h3>
-
-            <p
-              style={{
-                margin: 0,
-                fontSize: 18,
-                lineHeight: 1.5,
-                color: '#222',
-              }}
-            >
+            <p style={{ margin: 0, fontSize: 18, lineHeight: 1.5, color: '#222' }}>
               {c.desc}
             </p>
           </div>
 
-          {/* Contenedor botón + ETAPA */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              marginTop: 'auto',
-            }}
-          >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 'auto' }}>
             <button
               onClick={() => openBookingFor(c.title)}
-              style={{
-                background: '#000',
-                color: '#fff',
-                border: '1px solid #000',
-                padding: '10px 18px',
-                borderRadius: 26,
-                fontSize: 20,
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                letterSpacing: 0.5,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#fff';
-                e.currentTarget.style.color = '#000';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#000';
-                e.currentTarget.style.color = '#fff';
-              }}
+              style={{ background: '#000', color: '#fff', border: '1px solid #000', padding: '10px 18px', borderRadius: 26, fontSize: 20, fontWeight: 600, cursor: 'pointer', transition: 'all 0.3s ease', letterSpacing: 0.5 }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = '#fff'; e.currentTarget.style.color = '#000'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = '#000'; e.currentTarget.style.color = '#fff'; }}
             >
               AGENDAR +INFO
             </button>
 
-            {/* ETAPA */}
             <span style={{ fontWeight: 700, fontSize: 18, color: '#000' }}>
               ETAPA{i + 1}
             </span>
@@ -771,6 +699,7 @@ export default function LexHome() {
     })}
   </div>
 </motion.section>
+
 
 
 
