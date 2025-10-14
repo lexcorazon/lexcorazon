@@ -455,144 +455,147 @@ const handleSubmitBooking = async (e) => {
 
 
         {/* ---------- SESIONES ---------- */}
-        <motion.section
-          {...fadeUp}
-          id="sessions"
+<motion.section
+  {...fadeUp}
+  id="sessions"
+  style={{
+    width: '100vw',
+    background: '#000',
+    padding: '0 0 80px 0',
+    margin: 0,
+    position: 'relative',
+  }}
+>
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      gap: 8,
+      borderTop: '1px solid #111',
+      borderLeft: '1px solid #111',
+    }}
+  >
+    {[
+      {
+        title: 'Carta Natal',
+        category: 'Sesiones astrológicas',
+        desc: 'Una lectura profunda de tu carta natal para comprender tus patrones internos, talentos y desafíos vitales.',
+      },
+      {
+        title: 'Viaje a las tripas',
+        category: 'Sesiones introspectivas',
+        desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.',
+      },
+      {
+        title: 'Motín existencial',
+        category: 'Talentos y propósito',
+        desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.',
+      },
+      {
+        title: 'Caja de cerillas',
+        category: 'Experimentación creativa',
+        desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.',
+      },
+      {
+        title: 'Lex ID',
+        category: 'ADN de marca',
+        desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.',
+      },
+      {
+        title: 'Aesthetic Overdose',
+        category: 'Estética y concepto',
+        desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.',
+      },
+      {
+        title: 'Carne y hueso',
+        category: 'Creación de producto',
+        desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.',
+      },
+      {
+        title: 'Pack de sesiones',
+        category: 'Programas completos',
+        desc: 'Un acompañamiento integral en varias sesiones, combinando introspección y acción para una transformación sostenida.',
+      },
+    ].map((c, i) => {
+      const isCartaNatal = i === 0;
+
+      return (
+        <motion.article
+          key={i}
           style={{
-            width: '100vw',
-            background: '#000',
-            padding: '0 0 80px 0',
-            margin: 0,
-            position: 'relative',
+            borderRight: '1px solid #111',
+            borderBottom: '1px solid #111',
+            background: isCartaNatal ? '#000' : '#fff',
+            color: isCartaNatal ? '#fff' : '#000',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: 460,
+            padding: 32,
+            transition: 'transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease',
+            cursor: 'pointer',
           }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.02)';
+            e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+          variants={cardVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          custom={i}
         >
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 8,
-              borderTop: '1px solid #111',
-              borderLeft: '1px solid #111',
-            }}
-          >
-            {[
-              {
-                title: 'Carta Natal',
-                category: 'Sesiones astrológicas',
-                desc: 'Una lectura profunda de tu carta natal para comprender tus patrones internos, talentos y desafíos vitales.',
-              },
-              {
-                title: 'Viaje a las tripas',
-                category: 'Sesiones introspectivas',
-                desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.',
-              },
-              {
-                title: 'Motín existencial',
-                category: 'Talentos y propósito',
-                desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.',
-              },
-              {
-                title: 'Caja de cerillas',
-                category: 'Experimentación creativa',
-                desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.',
-              },
-              {
-                title: 'Lex ID',
-                category: 'ADN de marca',
-                desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.',
-              },
-              {
-                title: 'Aesthetic Overdose',
-                category: 'Estética y concepto',
-                desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.',
-              },
-              {
-                title: 'Carne y hueso',
-                category: 'Creación de producto',
-                desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.',
-              },
-              {
-                title: 'Pack de sesiones',
-                category: 'Programas completos',
-                desc: 'Un acompañamiento integral en varias sesiones, combinando introspección y acción para una transformación sostenida.',
-              },
-            ].map((c, i) => (
-              <motion.article
-                key={i}
-                style={{
-                  borderRight: '1px solid #111',
-                  borderBottom: '1px solid #111',
-                  background: '#fff',
-                  color: '#000',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  height: 460,
-                  padding: 32,
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  cursor: 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.02)'
-                  e.currentTarget.style.boxShadow = '0 10px 20px rgba(0,0,0,0.15)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)'
-                  e.currentTarget.style.boxShadow = 'none'
-                }}
-                variants={cardVariant}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                custom={i}
-              >
-                <div style={{ minHeight: 240 }}>
-                  <div
-                    style={{
-                      color: '#6b7280',
-                      fontSize: 14,
-                      textTransform: 'uppercase',
-                      marginBottom: 6,
-                      fontWeight: 500,
-                      letterSpacing: 0.5,
-                    }}
-                  >
-                    {c.category}
-                  </div>
+          <div style={{ minHeight: 240 }}>
+            <div
+              style={{
+                color: isCartaNatal ? '#9ca3af' : '#6b7280',
+                fontSize: 14,
+                textTransform: 'uppercase',
+                marginBottom: 6,
+                fontWeight: 500,
+                letterSpacing: 0.5,
+              }}
+            >
+              {c.category}
+            </div>
 
-                  <h3
-                    style={{
-                      margin: '0 0 12px',
-                      fontSize: 38,
-                      fontWeight: 700,
-                      color: '#000',
-                      lineHeight: 1.2,
-                      minHeight: 80,
-                    }}
-                  >
-                    {c.title}
-                  </h3>
+            <h3
+              style={{
+                margin: '0 0 12px',
+                fontSize: 38,
+                fontWeight: 700,
+                color: isCartaNatal ? '#fff' : '#000',
+                lineHeight: 1.2,
+                minHeight: 80,
+              }}
+            >
+              {c.title}
+            </h3>
 
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: 18,
-                      lineHeight: 1.5,
-                      color: '#222',
-                    }}
-                  >
-                    {c.desc}
-                  </p>
-                </div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: 18,
+                lineHeight: 1.5,
+                color: isCartaNatal ? '#ddd' : '#222',
+              }}
+            >
+              {c.desc}
+            </p>
+          </div>
 
 <button
   onClick={() => openBookingFor(c.title)}
   style={{
     marginTop: 20,
     alignSelf: 'flex-start',
-    background: '#000',
-    color: '#fff',
-    border: '1px solid #000',
+    background: isCartaNatal ? '#fff' : '#000',
+    color: isCartaNatal ? '#000' : '#fff',
+    border: isCartaNatal ? '1px solid #000' : '1px solid #000',
     padding: '10px 18px',
     borderRadius: 26,
     fontSize: 20,
@@ -602,21 +605,38 @@ const handleSubmitBooking = async (e) => {
     letterSpacing: 0.5,
   }}
   onMouseEnter={(e) => {
-    e.currentTarget.style.background = '#fff'
-    e.currentTarget.style.color = '#000'
+    if (isCartaNatal) {
+      e.currentTarget.style.background = '#f3f3f3'; // hover suave
+      e.currentTarget.style.color = '#000';
+      e.currentTarget.style.transform = 'scale(1.05)'; // ligero zoom
+      e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.2)';
+    } else {
+      e.currentTarget.style.background = '#fff';
+      e.currentTarget.style.color = '#000';
+    }
   }}
   onMouseLeave={(e) => {
-    e.currentTarget.style.background = '#000'
-    e.currentTarget.style.color = '#fff'
+    if (isCartaNatal) {
+      e.currentTarget.style.background = '#fff';
+      e.currentTarget.style.color = '#000';
+      e.currentTarget.style.transform = 'scale(1)';
+      e.currentTarget.style.boxShadow = 'none';
+    } else {
+      e.currentTarget.style.background = '#000';
+      e.currentTarget.style.color = '#fff';
+    }
   }}
 >
   AGENDAR +INFO
 </button>
 
-              </motion.article>
-            ))}
-          </div>
-        </motion.section>
+
+        </motion.article>
+      );
+    })}
+  </div>
+</motion.section>
+
 
 {/* ---------- MODAL DE RESERVA ---------- */}
 <AnimatePresence>
@@ -954,7 +974,7 @@ const handleSubmitBooking = async (e) => {
     onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
     onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
   >
-    💬 WhatsApp
+    💬 AGENDAR
   </a>
 
   <a
