@@ -4,11 +4,13 @@ import Lenis from '@studio-freight/lenis'
 import Header from './Header'
 
 
+
+
 export default function LexHome() {
   const [activeImage, setActiveImage] = useState(0)
   const [activeText, setActiveText] = useState(0)
   const [showBooking, setShowBooking] = useState(false) // 🆕 Modal de reserva
-  const heroImages = Array.from({ length: 21 }, (_, i) => `/images/lex/lex${i + 1}.jpg`)
+  const heroImages = Array.from({ length: 18 }, (_, i) => `/images/lex/lex${i + 1}.jpg`)
   // 🧾 Control del formulario de reserva
   const [bookingOpen, setBookingOpen] = useState(false)
   const [form, setForm] = useState({
@@ -498,6 +500,7 @@ const cardVariant = {
             </button>
           </motion.div>
         </motion.section>
+
 
 
 {/* ---------- SESIONES ---------- */}

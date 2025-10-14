@@ -456,8 +456,6 @@ function ProjectModal({ project, onClose }) {
   )
 }
 
-
-
 /* ---------- AJHome ---------- */
 export default function AJHome() {
   useLenis()
