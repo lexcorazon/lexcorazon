@@ -123,3 +123,21 @@
   }
 
   
+/* 🚫 Evita scroll lateral globalmente */
+html, body {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  position: relative;
+}
+
+/* 🔒 Bloquear desplazamiento lateral también dentro de modales */
+.fixed, .absolute {
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* ⚙️ Asegurar que el modal no cause overflow extra */
+[class*="modal"] {
+  overflow-x: hidden !important;
+  margin: 0 auto !important;
+}

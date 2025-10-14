@@ -43,7 +43,7 @@ Esta experiencia me ayudará a honrar mi evolución y constante sanación.`
   },
   {
     name: 'Lu',
-    text: `La lectura fué una maravilla. Me sentí muy a gusto. Generaste un espacio seguro y cercano y fue todo lo que necesitaba en una primera experiencia de lectura. Todo lo que me compartiste me ha abierto un lugar muy cálido dentro, de corazón te lo digo.`
+    text: `La lectura fué una maravilla. Me sentí muy a gusto. Generaste un espacio seguro y cercano y fue todo lo que necesitaba en una primera experiencia de lectura. Todo lo que me compartiste me ha abierto un lugar muy cálido dentro, de corazon te lo digo.`
   },
   {
     name: 'Violeta',
@@ -368,7 +368,7 @@ const cardVariant = {
                       color: '#fff',
                     }}
                   >
-                    ¿Qué es Lex Corazón?
+                    ¿Qué es Lex Corazon?
                   </h1>
                   <div
                     style={{
@@ -380,11 +380,11 @@ const cardVariant = {
                     className="no-scrollbar"
                   >
                     {[
-                      'Lex Corazón es un viaje creativo en seis etapas que atraviesa las tripas, el imaginario y la carne de un proyecto. Es un mapa para quienes sienten que lo que tienen dentro necesita una forma, una voz y una estética que les haga justicia.',
+                      'Lex Corazon es un viaje creativo en seis etapas que atraviesa las tripas, el imaginario y la carne de un proyecto. Es un mapa para quienes sienten que lo que tienen dentro necesita una forma, una voz y una estética que les haga justicia.',
                       'Nació de una urgencia: dejar atrás fórmulas prefabricadas y maneras huecas de “hacer marca”. Aquí la creatividad no se entiende como adorno ni estrategia fría, sino como una pulsión vital: un acto de honestidad radical y de belleza subversiva.',
                       'El recorrido va de dentro hacia afuera. Primero se mira lo oculto, lo que incomoda, lo que bloquea. Después llega la rebelión: un motín contra lo que limita, un grito que abre paso a los talentos dormidos.',
                       'De ahí se enciende la chispa: la cerilla que prende la esencia creativa y la convierte en materia prima. En etapas posteriores esa materia se moldea en identidad, se desborda en estética, hasta llegar finalmente a lo tangible: un proyecto real, coherente y encarnado.',
-                      'Lex Corazón es un cruce entre introspección, arte y estrategia. Un espacio donde conviven símbolos, narrativas, moda, filosofía y juego. Un laboratorio en el que las ideas no se quedan en la mente: se transforman en imágenes, palabras y estructuras capaces de sostenerse en el mundo.',
+                      'Lex Corazon es un cruce entre introspección, arte y estrategia. Un espacio donde conviven símbolos, narrativas, moda, filosofía y juego. Un laboratorio en el que las ideas no se quedan en la mente: se transforman en imágenes, palabras y estructuras capaces de sostenerse en el mundo.',
                       'Cada persona que atraviesa este proceso encuentra su propio sistema creativo: una forma única de producir, comunicar y sostener lo que hace en el tiempo.',
                     ].map((p, i) => (
                       <motion.p
@@ -423,7 +423,7 @@ const cardVariant = {
                       color: '#fff',
                     }}
                   >
-                    Lex Corazón — desde donde acompaño
+                    Lex Corazon — desde donde acompaño
                   </h1>
                   <div
                     style={{
@@ -442,7 +442,7 @@ const cardVariant = {
                       'No pretendo sanar ni enseñar a vivir. Sostengo un espacio donde cada persona pueda escucharse, moverse y entender su propio código: su manera única de estar viva.',
                       'Mi ética es la honestidad. Mi herramienta, la experiencia. Y mi intención es simple: que las personas vuelvan a sentir su propio fuego, incluso si todavía no saben qué hacer con él.',
                       'También acompaño a dar forma: a traducir lo que se siente o se intuye en algo que pueda verse, tocarse o compartirse. He trabajado muchos años entre la creación y la dirección —desde la marca María Magdalena hasta rodajes, pasando por procesos de identidad visual y narrativa.',
-                      'Esa experiencia me enseñó algo esencial: una idea no se materializa solo con técnica, sino con verdad. Por eso en Lex Corazón no solo miro lo interno, sino cómo eso puede expresarse afuera: una voz, un proyecto, una estética, una manera de habitar el mundo.',
+                      'Esa experiencia me enseñó algo esencial: una idea no se materializa solo con técnica, sino con verdad. Por eso en Lex Corazon no solo miro lo interno, sino cómo eso puede expresarse afuera: una voz, un proyecto, una estética, una manera de habitar el mundo.',
                       'Ayudo a ordenar, a estructurar, a encontrar coherencia sin apagar el instinto. No desde la exigencia de “hacer las cosas bien”, sino desde el deseo de que lo que nazca tenga alma.',
                     ].map((p, i) => (
                       <motion.p
@@ -494,7 +494,7 @@ const cardVariant = {
                 e.currentTarget.style.border = 'none'
               }}
             >
-              {activeText === 0 ? '¿Cómo te acompaño?' : '¿Qué es Lex Corazón?'}
+              {activeText === 0 ? '¿Cómo te acompaño?' : '¿Qué es Lex Corazon?'}
             </button>
           </motion.div>
         </motion.section>
@@ -543,7 +543,7 @@ const cardVariant = {
     {[
       {
         title: 'Carta Natal',
-        category: 'Sesiones astrológicas',
+        category: 'SESIONES CARTA NATAL/ COACHING ASTROLÓGICO',
         desc: 'Una lectura profunda de tu carta natal para comprender tus patrones internos, talentos y desafíos vitales.',
       },
       {
@@ -567,8 +567,8 @@ const cardVariant = {
           style={{
             borderRight: '1px solid #111',
             borderBottom: '1px solid #111',
-            background: isCartaNatal ? '#000' : '#FFD500',
-            color: isCartaNatal ? '#fff' : '#000',
+            background: isCartaNatal ? '#77cee4ff' : '#FFD500',
+            color: isCartaNatal ? '#fff' : '#000000ff',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -604,7 +604,7 @@ const cardVariant = {
                 margin: '0 0 12px',
                 fontSize: 38,
                 fontWeight: 700,
-                color: isCartaNatal ? '#fff' : '#000',
+                color: isCartaNatal ? '#0a0a0aff' : '#000',
                 lineHeight: 1.2,
                 minHeight: 80,
               }}
@@ -616,7 +616,7 @@ const cardVariant = {
                 margin: 0,
                 fontSize: 18,
                 lineHeight: 1.5,
-                color: isCartaNatal ? '#ddd' : '#222',
+                color: isCartaNatal ? '#080808ff' : '#222',
               }}
             >
               {c.desc}
@@ -675,12 +675,12 @@ const cardVariant = {
   {/* Filas 2 y 3 */}
   <div className="grid-responsive other-rows">
     {[
-      { title: 'Viaje a las tripas', category: 'Sesiones introspectivas', desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.' },
-      { title: 'Motín existencial', category: 'Talentos y propósito', desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.' },
-      { title: 'Caja de cerillas', category: 'Experimentación creativa', desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.' },
-      { title: 'Lex ID', category: 'ADN de marca', desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.' },
-      { title: 'Aesthetic Overdose', category: 'Estética y concepto', desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.' },
-      { title: 'Carne y hueso', category: 'Creación de producto', desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.' },
+      { title: 'Viaje a las tripas - Introspección', category: 'SESIONES INTROSPECTIVAS/ VIAJE LEX CORAZON', desc: 'Explora emociones, bloqueos y apegos para reconectar con tu yo más genuino.' },
+      { title: 'Motín existencial - Talentos y propósito', category: 'SESIONES INTROSPECTIVAS/ VIAJE LEX CORAZON', desc: 'Descubre talentos dormidos y propósito vital con astrología psicológica.' },
+      { title: 'Caja de cerillas - Desbloqueo creativo', category: 'SESIONES INTROSPECTIVAS/ VIAJE LEX CORAZON', desc: 'Libera tu creatividad y conecta con la chispa que transforma ideas en acción.' },
+      { title: 'Lex ID - Adn de marca', category: 'SESIONES DE CONSTRUCCIÓN/ VIAJE LEX CORAZON', desc: 'Define la base de tu proyecto o marca: quién eres, qué representas y qué valores te guían.' },
+      { title: 'Aesthetic Overdose - Estética y concepto', category: 'SESIONES DE CONSTRUCCIÓN/ VIAJE LEX CORAZON', desc: 'Construye tu universo visual y conceptual con estilo propio: tono, narrativa y estética.' },
+      { title: 'Carne y hueso - Creación de producto', category: 'SESIONES DE CONSTRUCCIÓN/ VIAJE LEX CORAZON', desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.' },
     ].map((c, i) => {
       const isEtapa = true;
 
@@ -841,7 +841,7 @@ const cardVariant = {
               lineHeight: 1.1,
             }}
           >
-            {form.session_title || 'Sesión Creativa Lex Corazón'}
+            {form.session_title || 'Sesión Creativa Lex Corazon'}
           </h2>
           <p
             style={{
@@ -1350,17 +1350,6 @@ const cardVariant = {
     position: 'relative',
   }}
 >
-  <h2
-    style={{
-      textAlign: 'center',
-      fontSize: 36,
-      fontWeight: 700,
-      marginBottom: 60,
-      letterSpacing: 1,
-    }}
-  >
-    Lo que dicen quienes vivieron Lex Corazón
-  </h2>
 
 <div
   className="reviews-container no-scrollbar"
@@ -1419,7 +1408,7 @@ const cardVariant = {
     borderTop: '1px solid #111',
   }}
 >
-  <p>© {new Date().getFullYear()} Lex Corazón — Todos los derechos reservados</p>
+  <p>© {new Date().getFullYear()} Lex Corazon — Todos los derechos reservados</p>
 </footer>
 
 </main>

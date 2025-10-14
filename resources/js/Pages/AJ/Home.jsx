@@ -371,15 +371,49 @@ function DressedByMMCarousel({ media = [] }) {
 
 /* ---------- ProjectModal ---------- */
 function ProjectModal({ project, onClose }) {
+  useEffect(() => {
+    if (project) {
+      // 🔒 Evita scroll del fondo y cualquier desplazamiento lateral
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+    } else {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+    }
+  }, [project])
+
   if (!project) return null
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-2 md:p-4 font-roboto">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 font-roboto"
+      style={{
+        padding: '1rem',
+        overscrollBehavior: 'contain',
+        overflowY: 'auto',
+        overflowX: 'hidden', // 🚫 evita scroll horizontal del contenedor
+        maxWidth: '100%', // 👈 asegura que nunca se expanda más que la pantalla
+        boxSizing: 'border-box',
+      }}
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.9, y: 50 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 50 }}
-        transition={{ duration: 0.4, ease: "easeInOut" }}
-        className="relative w-full max-w-md md:max-w-lg rounded-xl bg-white text-black p-6 shadow-2xl overflow-y-auto max-h-[85vh] flex flex-col"
+        transition={{ duration: 0.4, ease: 'easeInOut' }}
+        className="relative w-full max-w-md md:max-w-lg rounded-xl bg-white text-black p-6 shadow-2xl flex flex-col max-h-[85vh] overflow-y-auto"
+        style={{
+          overflowX: 'hidden', // ⚡ protege el modal también
+          maxWidth: 'calc(100vw - 2rem)',
+          boxSizing: 'border-box',
+        }}
       >
         {/* Botón de cierre */}
         <button
@@ -409,6 +443,10 @@ function ProjectModal({ project, onClose }) {
                 src={src}
                 alt={`${project.title}-${idx}`}
                 className="w-full object-cover rounded"
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                }}
               />
             ))}
           </div>
@@ -417,6 +455,7 @@ function ProjectModal({ project, onClose }) {
     </div>
   )
 }
+
 
 
 /* ---------- AJHome ---------- */
