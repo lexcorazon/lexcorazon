@@ -43,7 +43,7 @@ export default function Navbar({ brand }) {
             <img src="/images/icons/insta.svg" alt="Instagram" className="w-5 h-5 opacity-75 hover:opacity-100" />
           </a>
           <a
-            href="https://www.linkedin.com/in/alejandrajaime"
+            href="https://www.linkedin.com/in/alejandra-jaime-mendoza-1b761b1a9/"
             target="_blank"
             rel="noreferrer"
             className="transition transform hover:scale-110"
