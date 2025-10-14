@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Lenis from '@studio-freight/lenis'
+import Header from './Header'
+
 
 export default function LexHome() {
   const [activeImage, setActiveImage] = useState(0)
@@ -232,51 +234,12 @@ const cardVariant = {
 
   return (
     <div style={{ overflow: 'hidden', width: '100%', minHeight: '100vh' }}>
-      {/* ---------- Header ---------- */}
-      <header
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          zIndex: 100,
-          background: '#1f1f1f',
-          color: '#fff',
-          borderBottom: '1px solid #333',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            padding: '12px 32px',
-            width: '100%',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 32 }}>
-            <a href="#hero" style={{ display: 'flex', alignItems: 'center' }}>
-              <img src="/images/lex-corazon.png" alt="Lex Corazón" style={{ height: 48, objectFit: 'contain', cursor: 'pointer' }} />
-            </a>
-            <nav style={{ display: 'flex', alignItems: 'center', gap: 32, fontWeight: 500, fontSize: 16 }}>
-              <a href="#sessions" style={{ color: '#fff', textDecoration: 'none' }}>Servicios</a>
-              <a href="#reviews" style={{ color: '#fff', textDecoration: 'none' }}>Reseñas</a>
-              <a href="#contact" style={{ color: '#fff', textDecoration: 'none' }}>Contacto</a>
-            </nav>
-          </div>
-
-          <div style={{ position: 'absolute', right: 32, top: '50%', transform: 'translateY(-50%)' }}>
-            <a href="/aj" style={{ display: 'inline-flex', alignItems: 'center' }}>
-              <img src="/images/BAJ.png" alt="Volver a AJ" style={{ height: 25, objectFit: 'contain', cursor: 'pointer' }} />
-            </a>
-          </div>
-        </div>
-      </header>
+      
+{/* ---------- header---------- */}
+<Header />
 
       <main style={{ paddingTop: 0 }}>
-
+ 
         
         {/* ---------- HERO ---------- */}
         <motion.section
@@ -1328,6 +1291,46 @@ const cardVariant = {
           }
         }
       `}</style>
+      <style>{`
+  /* --- Fix para que el panel izquierdo sea totalmente visible en móvil --- */
+  @media (max-width: 1024px) {
+    .booking-overlay {
+      align-items: flex-start !important;
+      justify-content: center !important;
+      overflow-y: auto !important;
+      padding: 20px 0 60px 0 !important;
+    }
+
+    .booking-modal {
+      margin-top: 60px !important;
+      margin-bottom: 60px !important;
+      height: auto !important;
+      max-height: none !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .booking-left, .booking-right {
+      width: 100% !important;
+      border: none !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .booking-overlay {
+      padding: 10px 0 40px 0 !important;
+    }
+
+    .booking-left {
+      padding: 36px 20px !important;
+    }
+
+    .booking-right {
+      padding: 28px 18px !important;
+    }
+  }
+`}</style>
+
     </motion.div>
   )}
 </AnimatePresence>
