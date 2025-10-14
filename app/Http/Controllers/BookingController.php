@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
+    
     public function send(Request $request)
     {
         $data = $request->all();

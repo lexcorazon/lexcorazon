@@ -130,10 +130,6 @@
             <h2>Datos de la sesión</h2>
             <table>
                 <tr>
-                    <td class="label">Tipo de sesión</td>
-                    <td class="value">{{ $session_title ?? '—' }}</td>
-                </tr>
-                <tr>
                     <td class="label">Expectativas</td>
                     <td class="value">{{ $expectations ?? '—' }}</td>
                 </tr>

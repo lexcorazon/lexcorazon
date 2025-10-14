@@ -15,5 +15,6 @@ class VerifyCsrfToken extends Middleware
         'lex/booking/send',
         '/lex/booking/send',
         'http://127.0.0.1:8000/lex/booking/send',
+        '/stripe/checkout',
     ];
 }

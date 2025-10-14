@@ -5,6 +5,8 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\BookingController;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 /**
  * LANDING (raíz)
@@ -37,11 +39,7 @@ Route::prefix('lex')->group(function () {
 
 });
 
-// API: Stripe checkout + verification
-Route::get('/api/stripe/public-key', [\App\Http\Controllers\StripeController::class, 'publicKey']);
-Route::get('/api/stripe/health', [\App\Http\Controllers\StripeController::class, 'health']);
-Route::post('/api/stripe/checkout', [\App\Http\Controllers\StripeController::class, 'checkout']);
-Route::get('/api/stripe/verify', [\App\Http\Controllers\StripeController::class, 'verify']);
+
 
 /**
  * DASHBOARD / AUTH (Breeze)
@@ -54,6 +52,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::post('/stripe/checkout', function () {
+    Stripe::setApiKey(env('STRIPE_SECRET'));
+
+    $session = Session::create([
+        'payment_method_types' => ['card'],
+        'line_items' => [[
+            'price_data' => [
+                'currency' => 'eur',
+                'product_data' => [
+                    'name' => 'Sesión Creativa Lex Corazón',
+                ],
+                'unit_amount' => 15000, // 150€ → 15000 céntimos
+            ],
+            'quantity' => 1,
+        ]],
+        'mode' => 'payment',
+        'success_url' => env('APP_URL') . '/reserva-exitosa',
+        'cancel_url' => env('APP_URL') . '/reserva-cancelada',
+    ]);
+
+    return response()->json(['id' => $session->id]);
 });
 
 require __DIR__ . '/auth.php';
