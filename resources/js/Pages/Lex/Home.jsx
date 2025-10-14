@@ -23,6 +23,38 @@ export default function LexHome() {
   const [sending, setSending] = useState(false)
   const [sentOk, setSentOk] = useState(null)
 
+  // Lista de reseñas definida fuera del render para evitar reinicios
+const reviewsData = [
+  {
+    name: 'María Fernández',
+    text: `La sesión con Alejandra para conocer mi carta natal fue muy emocionante.  
+Me permitió entenderme mejor y conectar con mi versión más auténtica.  
+Combinó astrología con un enfoque psicológico-evolutivo profundo.  
+Me ayudó a reconocer mis luces, sombras y aspectos ocultos de mí misma.  
+Su atención y delicadeza al tratar temas sensibles fue notable.  
+Recomendable para quienes buscan armonizar sentimientos y pensamientos.  
+Esta experiencia me ayudará a honrar mi evolución y constante sanación.`
+  },
+  {
+    name: 'Ricardo',
+    text: `Gracias Alejandra, por acercarme un poquito más a la comprensión de esos aspectos que me gobiernan, y por guiarme con tu sensibilidad para dar los próximos pasos de mi viaje.`
+  },
+  {
+    name: 'Lu',
+    text: `La lectura fué una maravilla. Me sentí muy a gusto. Generaste un espacio seguro y cercano y fue todo lo que necesitaba en una primera experiencia de lectura. Todo lo que me compartiste me ha abierto un lugar muy cálido dentro, de corazón te lo digo.`
+  },
+  {
+    name: 'Violeta',
+    text: `Me ha gustado la cercanía de Alejandra y su visión abierta de la astrología, partiendo de un hondo conocimiento de la misma para plantear la sesión de una manera que no es una simple lectura sino que sirve como herramienta para la autoexploración. Se nota que a Alejandra le apasiona lo que hace, se implica al máximo en la sesión. Una experiencia muy interesante.`
+  },
+  {
+    name: 'Ana',
+    text: `Ha sido un placer hacer una lectura de carta astral con Alejandra. Fue súper generosa desde el principio preguntándome en qué aspectos quería indagar para preparar la lectura según mis intereses de ese momento. Me sirvió muchísimo su lectura por la profundidad y amplitud que tuvo Alejandra para explicarme las distintas cuestiones que vio en mi carta. Sentí que fue una conversacion y que entre ambas íbamos puliendo la información que me proporcionaba. Por otro lado, le pedí ahondar sobre un aspecto en concreto y me envió al día siguiente materiales. Total que recomiendo 100% una lectura con ella y destaco su sensibilidad, generosidad e intuición. Gracias!`
+  }
+];
+
+  
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }))
@@ -79,6 +111,59 @@ export default function LexHome() {
     }
   };
 
+
+{/* ---------- COMPONENTE REVIEWCARD ---------- */}
+function ReviewCard({ review }) {
+  const [expanded, setExpanded] = useState(false);
+  const MAX_HEIGHT = 180;
+
+  return (
+    <div
+      style={{
+        flex: '0 0 auto',
+        width: 320,
+        minHeight: 300,
+        background: '#fff',
+        color: '#000',
+        borderRadius: 12,
+        padding: 24,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        boxShadow: '0 8px 20px rgba(0,0,0,0.05)',
+        scrollSnapAlign: 'center',
+        position: 'relative',
+      }}
+    >
+      <div style={{ maxHeight: expanded ? 'none' : MAX_HEIGHT, overflow: 'hidden', transition: 'max-height 0.3s ease' }}>
+        <p style={{ fontStyle: 'italic', fontSize: 18, lineHeight: 1.6 }}>
+          “{review.text}”
+        </p>
+      </div>
+
+      {review.text.length > 200 && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          style={{
+            marginTop: 12,
+            background: 'none',
+            border: 'none',
+            color: '#000',
+            fontWeight: 600,
+            cursor: 'pointer',
+            textAlign: 'right',
+          }}
+        >
+          {expanded ? 'Ver menos' : 'Ver más'}
+        </button>
+      )}
+
+      <footer style={{ fontWeight: 700, color: '#333', fontSize: 16, textAlign: 'right', marginTop: 16 }}>
+        — {review.name}
+      </footer>
+    </div>
+  );
+}
 
 
 
@@ -700,15 +785,6 @@ const cardVariant = {
   </div>
 </motion.section>
 
-
-
-
-
-
-
-
-
-
         {/* ---------- MODAL DE RESERVA ---------- */}
         <AnimatePresence>
           {bookingOpen && (
@@ -1135,152 +1211,92 @@ const cardVariant = {
           )}
         </AnimatePresence>
 
-        {/* ---------- RESEÑAS ---------- */}
-        <motion.section
-          {...fadeUp}
-          id="reviews"
-          style={{
-            width: '100vw',
-            background: '#000',
-            color: '#fff',
-            padding: '120px 0',
-            overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <h2
-            style={{
-              textAlign: 'center',
-              fontSize: 36,
-              fontWeight: 700,
-              marginBottom: 60,
-              letterSpacing: 1,
-            }}
-          >
-            Lo que dicen quienes vivieron Lex Corazón
-          </h2>
+{/* ---------- RESEÑAS ---------- */}
+<section
+  id="reviews"
+  style={{
+    width: '100%',
+    background: '#000',
+    color: '#fff',
+    padding: '120px 0',
+    overflow: 'hidden',
+    position: 'relative',
+  }}
+>
+  <h2
+    style={{
+      textAlign: 'center',
+      fontSize: 36,
+      fontWeight: 700,
+      marginBottom: 60,
+      letterSpacing: 1,
+    }}
+  >
+    Lo que dicen quienes vivieron Lex Corazón
+  </h2>
 
-          <div
-            style={{
-              position: 'relative',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <motion.div
-              style={{
-                display: 'flex',
-                gap: 34,
-                overflow: 'hidden',
-                width: '70%',
-                scrollBehavior: 'smooth',
-              }}
-              className="no-scrollbar"
-            >
-              {[
-                { name: 'Ana', text: 'Una experiencia transformadora. Me ayudó a ver mis procesos creativos con una claridad brutal.' },
-                { name: 'Luis', text: 'Lex Corazón no es una metodología, es una experiencia que me devolvió las ganas de crear desde lo auténtico.' },
-                { name: 'María', text: 'Su acompañamiento fue un espejo de honestidad. Salí con una identidad creativa completamente nueva.' },
-                { name: 'Valeria', text: 'Nunca imaginé que mi historia pudiera tener una voz tan estética. Lex Corazón me ayudó a encontrarla.' },
-                { name: 'Diego', text: 'Cada sesión fue una revelación. De lo simbólico a lo concreto, todo cobró sentido.' },
-                { name: 'Lucía', text: 'Hay algo profundamente humano en este proceso. No se trata solo de crear, sino de recordarte por qué empezaste.' },
-                { name: 'Carmen', text: 'Sentí que me devolvía a mí misma. Una alquimia entre arte, emoción y estrategia que transforma de verdad.' },
-              ].map((r, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 60 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: i * 0.15 }}
-                  viewport={{ once: true }}
-                  style={{
-                    flex: '0 0 420px',
-                    background: '#fff',
-                    color: '#000',
-                    borderRadius: 12,
-                    padding: '32px 28px',
-                    boxShadow: '0 10px 25px rgba(255,255,255,0.05)',
-                    scrollSnapAlign: 'center',
-                    position: 'relative',
-                    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  }}
-                  whileHover={{
-                    scale: 1.03,
-                    boxShadow: '0 12px 30px rgba(255,255,255,0.15)',
-                  }}
-                >
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    style={{
-                      fontStyle: 'italic',
-                      fontSize: 20,
-                      lineHeight: 1.6,
-                      marginBottom: 20,
-                    }}
-                  >
-                    “{r.text}”
-                  </motion.p>
-                  <footer
-                    style={{
-                      fontWeight: 600,
-                      color: '#333',
-                      fontSize: 16,
-                      textAlign: 'right',
-                    }}
-                  >
-                    — {r.name}
-                  </footer>
+<div
+  className="reviews-container no-scrollbar"
+  style={{
+    display: 'flex',
+    alignItems: 'flex-start',
+    overflowX: 'auto',
+    gap: 24,
+    padding: '0 16px 40px 16px',
+  }}
+>
+  {reviewsData.map((r, i) => (
+    <ReviewCard key={i} review={r} />
+  ))}
+</div>
 
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '6px',
-                      background: 'linear-gradient(90deg, #fff 0%, #999 100%)',
-                      borderRadius: '12px 12px 0 0',
-                    }}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+<style>{`
+  @media (max-width: 768px) {
+    .reviews-container {
+      justify-content: flex-start;
+    }
+  }
+  @media (min-width: 769px) {
+    .reviews-container {
+      justify-content: center;
+    }
+  }
+`}</style>
 
-          {/* 🔸 Sombra decorativa inferior */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '120px',
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)',
-              pointerEvents: 'none',
-            }}
-          />
-        </motion.section>
 
-        {/* ---------- FOOTER ---------- */}
-        <motion.footer
-          style={{
-            width: '100vw',
-            background: '#000',
-            color: '#fff',
-            padding: '40px 16px',
-            textAlign: 'center',
-            borderTop: '1px solid #111',
-          }}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <p>© {new Date().getFullYear()} Lex Corazón — Todos los derechos reservados</p>
-        </motion.footer>
-      </main>
-    </div>
+  <style>{`
+    /* ⚡ Responsive */
+    @media (max-width: 768px) {
+      .reviews-container {
+        justify-content: flex-start; /* pega a la izquierda en móvil */
+      }
+    }
+    @media (min-width: 769px) {
+      .reviews-container {
+        justify-content: center; /* centrado en escritorio */
+      }
+    }
+  `}</style>
+
+
+</section>
+
+{/* ---------- FOOTER ---------- */}
+<footer
+  style={{
+    width: '100vw',
+    background: '#000',
+    color: '#fff',
+    padding: '40px 16px',
+    textAlign: 'center',
+    borderTop: '1px solid #111',
+  }}
+>
+  <p>© {new Date().getFullYear()} Lex Corazón — Todos los derechos reservados</p>
+</footer>
+
+</main>
+</div>
+
   )
 }
