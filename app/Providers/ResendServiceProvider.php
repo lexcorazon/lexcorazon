@@ -57,9 +57,22 @@ class ResendTransport extends AbstractTransport
             $payload['text'] = $email->getTextBody();
         }
 
-        // Resend SDK v0.22 - API call
+        // Resend SDK v0.22 - Correct API call using GuzzleHTTP
         try {
-            $response = $this->resend->request('POST', '/emails', $payload);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post('https://api.resend.com/emails', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . config('services.resend.key'),
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => $payload,
+            ]);
+            
+            $body = json_decode($response->getBody(), true);
+            
+            if ($response->getStatusCode() !== 200) {
+                throw new \Exception('Resend API error: ' . ($body['message'] ?? 'Unknown error'));
+            }
         } catch (\Exception $e) {
             throw new \Exception('Resend API error: ' . $e->getMessage());
         }
