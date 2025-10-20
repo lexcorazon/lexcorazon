@@ -32,7 +32,7 @@ class ResendTransport extends AbstractTransport
 {
     protected $resend;
 
-    public function __construct(Resend $resend)
+    public function __construct($resend)
     {
         parent::__construct();
         $this->resend = $resend;
@@ -57,8 +57,12 @@ class ResendTransport extends AbstractTransport
             $payload['text'] = $email->getTextBody();
         }
 
-        // Resend SDK v0.22 - usar método send directamente
-        $this->resend->emails->send($payload);
+        // Resend SDK v0.22 - API call
+        try {
+            $response = $this->resend->request('POST', '/emails', $payload);
+        } catch (\Exception $e) {
+            throw new \Exception('Resend API error: ' . $e->getMessage());
+        }
     }
 
     public function __toString(): string
