@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\LexBookingMail;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -13,14 +15,21 @@ class BookingController extends Controller
         $data = $request->all();
 
         try {
-            Mail::send('lex_booking', $data, function ($message) {
-                $message->to('lexcorazon@gmail.com')
-                        ->from(config('mail.from.address'), 'Lex Corazón')
-                        ->subject('💫 Nueva reserva en Lex Corazón');
-            });
+            // Enviar el correo usando la clase Mailable
+            Mail::to('lexcorazon@gmail.com')
+                ->send(new LexBookingMail($data));
+
+            // Log para debugging
+            Log::info('Booking email sent successfully', ['data' => $data]);
 
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
+            // Log del error para debugging
+            Log::error('Error sending booking email: ' . $e->getMessage(), [
+                'exception' => $e,
+                'data' => $data
+            ]);
+
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
