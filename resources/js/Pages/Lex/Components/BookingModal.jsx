@@ -196,7 +196,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     box-sizing: border-box;
   }
 
-  /* 🖥️ WEB — centrado perfecto sin scroll */
+  /* 🖥️ VERSIÓN WEB — centrado, sin scroll global, con scroll interno solo en el formulario */
   @media (min-width: 769px) {
     html, body {
       overflow: hidden !important;
@@ -212,19 +212,42 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       grid-template-columns: 1.1fr 1fr !important;
       overflow: hidden !important;
       box-shadow: 0 0 80px rgba(255, 255, 255, 0.15);
-      transform: none !important;
+      background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
     }
 
-    .booking-left,
-    .booking-right {
-      height: 100% !important;
+    /* Panel izquierdo fijo (texto) */
+    .booking-left {
+      height: 100%;
       overflow: hidden !important;
+      padding: 60px 60px !important;
+      border-right: 1px solid #222;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
     }
 
+    /* Panel derecho con scroll interno */
+    .booking-right {
+      height: 100%;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      padding: 50px !important;
+      scroll-behavior: smooth;
+      background: rgba(0,0,0,0.6);
+    }
+
+    /* Scrollbar estético */
+    .booking-right::-webkit-scrollbar {
+      width: 6px;
+    }
+    .booking-right::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+    }
+
+    /* Botón de cierre dentro del modal */
     .close-btn {
       position: absolute;
-      top: 24px;
-      right: 24px;
+      top: 22px;
+      right: 22px;
       font-size: 34px;
       color: #aaa;
       background: transparent;
@@ -239,7 +262,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     }
   }
 
-  /* 📱 MÓVIL — texto arriba, formulario abajo, scroll único */
+  /* 📱 VERSIÓN MÓVIL — texto arriba, formulario abajo, scroll único */
   @media (max-width: 768px) {
     .booking-modal {
       display: flex !important;
@@ -276,6 +299,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     }
   }
 `}</style>
+
 
         </motion.div>
       )}
