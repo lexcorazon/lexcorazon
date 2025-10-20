@@ -185,54 +185,98 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
           </div>
 
           {/* CSS RESPONSIVE */}
-          <style>{`
-/* Desktop: dos columnas con scroll interno en cada panel */
-@media (min-width: 769px) {
+<style>{`
+  /* 🌐 GENERAL — asegura que el modal cubra todo el viewport */
   .booking-modal {
-    transform: scale(0.8);               /* 🔥 reduce un 20% */
-    transform-origin: center center;
-    height: 100dvh;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+    box-sizing: border-box;
   }
 
-  .booking-left,
-  .booking-right {
-    height: 100dvh;
-    overflow-y: auto;
-    scrollbar-width: thin;
+  /* 🖥️ WEB — centrado perfecto sin scroll */
+  @media (min-width: 769px) {
+    html, body {
+      overflow: hidden !important;
+    }
+
+    .booking-modal {
+      width: 85vw !important;
+      height: 85vh !important;
+      max-height: 85vh !important;
+      margin: auto !important;
+      border-radius: 16px;
+      display: grid !important;
+      grid-template-columns: 1.1fr 1fr !important;
+      overflow: hidden !important;
+      box-shadow: 0 0 80px rgba(255, 255, 255, 0.15);
+      transform: none !important;
+    }
+
+    .booking-left,
+    .booking-right {
+      height: 100% !important;
+      overflow: hidden !important;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 34px;
+      color: #aaa;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+      z-index: 50;
+    }
+
+    .close-btn:hover {
+      color: #fff;
+    }
   }
 
-  .booking-right::-webkit-scrollbar,
-  .booking-left::-webkit-scrollbar {
-    width: 6px;
-  }
+  /* 📱 MÓVIL — texto arriba, formulario abajo, scroll único */
+  @media (max-width: 768px) {
+    .booking-modal {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100vw !important;
+      height: 100dvh !important;
+      overflow-y: auto !important; /* un solo scroll vertical */
+      overflow-x: hidden !important;
+      background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%) !important;
+      backdrop-filter: blur(10px);
+    }
 
-  .booking-right::-webkit-scrollbar-thumb,
-  .booking-left::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 4px;
+    .booking-left {
+      order: 1 !important;
+      border: none !important;
+      border-bottom: 1px solid #222;
+      padding: 32px 22px !important;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
+    }
+
+    .booking-right {
+      order: 2 !important;
+      padding: 28px 22px !important;
+      overflow: visible !important;
+      flex-grow: 1;
+    }
+
+    .booking-modal button[style*="position: absolute"],
+    .close-btn {
+      top: 16px !important;
+      right: 16px !important;
+      font-size: 32px !important;
+      z-index: 99 !important;
+    }
   }
-}
-            /* Móvil: una sola columna y un solo scroll (el shell) */
-            @media (max-width: 768px) {
-              .booking-modal {
-                display: block !important;      /* una columna */
-                min-height: 100dvh !important;
-              }
-              .booking-left {
-                border-right: none !important;
-                border-bottom: 1px solid #222;
-                padding: 88px 22px 28px !important; /* deja aire bajo el texto */
-              }
-              .booking-right {
-                padding: 28px 22px 56px !important;
-              }
-              /* importantísimo: los paneles NO deben tener scroll propio en móvil */
-              .booking-left, .booking-right { overflow: visible !important; }
-            }
-              
-          `}</style>
+`}</style>
+
         </motion.div>
       )}
     </AnimatePresence>
