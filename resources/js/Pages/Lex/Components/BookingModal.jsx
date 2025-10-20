@@ -54,15 +54,15 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
           }}
         >
           {/* Botón cerrar, fuera del flujo para no solapar nada */}
-          <button
-            onClick={() => setBookingOpen(false)}
-            aria-label="Cerrar"
-            style={{
-              position: 'fixed', right: 16, top: 10, zIndex: 10000,
-              fontSize: 36, lineHeight: 1, color: '#ddd',
-              background: 'transparent', border: 'none', cursor: 'pointer'
-            }}
-          >×</button>
+<button
+  onClick={() => setBookingOpen(false)}
+  aria-label="Cerrar"
+  style={{
+    position: 'fixed', right: 16, top: 10, zIndex: 10000,
+    fontSize: 36, lineHeight: 1, color: '#ddd',
+    background: 'transparent', border: 'none', cursor: 'pointer'
+  }}
+>×</button>
 
           {/* Shell: ocupa toda la pantalla */}
           <div
@@ -231,6 +231,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
               /* importantísimo: los paneles NO deben tener scroll propio en móvil */
               .booking-left, .booking-right { overflow: visible !important; }
             }
+              
           `}</style>
         </motion.div>
       )}
