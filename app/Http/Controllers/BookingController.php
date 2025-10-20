@@ -47,12 +47,21 @@ class BookingController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString(),
-                'data' => $data
+                'data' => $data,
+                'mail_config' => [
+                    'mailer' => config('mail.default'),
+                    'resend_key_set' => !empty(config('services.resend.key')),
+                ]
             ]);
 
             return response()->json([
                 'success' => false,
                 'error' => $e->getMessage(),
+                'debug' => config('app.debug') ? [
+                    'exception' => get_class($e),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                ] : null
             ], 500);
         }
     }
