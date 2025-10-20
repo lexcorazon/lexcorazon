@@ -42,21 +42,23 @@ class ResendTransport extends AbstractTransport
     {
         $email = MessageConverter::toEmail($message->getOriginalMessage());
         
+        $from = $email->getFrom()[0];
+        $to = $email->getTo();
+        
         $payload = [
-            'from' => $email->getFrom()[0]->toString(),
-            'to' => array_map(fn($addr) => $addr->toString(), $email->getTo()),
+            'from' => $from->getAddress(),
+            'to' => [array_map(fn($addr) => $addr->getAddress(), $to)],
             'subject' => $email->getSubject(),
         ];
 
         if ($email->getHtmlBody()) {
             $payload['html'] = $email->getHtmlBody();
-        }
-
-        if ($email->getTextBody()) {
+        } elseif ($email->getTextBody()) {
             $payload['text'] = $email->getTextBody();
         }
 
-        $this->resend->emails->send($payload);
+        // Resend API v0.22 - llamada directa al método send
+        $this->resend->emails()->send($payload);
     }
 
     public function __toString(): string
