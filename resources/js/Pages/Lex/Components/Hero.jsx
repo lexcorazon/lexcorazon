@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Hero({ heroImages, activeImage, setActiveImage, activeText, setActiveText }) {
@@ -32,7 +32,7 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
     },
   ]
 
-  // 🔁 Carrusel de imágenes
+  // Carrusel automático
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveImage((prev) => (prev + 1) % heroImages.length)
@@ -40,13 +40,29 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
     return () => clearInterval(interval)
   }, [heroImages.length, setActiveImage])
 
-  // 🔄 Cambio automático de texto
+  // Cambio de bloque de texto automático
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveText((prev) => (prev === 0 ? 1 : 0))
     }, 20000)
     return () => clearInterval(timer)
   }, [setActiveText])
+
+  // Handler nativo: deja que el scroll sea del contenedor; si está en top/bottom, deja pasar al body
+  const handleWheel = (e) => {
+    const el = scrollRef.current
+    if (!el) return
+    const delta = e.deltaY
+    const atTop = el.scrollTop <= 0
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1
+    const canScrollInside = !(atTop && delta < 0) && !(atBottom && delta > 0)
+    if (canScrollInside) {
+      // dejamos que el navegador desplace el contenedor, pero no el body
+      e.stopPropagation()
+      // no llamamos a preventDefault → no hay warnings de passive listeners
+    }
+    // si no puede seguir desplazándose, no detenemos nada y el body recibe la rueda
+  }
 
   return (
     <motion.section
@@ -55,7 +71,7 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
         position: 'relative',
         display: 'flex',
         flexWrap: 'wrap',
-        minHeight: '80vh',
+        minHeight: '100vh',
         background: '#000',
         overflow: 'hidden',
       }}
@@ -63,8 +79,8 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
       animate={{ opacity: 1 }}
       transition={{ duration: 1.2, ease: 'easeOut' }}
     >
-      {/* 🖼️ Carrusel de imágenes */}
-      <div style={{ position: 'relative', flex: '1 1 36%', height: '80vh', overflow: 'hidden' }}>
+      {/* Carrusel (solo desktop) */}
+      <div className="hero-carousel" style={{ position: 'relative', flex: '1 1 36%', height: '100vh', overflow: 'hidden' }}>
         {heroImages.map((src, i) => (
           <motion.img
             key={i}
@@ -84,50 +100,22 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
           />
         ))}
 
-        {/* Flechas laterales */}
+        {/* Flechas desktop */}
         <button
           onClick={() => setActiveImage((prev) => (prev - 1 + heroImages.length) % heroImages.length)}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: 16,
-            transform: 'translateY(-50%)',
-            fontSize: 36,
-            color: 'rgba(255,255,255,0.7)',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            zIndex: 10,
-            transition: 'color 0.3s ease',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
+          className="hero-arrow left"
         >
           ‹
         </button>
         <button
           onClick={() => setActiveImage((prev) => (prev + 1) % heroImages.length)}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            right: 16,
-            transform: 'translateY(-50%)',
-            fontSize: 36,
-            color: 'rgba(255,255,255,0.7)',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            zIndex: 10,
-            transition: 'color 0.3s ease',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-          onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.7)')}
+          className="hero-arrow right"
         >
           ›
         </button>
       </div>
 
-      {/* ✨ Texto dinámico */}
+      {/* Texto */}
       <motion.div
         style={{
           flex: '1 1 64%',
@@ -140,153 +128,168 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
           position: 'relative',
           fontFamily: 'Roboto, system-ui',
         }}
-        initial={{ opacity: 0, x: 80 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1.2, ease: 'easeOut', delay: 0.4 }}
       >
         <AnimatePresence mode="wait">
-          {heroTexts[activeText].title && (
-            <motion.div
-              key={activeText}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+          <motion.div
+            key={activeText}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            <h1
+              style={{
+                fontSize: 'clamp(2.4rem, 4vw, 4rem)',
+                marginBottom: 24,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: 1,
+              }}
             >
-              <h1
-                style={{
-                  fontSize: 64,
-                  marginBottom: 24,
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: 1,
-                  color: '#fff',
-                }}
-              >
-                {heroTexts[activeText].title}
-              </h1>
+              {heroTexts[activeText].title}
+            </h1>
 
-              {/* 🔥 Scroll interno suave sin flechas */}
-{/* 🔥 Scroll interno suave sin flechas */}
-<div
-  ref={scrollRef}
-  className="custom-scrollbar no-arrows"
-  onWheelCapture={(e) => {
-    const el = scrollRef.current
-    if (!el) return
-
-    const delta = e.deltaY
-    const atTop = el.scrollTop === 0
-    const atBottom = Math.ceil(el.scrollTop + el.clientHeight) >= el.scrollHeight
-
-    // Evita scroll global, solo mueve el texto
-    if ((delta < 0 && atTop) || (delta > 0 && atBottom)) {
-      return
-    } else {
-      e.preventDefault()
-      e.stopPropagation()
-      el.scrollTo({
-        top: el.scrollTop + delta,
-        behavior: 'smooth',
-      })
-    }
-  }}
-  style={{
-    maxHeight: '55vh',
-    paddingRight: 12,
-    overflowY: 'auto',
-    WebkitOverflowScrolling: 'touch',
-    touchAction: 'pan-y',
-    overscrollBehavior: 'contain',
-    pointerEvents: 'auto',
-    scrollbarWidth: 'thin',
-    scrollBehavior: 'smooth',
-  }}
->
-  {heroTexts[activeText].paragraphs.map((p, i) => (
-    <motion.p
-      key={i}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.08 }}
-      style={{
-        marginBottom: 16,
-        lineHeight: 1.7,
-        opacity: 0.95,
-        fontSize: 25,
-        color: '#eee',
-      }}
-    >
-      {p}
-    </motion.p>
-  ))}
-</div>
-
-            </motion.div>
-          )}
+            {/* Contenedor scroll interno */}
+            <div
+              ref={scrollRef}
+              onWheel={handleWheel}
+              className="custom-scrollbar no-arrows"
+              style={{
+                maxHeight: '55vh',
+                paddingRight: 12,
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                overscrollBehavior: 'contain',
+                scrollbarWidth: 'thin',
+                scrollBehavior: 'smooth',
+                scrollbarGutter: 'stable',
+              }}
+            >
+              {heroTexts[activeText].paragraphs.map((p, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.08 }}
+                  style={{
+                    marginBottom: 16,
+                    lineHeight: 1.7,
+                    opacity: 0.95,
+                    fontSize: 32,
+                    color: '#eee',
+                    textAlign: 'justify',
+                  }}
+                >
+                  {p}
+                </motion.p>
+              ))}
+            </div>
+          </motion.div>
         </AnimatePresence>
 
         <button
           onClick={() => setActiveText((prev) => (prev === 0 ? 1 : 0))}
-          style={{
-            position: 'absolute',
-            bottom: 28,
-            right: 40,
-            background: '#fff',
-            border: 'none',
-            color: '#000',
-            padding: '12px 26px',
-            borderRadius: 6,
-            fontSize: 16,
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#000'
-            e.currentTarget.style.color = '#fff'
-            e.currentTarget.style.border = '1px solid #fff'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#fff'
-            e.currentTarget.style.color = '#000'
-            e.currentTarget.style.border = 'none'
-          }}
+          className="hero-button"
         >
           {activeText === 0 ? '¿Cómo te acompaño?' : '¿Qué es Lex Corazon?'}
         </button>
+
+        <style>{`
+          /* Scrollbar */
+          .no-arrows::-webkit-scrollbar-button { display: none !important; }
+          .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+          .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 4px;
+          }
+          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.45);
+          }
+          .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+          }
+
+          /* Flechas (desktop) */
+          .hero-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 36px;
+            color: rgba(255,255,255,0.7);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: color 0.3s ease;
+          }
+          .hero-arrow.left { left: 16px; }
+          .hero-arrow.right { right: 16px; }
+          .hero-arrow:hover { color: #fff; }
+
+          /* Responsive móvil: sin fotos + hero más corto */
+          @media (max-width: 1024px) {
+            #hero {
+              flex-direction: column;
+              padding-top: 50px !important;
+              min-height: 90vh !important;
+            }
+            .hero-carousel { display: none !important; }
+            #hero h1 {
+              font-size: 1.8rem !important;
+              text-align: center;
+              line-height: 1.2;
+              margin-top: 1rem;
+            }
+            .custom-scrollbar { max-height: 50vh !important; }
+            .hero-button {
+              position: static !important;
+              margin: 2rem auto 0 auto !important;
+              display: block !important;
+            }
+          }
+.hero-button {
+  position: absolute;
+  bottom: 28px;
+  right: 40px;
+  background: #fff;
+  color: #000;
+  border: none;
+  padding: 12px 26px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-button:hover {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+/* 🧠 Evita quedarse “pegado” en móvil */
+.hero-button:focus,
+.hero-button:active {
+  background: #fff !important;
+  color: #000 !important;
+  border: none !important;
+}
+
+/* En móvil, centrado y estilo consistente */
+@media (max-width: 1024px) {
+  .hero-button {
+    background: #fff !important;
+    color: #000 !important;
+    position: static !important;
+    margin: 2rem auto 0 auto !important;
+    display: block !important;
+  }
+}
+
+        `}</style>
       </motion.div>
-
-      {/* 🧭 CSS inline: scrollbar minimalista + sin flechas */}
-      <style>{`
-        .no-arrows {
-          scrollbar-gutter: stable;
-        }
-        .no-arrows::-webkit-scrollbar-button {
-          display: none !important;
-          width: 0;
-          height: 0;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.25);
-          border-radius: 4px;
-          transition: background 0.3s ease;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.45);
-        }
-        .custom-scrollbar {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
-        }
-      `}</style>
     </motion.section>
   )
 }

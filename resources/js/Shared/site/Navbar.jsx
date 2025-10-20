@@ -114,7 +114,7 @@ export default function Navbar() {
               {/* Logo mobile centrado */}
               <div className="mt-6">
                 <Link href="/lex">
-                  <img src="/images/lex-corazon.png" alt="Lex Corazón" className="h-20 w-20 object-contain cursor-pointer" />
+                  <img src="/images/lex-corazon.png" alt="Lex Corazón" className="h-25 w-25 object-contain cursor-pointer" />
                 </Link>
               </div>
             </nav>
