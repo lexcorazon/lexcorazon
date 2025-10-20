@@ -21,7 +21,7 @@ class ResendServiceProvider extends ServiceProvider
         $this->app->afterResolving(MailManager::class, function (MailManager $mailManager) {
             $mailManager->extend('resend', function ($config) {
                 return new ResendTransport(
-                    new Resend(config('services.resend.key'))
+                    Resend::client(config('services.resend.key'))
                 );
             });
         });
@@ -47,7 +47,7 @@ class ResendTransport extends AbstractTransport
         
         $payload = [
             'from' => $from->getAddress(),
-            'to' => [array_map(fn($addr) => $addr->getAddress(), $to)],
+            'to' => array_values(array_map(fn($addr) => $addr->getAddress(), $to)),
             'subject' => $email->getSubject(),
         ];
 
@@ -57,8 +57,8 @@ class ResendTransport extends AbstractTransport
             $payload['text'] = $email->getTextBody();
         }
 
-        // Resend API v0.22 - llamada directa al método send
-        $this->resend->emails()->send($payload);
+        // Resend SDK v0.22 - usar método send directamente
+        $this->resend->emails->send($payload);
     }
 
     public function __toString(): string
