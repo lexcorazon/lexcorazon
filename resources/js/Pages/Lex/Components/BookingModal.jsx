@@ -112,7 +112,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 
               {/* Panel Derecho – FORMULARIO */}
               <div className="booking-right" style={{ padding: '56px', background: 'rgba(0,0,0,0.75)' }}>
-                <form onSubmit={handleSubmitBooking} style={{ display: 'grid', gap: 16, maxWidth: 600, margin: '0 auto' }}>
+                <form onSubmit={handleSubmitBooking} style={{ display: 'grid', gap: 12, maxWidth: 600, margin: '0 auto' }}>
                   {['birth_date','birth_place','birth_time','phone','expectations'].map(f => {
                     const labels = {
                       birth_date:'Fecha de nacimiento*',
@@ -155,13 +155,13 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 
                   <div style={{ display:'grid', gap:8 }}>
                     <label style={{ color:'#ccc', fontSize:16 }}>¿En qué punto vital te encuentras?</label>
-                    <textarea name="life_point" value={form.life_point} onChange={handleChange} rows={3}
+                    <textarea name="life_point" value={form.life_point} onChange={handleChange} rows={2}
                       style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
                   </div>
 
                   <div style={{ display:'grid', gap:8 }}>
                     <label style={{ color:'#ccc', fontSize:16 }}>¿Qué relación tienes con la creatividad?</label>
-                    <textarea name="creativity" value={form.creativity} onChange={handleChange} rows={3}
+                    <textarea name="creativity" value={form.creativity} onChange={handleChange} rows={2}
                       style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
                   </div>
 
@@ -196,20 +196,20 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     box-sizing: border-box;
   }
 
-  /* 🖥️ VERSIÓN WEB — centrado, sin scroll global, con scroll interno solo en el formulario */
+  /* 🖥️ VERSIÓN WEB — centrado, sin scroll global, optimizado para mostrar todo el contenido */
   @media (min-width: 769px) {
     html, body {
       overflow: hidden !important;
     }
 
     .booking-modal {
-      width: 85vw !important;
-      height: 85vh !important;
-      max-height: 85vh !important;
+      width: 92vw !important;
+      height: 92vh !important;
+      max-height: 92vh !important;
       margin: auto !important;
       border-radius: 16px;
       display: grid !important;
-      grid-template-columns: 1.1fr 1fr !important;
+      grid-template-columns: 1fr 1fr !important;
       overflow: hidden !important;
       box-shadow: 0 0 80px rgba(255, 255, 255, 0.15);
       background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
@@ -219,19 +219,57 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     .booking-left {
       height: 100%;
       overflow: hidden !important;
-      padding: 60px 60px !important;
+      padding: 40px 40px !important;
       border-right: 1px solid #222;
       background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
-    /* Panel derecho con scroll interno */
+    .booking-left h2 {
+      font-size: clamp(1.8rem, 3vw, 2.8rem) !important;
+      margin-bottom: 16px !important;
+    }
+
+    .booking-left p {
+      font-size: 17px !important;
+      line-height: 1.6 !important;
+    }
+
+    /* Panel derecho sin scroll interno */
     .booking-right {
       height: 100%;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      padding: 50px !important;
+      padding: 35px 40px !important;
       scroll-behavior: smooth;
       background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+    }
+
+    .booking-right form {
+      width: 100%;
+      gap: 12px !important;
+    }
+
+    .booking-right form > div {
+      gap: 6px !important;
+    }
+
+    .booking-right label {
+      font-size: 14px !important;
+    }
+
+    .booking-right input,
+    .booking-right textarea {
+      padding: 10px 12px !important;
+      font-size: 14px !important;
+    }
+
+    .booking-right textarea {
+      rows: 2 !important;
     }
 
     /* Scrollbar estético */
