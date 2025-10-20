@@ -2,34 +2,28 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Link } from '@inertiajs/react'
 
-// Importa tus PNG
+// Importa tus imágenes
 import LexLogo from '../../images/lex-corazon.png'
 import AJLogo from '../../images/AJ.png'
 
 export default function Landing() {
-  const [hovered, setHovered] = useState(null) // 'aj' | 'lex' | null
+  const [hovered, setHovered] = useState(null)
   const reduce = useReducedMotion()
 
-  const expandTransition  = { duration: reduce ? 0 : 1.8, ease: [0.25, 1, 0.3, 1] }
-  const entryTransition   = { duration: reduce ? 0 : 3.2, ease: [0.25, 1, 0.3, 1] }
+  const expandTransition = { duration: reduce ? 0 : 1.8, ease: [0.25, 1, 0.3, 1] }
+  const entryTransition = { duration: reduce ? 0 : 3.2, ease: [0.25, 1, 0.3, 1] }
   const overlayTransition = { duration: reduce ? 0 : 1.1 }
 
-  const ajBasis  = hovered === 'aj'  ? '100%' : hovered === 'lex' ? '0%'  : '50%'
-  const lexBasis = hovered === 'lex' ? '100%' : hovered === 'aj'  ? '0%'  : '50%'
+  const ajBasis = hovered === 'aj' ? '100%' : hovered === 'lex' ? '0%' : '50%'
+  const lexBasis = hovered === 'lex' ? '100%' : hovered === 'aj' ? '0%' : '50%'
 
-  // Tamaños iguales para AJ y Lex
-  const logoWidth = "w-[100%]"
-  const logoMaxWidthMobile = "max-w-[400px]"
-  const logoMaxWidthDesktop = "md:max-w-[480px]"
-  const logoHeight = "h-[180px]"
+  // Ajustes responsivos para los logos
+  const logoClass =
+    'mx-auto w-full h-auto max-w-[300px] sm:max-w-[360px] md:max-w-[460px] object-contain drop-shadow'
 
   // Toggle para touch/móviles
   const handleTouch = (panel) => {
-    if (hovered === panel) {
-      setHovered(null)
-    } else {
-      setHovered(panel)
-    }
+    setHovered(hovered === panel ? null : panel)
   }
 
   return (
@@ -53,7 +47,7 @@ export default function Landing() {
         animate={{ flexBasis: ajBasis }}
         transition={expandTransition}
       >
-        {/* Fondo AJ – gris claro */}
+        {/* Fondo AJ */}
         <motion.div
           className="absolute inset-0 bg-gray-100"
           initial={{ opacity: 0, y: 16 }}
@@ -68,7 +62,7 @@ export default function Landing() {
             <motion.img
               src={AJLogo}
               alt="Alejandra Jaime"
-              className={`mx-auto ${logoWidth} ${logoMaxWidthMobile} ${logoMaxWidthDesktop} ${logoHeight} drop-shadow`}
+              className={logoClass}
               initial={{ opacity: 0, y: 288 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -83,7 +77,7 @@ export default function Landing() {
               <span className="block w-3 h-3 bg-black/40 dark:bg-white/40 rounded-full animate-pulse"></span>
             </div>
 
-            {/* CTA AJ – botón negro con sombra */}
+            {/* CTA AJ */}
             <AnimatePresence>
               {hovered === 'aj' && (
                 <motion.div
@@ -133,7 +127,7 @@ export default function Landing() {
             <motion.img
               src={LexLogo}
               alt="Lex Corazón"
-              className={`mx-auto ${logoWidth} ${logoMaxWidthMobile} ${logoMaxWidthDesktop} ${logoHeight} drop-shadow`}
+              className={logoClass}
               initial={{ opacity: 0, y: -288 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{

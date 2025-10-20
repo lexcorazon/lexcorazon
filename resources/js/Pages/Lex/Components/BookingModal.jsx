@@ -27,9 +27,9 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
         headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' },
         body: JSON.stringify({ ...form, session_title: sessionTitle })
       });
-      if (res.ok) { 
+      if (res.ok) {
         setSentOk(true); setSending(false);
-        setForm({ birth_date: '', birth_place: '', birth_time: '', time_exact: false, phone: '', expectations: '', knows_astrology: '', life_point: '', creativity: '' }); 
+        setForm({ birth_date: '', birth_place: '', birth_time: '', time_exact: false, phone: '', expectations: '', knows_astrology: '', life_point: '', creativity: '' });
       }
       else { setSentOk(false); setSending(false); }
     } catch { setSentOk(false); setSending(false); }
@@ -53,7 +53,9 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
             exit={{ opacity: 0, y: 80, scale: 0.96 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
             style={{
-              width: '96vw', maxWidth: '1100px', height: '92vh',
+              width: 'min(96%, 1100px)',
+              height: 'auto',
+              maxHeight: '90dvh',
               background: 'linear-gradient(120deg,#0b0b0b 0%,#151515 100%)', color: '#fff',
               display: 'grid', gridTemplateColumns: '1.1fr 1fr', borderRadius: 18,
               boxShadow: '0 0 80px rgba(255,255,255,0.1)', position: 'relative',
@@ -80,45 +82,45 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
             {/* Panel derecho (formulario) */}
             <motion.div className="booking-right" style={{ padding: '40px', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
               <form onSubmit={handleSubmitBooking} style={{ display: 'grid', gap: 16, width: '100%' }}>
-                {['birth_date','birth_place','birth_time','phone','expectations'].map(f => {
-                  const labels = { birth_date:'Fecha de nacimiento*', birth_place:'Lugar de nacimiento*', birth_time:'Hora de nacimiento*', phone:'Teléfono*', expectations:'Expectativas' };
-                  return <div key={f} style={{ display:'grid', gap:8 }}>
-                    <label style={{ color:'#ccc', fontSize:16 }}>{labels[f]}</label>
+                {['birth_date', 'birth_place', 'birth_time', 'phone', 'expectations'].map(f => {
+                  const labels = { birth_date: 'Fecha de nacimiento*', birth_place: 'Lugar de nacimiento*', birth_time: 'Hora de nacimiento*', phone: 'Teléfono*', expectations: 'Expectativas' };
+                  return <div key={f} style={{ display: 'grid', gap: 8 }}>
+                    <label style={{ color: '#ccc', fontSize: 16 }}>{labels[f]}</label>
                     <input name={f} placeholder="" value={form[f]} onChange={handleChange} required={labels[f].includes('*')}
-                      style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
+                      style={{ background: '#000', color: '#fff', border: '1px solid #333', borderRadius: 10, padding: '14px 16px', fontSize: 16 }} />
                   </div>
                 })}
                 {/* Conocimientos astrología */}
-                <div style={{ display:'grid', gap:8 }}>
-                  <label style={{ color:'#ccc', fontSize:16 }}>¿Tienes conocimientos de astrología?</label>
-                  <div style={{ display:'flex', gap:16 }}>
-                    {['Sí','No'].map(opt => (
-                      <label key={opt} style={{ display:'flex', alignItems:'center', gap:8, cursor:'pointer', fontSize:15 }}>
-                        <input type="radio" name="knows_astrology" value={opt} checked={form.knows_astrology===opt} onChange={handleChange} style={{ accentColor:'#fff', transform:'scale(1.2)' }} />
+                <div style={{ display: 'grid', gap: 8 }}>
+                  <label style={{ color: '#ccc', fontSize: 16 }}>¿Tienes conocimientos de astrología?</label>
+                  <div style={{ display: 'flex', gap: 16 }}>
+                    {['Sí', 'No'].map(opt => (
+                      <label key={opt} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 15 }}>
+                        <input type="radio" name="knows_astrology" value={opt} checked={form.knows_astrology === opt} onChange={handleChange} style={{ accentColor: '#fff', transform: 'scale(1.2)' }} />
                         {opt}
                       </label>
                     ))}
                   </div>
                 </div>
                 {/* Punto vital */}
-                <div style={{ display:'grid', gap:8 }}>
-                  <label style={{ color:'#ccc', fontSize:16 }}>¿En qué punto vital te encuentras?</label>
-                  <textarea name="life_point" value={form.life_point} onChange={handleChange} rows={3} style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
+                <div style={{ display: 'grid', gap: 8 }}>
+                  <label style={{ color: '#ccc', fontSize: 16 }}>¿En qué punto vital te encuentras?</label>
+                  <textarea name="life_point" value={form.life_point} onChange={handleChange} rows={3} style={{ background: '#000', color: '#fff', border: '1px solid #333', borderRadius: 10, padding: '14px 16px', fontSize: 16 }} />
                 </div>
                 {/* Creatividad */}
-                <div style={{ display:'grid', gap:8 }}>
-                  <label style={{ color:'#ccc', fontSize:16 }}>¿Qué relación tienes con la creatividad?</label>
-                  <textarea name="creativity" value={form.creativity} onChange={handleChange} rows={3} style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
+                <div style={{ display: 'grid', gap: 8 }}>
+                  <label style={{ color: '#ccc', fontSize: 16 }}>¿Qué relación tienes con la creatividad?</label>
+                  <textarea name="creativity" value={form.creativity} onChange={handleChange} rows={3} style={{ background: '#000', color: '#fff', border: '1px solid #333', borderRadius: 10, padding: '14px 16px', fontSize: 16 }} />
                 </div>
 
                 {/* Botones WhatsApp, Stripe y Enviar alineados */}
-                <div style={{ display:'flex', gap:16, marginTop:16, flexWrap:'wrap' }}>
-                  <a href="https://wa.me/34678776392" target="_blank" rel="noreferrer" style={{ background:'#25D366', color:'#000', borderRadius:10, padding:'12px 18px', fontWeight:700, fontSize:17, display:'inline-flex', alignItems:'center', justifyContent:'center', textDecoration:'none', cursor:'pointer', transition:'transform 0.2s ease' }}
-                    onMouseEnter={e=>e.currentTarget.style.transform='scale(1.05)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>💬 Contactar por WhatsApp</a>
-                  <button type="button" onClick={handleStripeCheckout} style={{ background:'#fff', color:'#000', borderRadius:10, padding:'12px 18px', fontWeight:700, fontSize:17, cursor:'pointer', transition:'transform 0.2s ease' }}
-                    onMouseEnter={e=>e.currentTarget.style.transform='scale(1.05)'} onMouseLeave={e=>e.currentTarget.style.transform='scale(1)'}>💳 Pagar con Stripe</button>
-                  <button type="submit" disabled={sending||sentOk===true} style={{ background: sentOk?'#7CFFB2':sending?'#ccc':'#fff', color:'#000', border:'none', borderRadius:10, padding:'12px 18px', fontWeight:700, cursor:sending?'not-allowed':'pointer', fontSize:17, transition:'all 0.3s ease' }}>
-                    {sentOk?'✅ Enviado':sending?'Enviando…':'Enviar formulario'}
+                <div style={{ display: 'flex', gap: 16, marginTop: 16, flexWrap: 'wrap' }}>
+                  <a href="https://wa.me/34678776392" target="_blank" rel="noreferrer" style={{ background: '#25D366', color: '#000', borderRadius: 10, padding: '12px 18px', fontWeight: 700, fontSize: 17, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', cursor: 'pointer', transition: 'transform 0.2s ease' }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>💬 Contactar por WhatsApp</a>
+                  <button type="button" onClick={handleStripeCheckout} style={{ background: '#fff', color: '#000', borderRadius: 10, padding: '12px 18px', fontWeight: 700, fontSize: 17, cursor: 'pointer', transition: 'transform 0.2s ease' }}
+                    onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>💳 Pagar con Stripe</button>
+                  <button type="submit" disabled={sending || sentOk === true} style={{ background: sentOk ? '#7CFFB2' : sending ? '#ccc' : '#fff', color: '#000', border: 'none', borderRadius: 10, padding: '12px 18px', fontWeight: 700, cursor: sending ? 'not-allowed' : 'pointer', fontSize: 17, transition: 'all 0.3s ease' }}>
+                    {sentOk ? '✅ Enviado' : sending ? 'Enviando…' : 'Enviar formulario'}
                   </button>
                 </div>
               </form>
