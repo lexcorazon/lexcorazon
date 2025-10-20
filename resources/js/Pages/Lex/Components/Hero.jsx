@@ -6,7 +6,7 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
   
   const heroTexts = [
     {
-      title: '¿Qué es Lex Corazon?',
+      title: '¿Qué e Lex Corazon?',
       paragraphs: [
         'Lex Corazon es un viaje creativo en seis etapas que atraviesa las tripas, el imaginario y la carne de un proyecto. Es un mapa para quienes sienten que lo que tienen dentro necesita una forma, una voz y una estética que les haga justicia.',
         'Nació de una urgencia: dejar atrás fórmulas prefabricadas y maneras huecas de “hacer marca”. Aquí la creatividad no se entiende como adorno ni estrategia fría, sino como una pulsión vital: un acto de honestidad radical y de belleza subversiva.',

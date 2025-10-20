@@ -15,12 +15,26 @@ export default function AJHome() {
 
   return (
     <SiteLayout brand="aj" className="font-roboto bg-white text-black">
+
+      {/* Hero Section */}
       <PortfolioSection />
+
+      {/* Dressed by MM Section */}
       <DressedByMMSection />
+
+      {/* Collaborations Section */}
       <CollaborationsSection />
+
+      {/* Trajectory Section */}
       <Trajectory />
+
+      {/* About Me Section */}
       <AboutMe />
+
+      {/* Clipping Section */}
       <ClippingSection items={aj.prensa || []} />
+
+    
     </SiteLayout>
   )
 }
