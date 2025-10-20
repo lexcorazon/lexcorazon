@@ -186,19 +186,34 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 
           {/* CSS RESPONSIVE */}
           <style>{`
-            /* Desktop: dos columnas con scroll interno en cada panel */
-            @media (min-width: 769px) {
-              .booking-left, .booking-right {
-                height: 100dvh;
-                overflow-y: auto;
-                scrollbar-width: thin;
-              }
-              .booking-right::-webkit-scrollbar,
-              .booking-left::-webkit-scrollbar { width: 6px; }
-              .booking-right::-webkit-scrollbar-thumb,
-              .booking-left::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 4px; }
-            }
+/* Desktop: dos columnas con scroll interno en cada panel */
+@media (min-width: 769px) {
+  .booking-modal {
+    transform: scale(0.8);               /* 🔥 reduce un 20% */
+    transform-origin: center center;
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
 
+  .booking-left,
+  .booking-right {
+    height: 100dvh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .booking-right::-webkit-scrollbar,
+  .booking-left::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .booking-right::-webkit-scrollbar-thumb,
+  .booking-left::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+  }
+}
             /* Móvil: una sola columna y un solo scroll (el shell) */
             @media (max-width: 768px) {
               .booking-modal {
