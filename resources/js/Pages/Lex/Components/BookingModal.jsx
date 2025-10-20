@@ -345,35 +345,82 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
             </div>
 
 <style>{`
+  /* 🌐 GENERAL — asegura que el modal cubra todo el viewport */
+  .booking-modal {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  /* 🖥️ WEB: dos columnas y scroll bloqueado del fondo */
+  @media (min-width: 769px) {
+    body {
+      overflow: hidden !important;
+    }
+
+    .booking-modal {
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr !important;
+      height: 100dvh !important;
+      overflow: hidden !important;
+    }
+
+    .booking-left,
+    .booking-right {
+      height: 100%;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .booking-right::-webkit-scrollbar {
+      width: 6px;
+    }
+    .booking-right::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+    }
+  }
+
+  /* 📱 MÓVIL: texto arriba, formulario abajo, scroll único */
   @media (max-width: 768px) {
     .booking-modal {
       display: flex !important;
       flex-direction: column !important;
-      width: 100% !important;
-      height: 100vh !important;
-      max-height: none !important;
-      overflow-y: auto !important; /* 🔥 scroll general */
+      width: 100vw !important;
+      height: 100dvh !important;
+      overflow-y: auto !important; /* 🔥 un solo scroll fluido */
+      background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%) !important;
+      backdrop-filter: blur(10px);
     }
+
     .booking-left {
-      order: 1 !important; /* 🩶 texto primero */
-      border-right: none !important;
+      order: 1 !important;
+      border: none !important;
       border-bottom: 1px solid #222;
-      padding: 28px 20px !important;
-      width: 100% !important;
+      padding: 32px 22px !important;
       flex-shrink: 0;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
     }
+
     .booking-right {
-      order: 2 !important; /* 🩶 formulario debajo */
-      padding: 28px 20px !important;
-      overflow-y: visible !important;
-      width: 100% !important;
+      order: 2 !important;
+      padding: 28px 22px !important;
+      overflow: visible !important;
       flex-grow: 1;
     }
-    form {
-      max-width: 100% !important;
+
+    /* 🔝 X siempre arriba visible, sin tapar texto */
+    .booking-modal button[style*="position: absolute"] {
+      top: 16px !important;
+      right: 16px !important;
+      font-size: 32px !important;
+      z-index: 99 !important;
     }
   }
 `}</style>
+
 
 
           </motion.div>
