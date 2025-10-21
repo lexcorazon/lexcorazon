@@ -84,21 +84,21 @@ export default function CollaborationsSection() {
       <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-6">
         <div className="flex-1 w-full flex flex-col items-center">
           <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
-          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-lg shadow-md">
+          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-full shadow-md">
             Colaboraciones de MM en videoclips
           </h3>
         </div>
 
         <div className="flex-1 w-full flex flex-col items-center">
           <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
-          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-lg shadow-md">
+          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-full shadow-md">
             Dirección artística
           </h3>
         </div>
 
         <div className="flex-1 w-full flex flex-col items-center">
           <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
-          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-lg shadow-md">
+          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-full shadow-md">
             Estilismo y coordinación de vestuario
           </h3>
         </div>
