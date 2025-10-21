@@ -295,9 +295,9 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     border-radius: 20px;
     box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-    max-width: 1400px;
-    width: 95vw;
-    height: 90vh;
+    max-width: 1100px;
+    width: 88vw;
+    height: 82vh;
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -306,7 +306,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
   }
   
   .booking-left {
-    padding: 40px;
+    padding: 30px;
     background: radial-gradient(circle at top left, rgba(255,255,255,0.1) 0%, transparent 70%);
     border-right: 1px solid #333;
     overflow-y: auto;
@@ -329,7 +329,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
   }
   
   .booking-right {
-    padding: 40px;
+    padding: 30px;
     background: rgba(0,0,0,0.3);
     overflow-y: auto;
     max-height: 100%;
@@ -362,7 +362,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       height: 100%;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      padding: 30px 35px !important;
+      padding: 25px 30px !important;
       border-right: 1px solid #222;
       background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
       display: flex;
@@ -380,8 +380,8 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     }
 
     .booking-left h2 {
-      font-size: clamp(1.6rem, 2.5vw, 2.2rem) !important;
-      margin-bottom: 12px !important;
+      font-size: clamp(1.5rem, 2.2vw, 2rem) !important;
+      margin-bottom: 10px !important;
       color: #fff !important;
       display: block !important;
       visibility: visible !important;
@@ -392,21 +392,21 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     }
 
     .booking-left .session-description p {
-      font-size: 15px !important;
-      line-height: 1.6 !important;
+      font-size: 14px !important;
+      line-height: 1.5 !important;
       margin-bottom: 10px;
       color: #ddd !important;
     }
     
     .booking-left .session-description ul {
-      margin-left: 20px;
+      margin-left: 18px;
       margin-bottom: 10px;
     }
     
     .booking-left .session-description li {
-      font-size: 14px !important;
-      line-height: 1.5 !important;
-      margin-bottom: 6px;
+      font-size: 13px !important;
+      line-height: 1.4 !important;
+      margin-bottom: 5px;
       color: #ddd !important;
     }
     
@@ -421,7 +421,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       height: 100%;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      padding: 30px 35px !important;
+      padding: 25px 30px !important;
       scroll-behavior: smooth;
       background: rgba(0,0,0,0.6);
       display: flex;

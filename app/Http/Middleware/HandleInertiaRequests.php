@@ -34,7 +34,6 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'appName' => config('app.name', 'LexCorazon'),
         ];
     }
 
@@ -47,5 +46,13 @@ class HandleInertiaRequests extends Middleware
     public function title(): string
     {
         return '%s';
+    }
+
+    /**
+     * Override the root template to ensure clean titles
+     */
+    public function rootView(Request $request): string
+    {
+        return 'app';
     }
 }
