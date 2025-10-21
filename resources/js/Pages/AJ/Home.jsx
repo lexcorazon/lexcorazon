@@ -20,7 +20,7 @@ export default function AJHome() {
 
   return (
     <>
-      <Head title="AJ - Alejandra Jaime" />
+      <Head title="AJ & LEX" />
       <SiteLayout brand="aj" className="font-roboto bg-white text-black">
 
       {/* Hero Section */}

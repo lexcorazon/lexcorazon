@@ -65,7 +65,7 @@ export default function LexHome() {
 
   return (
     <>
-      <Head title="Lex" />
+      <Head title="AJ & LEX" />
       <div style={{ overflow: 'hidden', width: '100%', minHeight: '100vh' }}>
         <Header />
 

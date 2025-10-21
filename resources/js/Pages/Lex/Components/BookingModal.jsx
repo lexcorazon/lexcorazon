@@ -368,7 +368,9 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
     
     /* Scrollbar estético para panel izquierdo */
@@ -397,11 +399,14 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       line-height: 1.4 !important;
       margin-bottom: 7px;
       color: #ddd !important;
+      text-align: center;
     }
     
     .booking-left .session-description ul {
-      margin-left: 16px;
+      margin-left: 0;
       margin-bottom: 7px;
+      list-style-position: inside;
+      text-align: center;
     }
     
     .booking-left .session-description li {
@@ -409,6 +414,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       line-height: 1.35 !important;
       margin-bottom: 4px;
       color: #ddd !important;
+      text-align: center;
     }
     
     .booking-left .session-description strong {
