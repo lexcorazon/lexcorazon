@@ -121,13 +121,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
             <div className="booking-content">
               {/* Panel Izquierdo – TEXTO */}
               <div className="booking-left">
-                <h2
-                  style={{
-                    fontSize: 'clamp(2.2rem,4vw,3.6rem)',
-                    fontWeight: 900, marginBottom: 16,
-                    textTransform: 'uppercase', lineHeight: 1.1
-                  }}
-                >
+                <h2 className="session-title">
                   {sessionTitle || 'Sesión Creativa Lex Corazon'}
                 </h2>
                 
@@ -322,8 +316,17 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     justify-content: center;
   }
   
-  .booking-left h2 {
+  .booking-left h2,
+  .session-title {
     color: #fff !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: clamp(2.2rem,4vw,3.6rem) !important;
+    font-weight: 900 !important;
+    margin-bottom: 16px !important;
+    text-transform: uppercase !important;
+    line-height: 1.1 !important;
   }
   
   .booking-right {
@@ -377,15 +380,24 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       border-radius: 4px;
     }
 
-    .booking-left h2 {
+    .booking-left h2,
+    .session-title {
       font-size: clamp(1.8rem, 3vw, 2.8rem) !important;
       margin-bottom: 16px !important;
+      color: #fff !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      font-weight: 900 !important;
+      text-transform: uppercase !important;
+      line-height: 1.1 !important;
     }
 
     .booking-left .session-description p {
       font-size: 18px !important;
       line-height: 1.75 !important;
       margin-bottom: 14px;
+      color: #ddd !important;
     }
     
     .booking-left .session-description ul {
@@ -397,11 +409,27 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       font-size: 17px !important;
       line-height: 1.7 !important;
       margin-bottom: 8px;
+      color: #ddd !important;
     }
     
     .booking-left .session-description strong {
-      color: #FFD500;
+      color: #FFD500 !important;
       font-weight: 700;
+    }
+
+    /* Título específico para web */
+    .session-title {
+      color: #fff !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      font-size: clamp(2.2rem,4vw,3.6rem) !important;
+      font-weight: 900 !important;
+      margin-bottom: 16px !important;
+      text-transform: uppercase !important;
+      line-height: 1.1 !important;
+      position: relative !important;
+      z-index: 10 !important;
     }
 
     /* Panel derecho sin scroll interno */
@@ -508,6 +536,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     .booking-left .session-description p {
       font-size: 15px !important;
       line-height: 1.7 !important;
+      color: #ddd !important;
     }
     
     .booking-left .session-description ul {
@@ -517,6 +546,12 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     .booking-left .session-description li {
       font-size: 14px !important;
       line-height: 1.6 !important;
+      color: #ddd !important;
+    }
+    
+    .booking-left .session-description strong {
+      color: #FFD500 !important;
+      font-weight: 700;
     }
 
     .booking-right {
