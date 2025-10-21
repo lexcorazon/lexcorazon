@@ -336,8 +336,9 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     overflow-y: auto;
     max-height: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 20px;
   }
 
   /* 🖥️ VERSIÓN WEB — centrado, sin scroll global, optimizado para mostrar todo el contenido */
@@ -551,7 +552,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       order: 2 !important;
       border: none !important;
       padding: 28px 22px !important;
-      overflow: visible !important;
+      overflow-y: auto !important;
       height: auto !important;
       width: 100% !important;
       display: flex;
@@ -559,12 +560,14 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       justify-content: center;
       padding-top: 20px;
       background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
+      max-height: 60vh;
     }
 
     .booking-right form {
       width: 100% !important;
       max-width: 350px;
       gap: 10px !important;
+      padding-bottom: 20px;
     }
 
     .booking-modal button[style*="position: absolute"],
