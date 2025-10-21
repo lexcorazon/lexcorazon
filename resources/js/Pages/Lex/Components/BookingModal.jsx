@@ -369,7 +369,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       text-align: center;
     }
