@@ -12,24 +12,24 @@ export default function SessionsOverview() {
   // Mapeo de nombres cortos a títulos completos para hacer scroll
   const sessionMap = {
     'Carta Natal': 'Carta Natal',
-    'Viaje a las tripas': 'Viaje a las tripas - Introspección',
-    'Motín existencial': 'Motín existencial - Talentos y propósito',
-    'Caja de cerillas': 'Caja de cerillas - Desbloqueo creativo',
-    'Lex ID': 'Lex ID - Adn de marca',
-    'Aesthetic Overdose': 'Aesthetic Overdose - Estética y concepto',
-    'Carne y hueso': 'Carne y hueso - Creación de producto'
+    'VIAJE A LAS TRIPAS': 'Viaje a las tripas - Introspección',
+    'MOTÍN EXISTENCIAL': 'Motín existencial - Talentos y propósito',
+    'CAJA DE CERILLAS': 'Caja de cerillas - Desbloqueo creativo',
+    'LEX ID': 'Lex ID - Adn de marca',
+    'AESTHETIC OVERDOSE': 'Aesthetic Overdose - Estética y concepto',
+    'CARNE Y HUESO': 'Carne y hueso - Creación de producto'
   }
 
   const introspectivas = [
-    'Viaje a las tripas',
-    'Motín existencial',
-    'Caja de cerillas'
+    'VIAJE A LAS TRIPAS',
+    'MOTÍN EXISTENCIAL',
+    'CAJA DE CERILLAS'
   ]
 
   const construccion = [
-    'Lex ID',
-    'Aesthetic Overdose',
-    'Carne y hueso'
+    'LEX ID',
+    'AESTHETIC OVERDOSE',
+    'CARNE Y HUESO'
   ]
 
   // Función para hacer scroll suave a una sesión
@@ -63,9 +63,9 @@ export default function SessionsOverview() {
       className="sessions-overview-section"
       style={{
         width: '100%',
-        minHeight: '100vh',
+        minHeight: '120vh',
         background: '#000',
-        padding: '80px 40px',
+        padding: '100px 60px',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: 0,
@@ -79,8 +79,7 @@ export default function SessionsOverview() {
         justifyContent: 'center',
         alignItems: 'center',
         borderRight: '1px solid #222',
-        padding: '60px 40px',
-        background: 'radial-gradient(circle at center, rgba(119, 206, 228, 0.15) 0%, transparent 70%)'
+        padding: '80px 60px'
       }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -96,14 +95,14 @@ export default function SessionsOverview() {
           }}
         >
           <h2 style={{
-            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+            fontSize: 'clamp(3rem, 6vw, 5rem)',
             fontWeight: 900,
             color: '#77cee4',
             textTransform: 'uppercase',
             letterSpacing: 2,
             lineHeight: 1.2
           }}>
-            Coaching<br />Astrológico
+            COACHING<br />ASTROLÓGICO
           </h2>
 
           {/* Flecha hacia abajo */}
@@ -117,7 +116,7 @@ export default function SessionsOverview() {
               ease: "easeInOut"
             }}
             style={{
-              fontSize: 60,
+              fontSize: 80,
               color: '#77cee4'
             }}
           >
@@ -127,12 +126,12 @@ export default function SessionsOverview() {
           <h3 
             onClick={() => scrollToSession('Carta Natal')}
             style={{
-              fontSize: 'clamp(2rem, 4vw, 3.5rem)',
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)',
               fontWeight: 900,
               color: '#fff',
               textTransform: 'uppercase',
               letterSpacing: 3,
-              padding: '20px 40px',
+              padding: '30px 50px',
               border: '3px solid #77cee4',
               borderRadius: 20,
               cursor: 'pointer',
@@ -157,8 +156,7 @@ export default function SessionsOverview() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        padding: '60px 40px',
-        background: 'radial-gradient(circle at center, rgba(255, 213, 0, 0.1) 0%, transparent 70%)'
+        padding: '80px 60px'
       }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -168,7 +166,7 @@ export default function SessionsOverview() {
         >
           {/* Título principal */}
           <h2 style={{
-            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+            fontSize: 'clamp(3rem, 6vw, 5rem)',
             fontWeight: 900,
             color: '#FFD500',
             textTransform: 'uppercase',
@@ -177,12 +175,12 @@ export default function SessionsOverview() {
             textAlign: 'center',
             lineHeight: 1.2
           }}>
-            Mentoría<br />Creativa
+            MENTORÍA<br />CREATIVA
           </h2>
 
           {/* Subtítulo */}
           <h3 style={{
-            fontSize: 'clamp(1.5rem, 3vw, 2.5rem)',
+            fontSize: 'clamp(2rem, 4vw, 3rem)',
             fontWeight: 700,
             color: '#fff',
             textTransform: 'uppercase',
@@ -190,32 +188,32 @@ export default function SessionsOverview() {
             marginBottom: 50,
             textAlign: 'center'
           }}>
-            Viaje Lex Corazon
+            VIAJE LEX CORAZÓN
           </h3>
 
           {/* Grid de sesiones */}
           <div className="sessions-grid-container" style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1px 1fr',
-            gap: 40,
-            marginTop: 40
+            gap: 50,
+            marginTop: 50
           }}>
             {/* Columna Izquierda - Introspectivas */}
             <div className="sessions-grid-column" style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 20
+              gap: 35
             }}>
               <h4 style={{
-                fontSize: 18,
+                fontSize: 22,
                 fontWeight: 700,
                 color: '#FFD500',
                 textTransform: 'uppercase',
                 letterSpacing: 1,
-                marginBottom: 10,
+                marginBottom: 15,
                 textAlign: 'center'
               }}>
-                Introspectivas
+                INTROSPECTIVAS
               </h4>
               {introspectivas.map((sesion, i) => (
                 <motion.div
@@ -226,16 +224,17 @@ export default function SessionsOverview() {
                   transition={{ delay: 0.4 + (i * 0.1), duration: 0.5 }}
                   viewport={{ once: true }}
                   style={{
-                    padding: '16px 20px',
+                    padding: '28px 35px',
                     background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 12,
+                    border: '2px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 16,
                     color: '#fff',
-                    fontSize: 16,
+                    fontSize: 24,
                     fontWeight: 600,
                     textAlign: 'center',
                     transition: 'all 0.3s ease',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    textTransform: 'uppercase'
                   }}
                   whileHover={{
                     background: 'rgba(255, 213, 0, 0.15)',
@@ -250,8 +249,8 @@ export default function SessionsOverview() {
 
             {/* Línea separadora */}
             <div className="sessions-grid-separator" style={{
-              width: 1,
-              background: 'linear-gradient(to bottom, transparent, #FFD500, transparent)',
+              width: 2,
+              background: '#FFD500',
               height: '100%'
             }} />
 
@@ -259,18 +258,18 @@ export default function SessionsOverview() {
             <div className="sessions-grid-column" style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 20
+              gap: 35
             }}>
               <h4 style={{
-                fontSize: 18,
+                fontSize: 22,
                 fontWeight: 700,
                 color: '#FFD500',
                 textTransform: 'uppercase',
                 letterSpacing: 1,
-                marginBottom: 10,
+                marginBottom: 15,
                 textAlign: 'center'
               }}>
-                Construcción
+                CONSTRUCCIÓN
               </h4>
               {construccion.map((sesion, i) => (
                 <motion.div
@@ -281,16 +280,17 @@ export default function SessionsOverview() {
                   transition={{ delay: 0.4 + (i * 0.1), duration: 0.5 }}
                   viewport={{ once: true }}
                   style={{
-                    padding: '16px 20px',
+                    padding: '28px 35px',
                     background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 12,
+                    border: '2px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: 16,
                     color: '#fff',
-                    fontSize: 16,
+                    fontSize: 24,
                     fontWeight: 600,
                     textAlign: 'center',
                     transition: 'all 0.3s ease',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    textTransform: 'uppercase'
                   }}
                   whileHover={{
                     background: 'rgba(255, 213, 0, 0.15)',
