@@ -14,7 +14,7 @@ import { reviewsData } from './data/reviewsData'
 export default function LexHome() {
   const [activeImage, setActiveImage] = useState(0)
   const [activeText, setActiveText] = useState(0)
-  const heroImages = Array.from({ length: 18 }, (_, i) => `/images/lex/lex${i + 1}.jpg`)
+  const heroImages = Array.from({ length: 18 }, (_, i) => `/images/lex/lex${i + 1}.webp`)
   const [bookingOpen, setBookingOpen] = useState(false)
   const [currentSessionTitle, setCurrentSessionTitle] = useState('')
   const [paymentStatus, setPaymentStatus] = useState(null) // 'success', 'cancelled', null
