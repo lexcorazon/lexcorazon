@@ -193,7 +193,7 @@ export const aj = {
       media: [
         '/images/dressed-by-mm/Princess Nokia.jpg',
         '/images/dressed-by-mm/Bad Gyal.JPEG',
-         '/images/dressed-by-mm/Maria Jose LLergo.jpg',
+         '/images/dressed-by-mm/Maria Jose Llergo.jpg',
         '/images/dressed-by-mm/Aliyah Morales.jpg',
         '/images/dressed-by-mm/Ana Rujas.jpg',
         '/images/dressed-by-mm/Brisa Fenoy.jpg',

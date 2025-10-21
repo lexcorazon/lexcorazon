@@ -232,7 +232,6 @@ export default function SessionsOverview() {
                     fontSize: 24,
                     fontWeight: 600,
                     textAlign: 'center',
-                    transition: 'all 0.3s ease',
                     cursor: 'pointer',
                     textTransform: 'uppercase'
                   }}
@@ -240,6 +239,10 @@ export default function SessionsOverview() {
                     background: 'rgba(255, 213, 0, 0.15)',
                     borderColor: '#FFD500',
                     scale: 1.05
+                  }}
+                  transition={{
+                    duration: 0.2,
+                    ease: 'easeInOut'
                   }}
                 >
                   {sesion}
@@ -288,7 +291,6 @@ export default function SessionsOverview() {
                     fontSize: 24,
                     fontWeight: 600,
                     textAlign: 'center',
-                    transition: 'all 0.3s ease',
                     cursor: 'pointer',
                     textTransform: 'uppercase'
                   }}
@@ -296,6 +298,10 @@ export default function SessionsOverview() {
                     background: 'rgba(255, 213, 0, 0.15)',
                     borderColor: '#FFD500',
                     scale: 1.05
+                  }}
+                  transition={{
+                    duration: 0.2,
+                    ease: 'easeInOut'
                   }}
                 >
                   {sesion}
