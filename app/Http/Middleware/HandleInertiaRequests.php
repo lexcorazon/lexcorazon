@@ -15,6 +15,14 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     /**
+     * Sets the title template for the site.
+     * Using %s alone prevents concatenation with app name.
+     *
+     * @var string
+     */
+    protected $titleTemplate = '%s';
+
+    /**
      * Determine the current asset version.
      */
     public function version(Request $request): ?string
