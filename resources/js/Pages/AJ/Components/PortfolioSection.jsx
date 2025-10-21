@@ -19,6 +19,8 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
   const [hover, setHover] = useState(false)
   const [direction, setDirection] = useState(1)
   const [isMobile, setIsMobile] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [loadedImages, setLoadedImages] = useState({})
 
   // Detectar si es móvil
   React.useEffect(() => {
@@ -28,18 +30,45 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Precargar la primera imagen
+  React.useEffect(() => {
+    if (sources[0] && !(/\.(mp4|webm)$/i.test(sources[0]) || /vimeo\.com/i.test(sources[0]))) {
+      const img = new Image()
+      img.onload = () => {
+        setLoadedImages(prev => ({ ...prev, [0]: true }))
+        setLoading(false)
+      }
+      img.onerror = () => setLoading(false)
+      img.src = sources[0]
+    } else {
+      setLoading(false)
+    }
+  }, [sources])
+
   const isVideo =
     sources.length > 0 &&
     (/\.(mp4|webm)$/i.test(sources[0]) || /vimeo\.com/i.test(sources[0]))
 
   const nextImage = () => {
     setDirection(1)
-    setCurIdx((prev) => (prev + 1) % sources.length)
+    const nextIdx = (curIdx + 1) % sources.length
+    setCurIdx(nextIdx)
+    if (!loadedImages[nextIdx] && !(/\.(mp4|webm)$/i.test(sources[nextIdx]) || /vimeo\.com/i.test(sources[nextIdx]))) {
+      const img = new Image()
+      img.onload = () => setLoadedImages(prev => ({ ...prev, [nextIdx]: true }))
+      img.src = sources[nextIdx]
+    }
   }
 
   const prevImage = () => {
     setDirection(-1)
-    setCurIdx((prev) => (prev - 1 + sources.length) % sources.length)
+    const prevIdx = (curIdx - 1 + sources.length) % sources.length
+    setCurIdx(prevIdx)
+    if (!loadedImages[prevIdx] && !(/\.(mp4|webm)$/i.test(sources[prevIdx]) || /vimeo\.com/i.test(sources[prevIdx]))) {
+      const img = new Image()
+      img.onload = () => setLoadedImages(prev => ({ ...prev, [prevIdx]: true }))
+      img.src = sources[prevIdx]
+    }
   }
 
   const renderMedia = (src) => {
@@ -70,7 +99,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
         />
       )
     }
-    return <motion.img key={src} {...commonProps} src={src} alt={title} />
+    return <motion.img key={src} {...commonProps} src={src} alt={title} loading="lazy" />
   }
 
   return (
@@ -80,6 +109,12 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-black"></div>
+        </div>
+      )}
+      
       {renderMedia(sources[curIdx])}
 
       {/* Overlay */}
@@ -153,6 +188,30 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
   )
 }
 
+/* ---------- ModalImage con Spinner ---------- */
+function ModalImage({ src, alt }) {
+  const [loaded, setLoaded] = useState(false)
+
+  return (
+    <div className="relative w-full aspect-square bg-gray-100">
+      {!loaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-4 border-gray-300 border-t-black"></div>
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        className={`w-full object-cover rounded transition-opacity duration-300 ${
+          loaded ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+    </div>
+  )
+}
+
 /* ---------- ProjectModal ---------- */
 function ProjectModal({ project, onClose }) {
   React.useEffect(() => {
@@ -202,11 +261,10 @@ function ProjectModal({ project, onClose }) {
         {project.media && project.media.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {project.media.map((src, idx) => (
-              <img
-                key={idx}
-                src={src}
+              <ModalImage 
+                key={idx} 
+                src={src} 
                 alt={`${project.title}-${idx}`}
-                className="w-full object-cover rounded"
               />
             ))}
           </div>
