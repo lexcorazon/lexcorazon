@@ -32,57 +32,75 @@ class StripeController extends Controller
     public function checkout(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'priceId' => 'nullable|string',
-            'sessionId' => 'nullable|string',
-            'sessionTitle' => 'nullable|string',
-            'category' => 'nullable|string',
+            'sessionTitle' => 'required|string',
+            'packType' => 'nullable|string', // 'introspectivas' o 'construccion' para packs
         ]);
 
         try {
             StripeSDK::setApiKey(config('services.stripe.secret'));
 
             $origin = $request->getSchemeAndHttpHost();
-            $sessionIdParam = $validated['sessionId'] ?? '';
-            $sessionTitleParam = $validated['sessionTitle'] ?? '';
-            $categoryParam = $validated['category'] ?? '';
+            $sessionTitle = $validated['sessionTitle'];
+            $packType = $validated['packType'] ?? null;
 
-            // Resolve price: prefer secure server-side mapping by sessionId; fallback to passed priceId
-            $resolvedPrice = null;
-            $sid = $validated['sessionId'] ?? '';
-            if ($sid) {
-                $mapEnvKey = 'STRIPE_PRICE_'.strtoupper(str_replace(['-', ' '], ['_', '_'], $sid));
-                $resolvedPrice = env($mapEnvKey);
-            }
-            if (!$resolvedPrice) {
-                $resolvedPrice = $validated['priceId'] ?? null;
-            }
-            if (!$resolvedPrice) {
-                return response()->json(['error' => 'Missing Stripe price for this session'], 422);
+            // Mapear título de sesión a Price ID de Stripe desde variables de entorno
+            $priceId = $this->getPriceIdForSession($sessionTitle, $packType);
+
+            if (!$priceId) {
+                return response()->json(['error' => 'No se encontró el precio configurado para esta sesión'], 422);
             }
 
             $session = StripeCheckoutSession::create([
                 'mode' => 'payment',
                 'line_items' => [[
-                    'price' => $resolvedPrice,
+                    'price' => $priceId,
                     'quantity' => 1,
                 ]],
-                'success_url' => $origin.'/lex/booking?success=true'
-                    .'&sessionId='.rawurlencode($sessionIdParam)
-                    .'&session='.rawurlencode($sessionTitleParam)
-                    .'&category='.rawurlencode($categoryParam)
+                'success_url' => $origin.'/lex?payment=success'
+                    .'&session='.rawurlencode($sessionTitle)
                     .'&session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => $origin.'/lex/booking?canceled=true',
+                'cancel_url' => $origin.'/lex?payment=cancelled',
             ]);
 
             return response()->json([
-                'id' => $session->id,
+                'sessionId' => $session->id,
+                'url' => $session->url,
                 'publicKey' => config('services.stripe.key') ?? '',
             ]);
         } catch (\Throwable $e) {
             Log::error('Stripe checkout error', ['message' => $e->getMessage()]);
-            $message = config('app.debug') ? $e->getMessage() : 'Unable to create checkout session';
+            $message = config('app.debug') ? $e->getMessage() : 'No se pudo crear la sesión de pago';
             return response()->json(['error' => $message], 500);
         }
+    }
+
+    /**
+     * Obtiene el Price ID de Stripe según el título de la sesión
+     */
+    private function getPriceIdForSession(string $sessionTitle, ?string $packType = null): ?string
+    {
+        // Mapa de sesiones a variables de entorno
+        $priceMap = [
+            'Carta Natal' => env('STRIPE_PRICE_CARTA_NATAL'),
+            'Viaje a las tripas - Introspección' => env('STRIPE_PRICE_VIAJE_TRIPAS'),
+            'Motín existencial - Talentos y propósito' => env('STRIPE_PRICE_MOTIN_EXISTENCIAL'),
+            'Caja de cerillas - Desbloqueo creativo' => env('STRIPE_PRICE_CAJA_CERILLAS'),
+            'Lex ID - Adn de marca' => env('STRIPE_PRICE_LEX_ID'),
+            'Aesthetic Overdose - Estética y concepto' => env('STRIPE_PRICE_AESTHETIC_OVERDOSE'),
+            'Carne y hueso - Creación de producto' => env('STRIPE_PRICE_CARNE_HUESO'),
+        ];
+
+        // Pack de sesiones tiene dos precios diferentes
+        if ($sessionTitle === 'Pack de sesiones') {
+            if ($packType === 'introspectivas') {
+                return env('STRIPE_PRICE_PACK_INTROSPECTIVAS');
+            } elseif ($packType === 'construccion') {
+                return env('STRIPE_PRICE_PACK_CONSTRUCCION');
+            }
+            return null; // Requiere especificar el tipo
+        }
+
+        return $priceMap[$sessionTitle] ?? null;
     }
 
     public function verify(Request $request): JsonResponse

@@ -107,9 +107,6 @@ export default function Header() {
             <button onClick={() => scrollTo('#reviews')} style={linkStyle}>
               Reseñas
             </button>
-            <button onClick={() => scrollTo('#contact')} style={linkStyle}>
-              Contacto
-            </button>
           </nav>
         </div>
 
@@ -176,9 +173,6 @@ export default function Header() {
           </button>
           <button onClick={() => scrollTo('#reviews')} style={mobileLinkStyle}>
             Reseñas
-          </button>
-          <button onClick={() => scrollTo('#contact')} style={mobileLinkStyle}>
-            Contacto
           </button>
 
           {/* Redes sociales (imágenes) dentro del menú móvil */}

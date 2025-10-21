@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Inertia\Inertia;
@@ -41,29 +42,12 @@ Route::middleware('auth')->group(function () {
 });
 
 /**
- * STRIPE CHECKOUT
+ * STRIPE ROUTES
  */
-Route::post('/stripe/checkout', function () {
-    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-    $session = \Stripe\Checkout\Session::create([
-        'payment_method_types' => ['card'],
-        'line_items' => [[
-            'price_data' => [
-                'currency' => 'eur',
-                'product_data' => [
-                    'name' => 'Sesión Creativa Lex Corazón',
-                ],
-                'unit_amount' => 15000, // 150€ → 15000 céntimos
-            ],
-            'quantity' => 1,
-        ]],
-        'mode' => 'payment',
-        'success_url' => env('APP_URL') . '/reserva-exitosa',
-        'cancel_url' => env('APP_URL') . '/reserva-cancelada',
-    ]);
-
-    return response()->json(['id' => $session->id]);
-});
+Route::post('/stripe/checkout', [StripeController::class, 'checkout'])->name('stripe.checkout');
+Route::get('/stripe/verify', [StripeController::class, 'verify'])->name('stripe.verify');
+Route::get('/stripe/public-key', [StripeController::class, 'publicKey'])->name('stripe.publicKey');
+Route::get('/stripe/health', [StripeController::class, 'health'])->name('stripe.health');
 
 // Auth routes
 require __DIR__ . '/auth.php';

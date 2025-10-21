@@ -8,6 +8,10 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
   })
   const [sending, setSending] = useState(false)
   const [sentOk, setSentOk] = useState(null)
+  const [packType, setPackType] = useState('') // 'introspectivas' o 'construccion'
+  const [stripeLoading, setStripeLoading] = useState(false)
+  
+  const isPack = sessionTitle === 'Pack de sesiones'
 
   // Bloquear scroll del fondo
   useEffect(() => {
@@ -38,6 +42,43 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       } else setSentOk(false)
     } catch { setSentOk(false) }
     finally { setSending(false) }
+  }
+
+  const handleStripePayment = async () => {
+    // Validar que si es pack, se haya seleccionado el tipo
+    if (isPack && !packType) {
+      alert('Por favor, selecciona el tipo de pack antes de proceder al pago')
+      return
+    }
+
+    setStripeLoading(true)
+    try {
+      const res = await fetch('/stripe/checkout', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '' 
+        },
+        body: JSON.stringify({ 
+          sessionTitle: sessionTitle,
+          packType: isPack ? packType : null
+        }),
+      })
+
+      const data = await res.json()
+
+      if (res.ok && data.url) {
+        // Redirigir a Stripe Checkout
+        window.location.href = data.url
+      } else {
+        alert(data.error || 'Error al iniciar el pago')
+      }
+    } catch (error) {
+      console.error('Error en el checkout:', error)
+      alert('Error al conectar con Stripe')
+    } finally {
+      setStripeLoading(false)
+    }
   }
 
   return (
@@ -165,14 +206,51 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
                       style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
                   </div>
 
+                  {/* Selector de tipo de pack solo para "Pack de sesiones" */}
+                  {isPack && (
+                    <div style={{ display:'grid', gap:8, marginTop:8, padding:'16px', background:'rgba(255,213,0,0.1)', borderRadius:10, border:'1px solid #FFD500' }}>
+                      <label style={{ color:'#FFD500', fontSize:17, fontWeight:700 }}>Selecciona el tipo de pack *</label>
+                      <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+                        <label style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'12px', background:packType==='introspectivas'?'rgba(255,213,0,0.2)':'transparent', borderRadius:8, border:'1px solid '+(packType==='introspectivas'?'#FFD500':'#333'), transition:'all 0.2s' }}>
+                          <input
+                            type="radio" 
+                            name="packType" 
+                            value="introspectivas"
+                            checked={packType==='introspectivas'} 
+                            onChange={(e) => setPackType(e.target.value)}
+                            style={{ accentColor:'#FFD500', transform:'scale(1.3)' }}
+                          />
+                          <div>
+                            <div style={{fontWeight:700}}>Sesiones Introspectivas</div>
+                            <div style={{fontSize:14, color:'#aaa'}}>180€ - Viaje a las tripas, Motín existencial, Caja de cerillas</div>
+                          </div>
+                        </label>
+                        <label style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'12px', background:packType==='construccion'?'rgba(255,213,0,0.2)':'transparent', borderRadius:8, border:'1px solid '+(packType==='construccion'?'#FFD500':'#333'), transition:'all 0.2s' }}>
+                          <input
+                            type="radio" 
+                            name="packType" 
+                            value="construccion"
+                            checked={packType==='construccion'} 
+                            onChange={(e) => setPackType(e.target.value)}
+                            style={{ accentColor:'#FFD500', transform:'scale(1.3)' }}
+                          />
+                          <div>
+                            <div style={{fontWeight:700}}>Sesiones de Construcción</div>
+                            <div style={{fontSize:14, color:'#aaa'}}>270€ - Lex ID, Aesthetic Overdose, Carne y hueso</div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
                   <div style={{ display:'flex', flexWrap:'wrap', gap:16, marginTop:20 }}>
                     <a href="https://wa.me/34678776392" target="_blank" rel="noreferrer"
                       style={{ background:'#25D366', color:'#000', borderRadius:10, padding:'12px 18px', fontWeight:700, fontSize:17, textDecoration:'none' }}>
                       💬 WhatsApp
                     </a>
-                    <button type="button" onClick={handleStripeCheckout}
-                      style={{ background:'#fff', color:'#000', borderRadius:10, padding:'12px 18px', fontWeight:700, fontSize:17 }}>
-                      💳 Pagar con Stripe
+                    <button type="button" onClick={handleStripePayment} disabled={stripeLoading}
+                      style={{ background:stripeLoading?'#ccc':'#fff', color:'#000', borderRadius:10, padding:'12px 18px', fontWeight:700, fontSize:17, cursor:stripeLoading?'not-allowed':'pointer' }}>
+                      {stripeLoading ? '⏳ Procesando...' : '💳 Pagar con Stripe'}
                     </button>
                     <button type="submit" disabled={sending || sentOk===true}
                       style={{ background: sentOk?'#7CFFB2':(sending?'#ccc':'#fff'), color:'#000', border:'none', borderRadius:10, padding:'12px 18px', fontWeight:700, fontSize:17 }}>

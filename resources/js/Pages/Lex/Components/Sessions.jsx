@@ -42,13 +42,28 @@ export default function Sessions({ cardVariant, openBookingFor }) {
     { title: 'Carne y hueso - Creación de producto', category: 'SESIONES DE CONSTRUCCIÓN/ VIAJE LEX CORAZON', desc: 'Convierte ideas en productos tangibles con coherencia y profundidad.' },
   ];
 
+  // Crear ID único para cada sesión basado en el título
+  const createSessionId = (title) => {
+    return 'session-' + title.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[áàä]/g, 'a')
+      .replace(/[éèë]/g, 'e')
+      .replace(/[íìï]/g, 'i')
+      .replace(/[óòö]/g, 'o')
+      .replace(/[úùü]/g, 'u')
+      .replace(/ñ/g, 'n')
+      .replace(/[^a-z0-9-]/g, '');
+  };
+
   const renderCard = (c, i, isFirstRow = false) => {
     const isCartaNatal = c.title === 'Carta Natal';
     const isPack = c.title === 'Pack de sesiones';
+    const sessionId = createSessionId(c.title);
 
     return (
       <motion.article
         key={i}
+        id={sessionId}
         variants={cardVariant}
         initial="hidden"
         whileInView="visible"
@@ -66,6 +81,7 @@ export default function Sessions({ cardVariant, openBookingFor }) {
           padding: 32,
           transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
           cursor: 'pointer',
+          scrollMarginTop: '100px',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.03)';
