@@ -200,7 +200,7 @@ export const aj = {
         '/images/dressed-by-mm/Campaña Rives.JPEG',
         '/images/dressed-by-mm/Campaña Rives Man.JPEG',
         '/images/dressed-by-mm/Eduardo Casanova.JPEG',
-        '/images/dressed-by-mm/Juancho Marques.PNG',
+        '/images/dressed-by-mm/Juancho Marques.png',
         '/images/dressed-by-mm/Natalia Lacunza.jpg',
         '/images/dressed-by-mm/Miss Nina.jpg',
         
