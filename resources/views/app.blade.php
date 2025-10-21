@@ -11,6 +11,9 @@
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- Favicon personalizado --}}
+    <link rel="icon" type="image/png" href="{{ asset('images/lex-corazon.png') }}">
+
     {{-- Rutas de Ziggy --}}
     @routes
 

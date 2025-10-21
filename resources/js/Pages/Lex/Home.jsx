@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Head } from '@inertiajs/react'
 import Lenis from '@studio-freight/lenis'
 import Header from './Components/Header'
 import Hero from './Components/Hero'
@@ -63,8 +64,10 @@ export default function LexHome() {
   }
 
   return (
-    <div style={{ overflow: 'hidden', width: '100%', minHeight: '100vh' }}>
-      <Header />
+    <>
+      <Head title="Lex" />
+      <div style={{ overflow: 'hidden', width: '100%', minHeight: '100vh' }}>
+        <Header />
 
       {/* Notificación de estado de pago */}
       {paymentStatus && (
@@ -155,6 +158,7 @@ export default function LexHome() {
           }
         }
       `}</style>
-    </div>
+      </div>
+    </>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { Link } from '@inertiajs/react'
+import { Link, Head } from '@inertiajs/react'
 
 // Importa tus imágenes
 import LexLogo from '../../images/lex-corazon.png'
@@ -27,7 +27,9 @@ export default function Landing() {
   }
 
   return (
-    <main className="relative min-h-dvh flex bg-paper text-ink overflow-hidden">
+    <>
+      <Head title="AJ & Lex" />
+      <main className="relative min-h-dvh flex bg-paper text-ink overflow-hidden">
       {!hovered && (
         <div
           aria-hidden="true"
@@ -164,6 +166,7 @@ export default function Landing() {
           </div>
         </section>
       </motion.div>
-    </main>
+      </main>
+    </>
   )
 }

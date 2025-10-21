@@ -190,7 +190,7 @@ export default function SessionsOverview() {
             marginBottom: 50,
             textAlign: 'center'
           }}>
-            Viaje Lex Corazón
+            Viaje Lex Corazon
           </h3>
 
           {/* Grid de sesiones */}

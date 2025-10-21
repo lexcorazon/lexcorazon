@@ -1,4 +1,5 @@
 import React from 'react'
+import { Head } from '@inertiajs/react'
 import SiteLayout from '@/Layouts/SiteLayout'
 import { aj } from '@/data/aj'
 import useLenis from './hooks/useLenis'
@@ -18,7 +19,9 @@ export default function AJHome() {
   const dressedByMMMedia = dressedByMMProject?.media || []
 
   return (
-    <SiteLayout brand="aj" className="font-roboto bg-white text-black">
+    <>
+      <Head title="AJ" />
+      <SiteLayout brand="aj" className="font-roboto bg-white text-black">
 
       {/* Hero Section */}
       <PortfolioSection />
@@ -39,6 +42,7 @@ export default function AJHome() {
       <ClippingSection items={aj.prensa || []} />
 
     
-    </SiteLayout>
+      </SiteLayout>
+    </>
   )
 }
