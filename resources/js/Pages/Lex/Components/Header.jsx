@@ -174,7 +174,6 @@ export default function Header() {
           <button onClick={() => scrollTo('#reviews')} style={mobileLinkStyle}>
             Reseñas
           </button>
-
           {/* Redes sociales (imágenes) dentro del menú móvil */}
           <div style={{ display: 'flex', gap: 24, marginTop: 8 }}>
             <a href="https://www.instagram.com/lex.corazon/?igsh=MTcwMm5leXM2bmY3MA%3D%3D#" target="_blank" rel="noreferrer" className="icon-link">

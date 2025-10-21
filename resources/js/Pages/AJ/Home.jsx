@@ -4,7 +4,7 @@ import { aj } from '@/data/aj'
 import useLenis from './hooks/useLenis'
 
 import PortfolioSection from './Components/PortfolioSection'
-import DressedByMMSection from './Components/Dressedbymm'
+import DressedByMMSection from './Components/DressedByMMSection'
 import CollaborationsSection from './Components/CollaborationsSection'
 import Trajectory from './Components/Trayectory'
 import AboutMe from './Components/Aboutme'
@@ -13,6 +13,10 @@ import ClippingSection from './Components/ClippingSection'
 export default function AJHome() {
   useLenis()
 
+  // Obtener datos de Dressed by MM
+  const dressedByMMProject = aj.proyectos?.find(p => p.titulo === 'Dressed by MM')
+  const dressedByMMMedia = dressedByMMProject?.media || []
+
   return (
     <SiteLayout brand="aj" className="font-roboto bg-white text-black">
 
@@ -20,7 +24,7 @@ export default function AJHome() {
       <PortfolioSection />
 
       {/* Dressed by MM Section */}
-      <DressedByMMSection />
+      <DressedByMMSection media={dressedByMMMedia} />
 
       {/* Collaborations Section */}
       <CollaborationsSection />

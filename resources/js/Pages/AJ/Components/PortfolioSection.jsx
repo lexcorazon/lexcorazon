@@ -18,6 +18,15 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
   const [curIdx, setCurIdx] = useState(0)
   const [hover, setHover] = useState(false)
   const [direction, setDirection] = useState(1)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detectar si es móvil
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const isVideo =
     sources.length > 0 &&
@@ -97,7 +106,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
             {title}
           </motion.span>
 
-          {isVideo && description && (
+          {isVideo && description && !isMobile && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
