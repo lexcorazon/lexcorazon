@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { sessionsInfo } from '../data/sessionsInfo'
 
 export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle, handleStripeCheckout }) {
   const [form, setForm] = useState({
@@ -12,6 +13,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
   const [stripeLoading, setStripeLoading] = useState(false)
   
   const isPack = sessionTitle === 'Pack de sesiones'
+  const sessionInfo = sessionsInfo[sessionTitle] || {}
 
   // Bloquear scroll del fondo
   useEffect(() => {
@@ -116,43 +118,57 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
             }}
           >
             {/* Contenido: grid en desktop, columna en móvil */}
-            <div
-              className="booking-modal"
-              style={{
-                minHeight: '100dvh',
-                display: 'grid',
-                gridTemplateColumns: '1.2fr 1fr',
-                background: 'linear-gradient(120deg,#0b0b0b 0%,#151515 100%)',
-                color: '#fff'
-              }}
-            >
+            <div className="booking-content">
               {/* Panel Izquierdo – TEXTO */}
-              <div
-                className="booking-left"
-                style={{
-                  padding: '72px 56px 48px',
-                  borderRight: '1px solid #222',
-                  background: 'radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%)'
-                }}
-              >
+              <div className="booking-left">
                 <h2
                   style={{
                     fontSize: 'clamp(2.2rem,4vw,3.6rem)',
-                    fontWeight: 900, marginBottom: 24,
+                    fontWeight: 900, marginBottom: 16,
                     textTransform: 'uppercase', lineHeight: 1.1
                   }}
                 >
                   {sessionTitle || 'Sesión Creativa Lex Corazon'}
                 </h2>
-                <p style={{ fontSize: 20, lineHeight: 1.8, color: '#ddd', textAlign: 'justify' }}>
-                  Esta sesión abre un espacio simbólico y creativo donde la astrología, la introspección y el arte
-                  se entrelazan para dar forma a lo invisible. Es un encuentro para quienes desean reconectar con su
-                  propósito, recuperar la creatividad dormida y entender su propio lenguaje interior.
-                </p>
+                
+                {/* Precio y duración */}
+                {(sessionInfo.price || sessionInfo.duration) && (
+                  <div className="session-info-box" style={{ marginBottom: 24 }}>
+                    {sessionInfo.duration && (
+                      <p style={{ fontSize: 16, color: '#FFD500', fontWeight: 700, marginBottom: 4 }}>
+                        {sessionInfo.duration}
+                      </p>
+                    )}
+                    {sessionInfo.price && (
+                      <p style={{ fontSize: 18, color: '#fff', fontWeight: 700, marginBottom: 4 }}>
+                        {sessionInfo.price}
+                      </p>
+                    )}
+                    {sessionInfo.trial && (
+                      <p style={{ fontSize: 14, color: '#7CFFB2', fontStyle: 'italic' }}>
+                        {sessionInfo.trial}
+                      </p>
+                    )}
+                  </div>
+                )}
+                
+                {/* Descripción de la sesión */}
+                <div 
+                  className="session-description"
+                  style={{ 
+                    fontSize: 19, 
+                    lineHeight: 1.8, 
+                    color: '#ddd', 
+                    textAlign: 'justify' 
+                  }}
+                  dangerouslySetInnerHTML={{ 
+                    __html: sessionInfo.description || 'Esta sesión abre un espacio simbólico y creativo donde la astrología, la introspección y el arte se entrelazan para dar forma a lo invisible.' 
+                  }}
+                />
               </div>
 
               {/* Panel Derecho – FORMULARIO */}
-              <div className="booking-right" style={{ padding: '56px', background: 'rgba(0,0,0,0.75)' }}>
+              <div className="booking-right">
                 <form onSubmit={handleSubmitBooking} style={{ display: 'grid', gap: 12, maxWidth: 600, margin: '0 auto' }}>
                   {['birth_date','birth_place','birth_time','phone','expectations'].map(f => {
                     const labels = {
@@ -266,12 +282,58 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 <style>{`
   /* 🌐 GENERAL — asegura que el modal cubra todo el viewport */
   .booking-modal {
-    width: 100vw !important;
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    overflow: hidden !important;
-    margin: 0 auto !important;
-    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .booking-content {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    max-width: 1200px;
+    width: 100%;
+    height: 95vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid #333;
+    margin: auto;
+  }
+  
+  .booking-left {
+    padding: 60px;
+    background: radial-gradient(circle at top left, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-right: 1px solid #333;
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .booking-left h2 {
+    color: #fff !important;
+  }
+  
+  .booking-right {
+    padding: 60px;
+    background: rgba(0,0,0,0.3);
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* 🖥️ VERSIÓN WEB — centrado, sin scroll global, optimizado para mostrar todo el contenido */
@@ -293,10 +355,11 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
     }
 
-    /* Panel izquierdo fijo (texto) */
+    /* Panel izquierdo con scroll (texto) */
     .booking-left {
       height: 100%;
-      overflow: hidden !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
       padding: 40px 40px !important;
       border-right: 1px solid #222;
       background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
@@ -304,15 +367,41 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       flex-direction: column;
       justify-content: center;
     }
+    
+    /* Scrollbar estético para panel izquierdo */
+    .booking-left::-webkit-scrollbar {
+      width: 6px;
+    }
+    .booking-left::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 4px;
+    }
 
     .booking-left h2 {
       font-size: clamp(1.8rem, 3vw, 2.8rem) !important;
       margin-bottom: 16px !important;
     }
 
-    .booking-left p {
+    .booking-left .session-description p {
+      font-size: 18px !important;
+      line-height: 1.75 !important;
+      margin-bottom: 14px;
+    }
+    
+    .booking-left .session-description ul {
+      margin-left: 24px;
+      margin-bottom: 14px;
+    }
+    
+    .booking-left .session-description li {
       font-size: 17px !important;
-      line-height: 1.6 !important;
+      line-height: 1.7 !important;
+      margin-bottom: 8px;
+    }
+    
+    .booking-left .session-description strong {
+      color: #FFD500;
+      font-weight: 700;
     }
 
     /* Panel derecho sin scroll interno */
@@ -325,10 +414,12 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       background: rgba(0,0,0,0.6);
       display: flex;
       align-items: center;
+      justify-content: center;
     }
 
     .booking-right form {
       width: 100%;
+      max-width: 400px;
       gap: 12px !important;
     }
 
@@ -385,25 +476,67 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       flex-direction: column !important;
       width: 100vw !important;
       height: 100dvh !important;
-      overflow-y: auto !important; /* un solo scroll vertical */
+      overflow-y: auto !important;
       overflow-x: hidden !important;
       background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%) !important;
       backdrop-filter: blur(10px);
     }
 
+    .booking-content {
+      display: flex !important;
+      flex-direction: column !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+
     .booking-left {
       order: 1 !important;
       border: none !important;
-      border-bottom: 1px solid #222;
       padding: 32px 22px !important;
-      background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
+      background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
+      overflow-y: visible !important;
+      height: auto !important;
+      width: 100% !important;
+      display: block !important;
+    }
+    
+    .booking-left h2 {
+      color: #fff !important;
+    }
+    
+    /* Ajustar tamaño de letra en móvil */
+    .booking-left .session-description p {
+      font-size: 15px !important;
+      line-height: 1.7 !important;
+    }
+    
+    .booking-left .session-description ul {
+      margin-left: 18px;
+    }
+    
+    .booking-left .session-description li {
+      font-size: 14px !important;
+      line-height: 1.6 !important;
     }
 
     .booking-right {
       order: 2 !important;
+      border: none !important;
       padding: 28px 22px !important;
       overflow: visible !important;
-      flex-grow: 1;
+      height: auto !important;
+      width: 100% !important;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 20px;
+      background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
+    }
+
+    .booking-right form {
+      width: 100% !important;
+      max-width: 350px;
+      gap: 10px !important;
     }
 
     .booking-modal button[style*="position: absolute"],

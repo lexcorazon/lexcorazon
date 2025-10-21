@@ -15,14 +15,6 @@ class HandleInertiaRequests extends Middleware
     protected $rootView = 'app';
 
     /**
-     * Sets the title template for the site.
-     * Using %s alone prevents concatenation with app name.
-     *
-     * @var string
-     */
-    protected $titleTemplate = '%s';
-
-    /**
      * Determine the current asset version.
      */
     public function version(Request $request): ?string
@@ -42,6 +34,18 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'appName' => config('app.name', 'LexCorazon'),
         ];
+    }
+
+    /**
+     * Sets the title template for the site.
+     * Using %s alone prevents concatenation with app name.
+     *
+     * @return string
+     */
+    public function title(): string
+    {
+        return '%s';
     }
 }

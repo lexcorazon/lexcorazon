@@ -33,18 +33,35 @@ npm run build
 
 Si los títulos de página siguen mostrando "Alejandra Jaime" o "${APP_NAME}" después de los cambios:
 
-1. Asegúrate de que el archivo `app/Http/Middleware/HandleInertiaRequests.php` tenga:
+1. Asegúrate de que existan estos archivos con el contenido correcto:
+   
+   **`config/inertia.php`:**
    ```php
-   protected $titleTemplate = '%s';
+   return [
+       'title' => [
+           'template' => '%s',
+       ],
+   ];
    ```
 
-2. Ejecuta en el servidor:
+   **`app/Http/Middleware/HandleInertiaRequests.php`:**
+   ```php
+   public function title(): string
+   {
+       return '%s';
+   }
+   ```
+
+2. Ejecuta en el servidor (MUY IMPORTANTE):
    ```bash
    php artisan config:clear
    php artisan cache:clear
+   php artisan config:cache
    ```
 
-3. Reinicia el servidor web (si usas servicios como PHP-FPM):
+3. Si usas Railway/Heroku/similar, asegúrate de hacer un nuevo deploy después de estos cambios
+
+4. Si usas PHP-FPM, reinicia el servicio:
    ```bash
    sudo systemctl restart php8.2-fpm  # ajusta la versión de PHP
    ```
