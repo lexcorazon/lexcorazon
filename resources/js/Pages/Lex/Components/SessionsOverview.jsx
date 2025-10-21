@@ -312,25 +312,48 @@ export default function SessionsOverview() {
         @media (max-width: 1024px) {
           .sessions-overview-section {
             grid-template-columns: 1fr !important;
-            padding: 40px 20px !important;
+            padding: 50px 20px !important;
             min-height: auto !important;
           }
           
           .sessions-overview-left {
             border-right: none !important;
             border-bottom: 1px solid #222;
-            padding: 40px 20px !important;
-            min-height: 60vh !important;
+            padding: 50px 20px !important;
+            min-height: auto !important;
+          }
+
+          .sessions-overview-left h2 {
+            font-size: clamp(2rem, 5vw, 3rem) !important;
+          }
+
+          .sessions-overview-left h3 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem) !important;
+            padding: 20px 30px !important;
+          }
+
+          .sessions-overview-left > div > div {
+            gap: 30px !important;
           }
           
           .sessions-overview-right {
-            padding: 40px 20px !important;
+            padding: 50px 20px !important;
+          }
+
+          .sessions-overview-right h2 {
+            font-size: clamp(2rem, 5vw, 3rem) !important;
+            margin-bottom: 15px !important;
+          }
+
+          .sessions-overview-right h3 {
+            font-size: clamp(1.3rem, 3.5vw, 2rem) !important;
+            margin-bottom: 35px !important;
           }
 
           .sessions-grid-container {
             grid-template-columns: 1fr !important;
-            gap: 25px !important;
-            margin-top: 30px !important;
+            gap: 30px !important;
+            margin-top: 35px !important;
           }
 
           .sessions-grid-separator {
@@ -338,43 +361,79 @@ export default function SessionsOverview() {
           }
 
           .sessions-grid-column {
-            gap: 20px !important;
+            gap: 18px !important;
           }
 
           .sessions-grid-column h4 {
-            font-size: 18px !important;
+            font-size: 19px !important;
             margin-bottom: 12px !important;
           }
 
           .sessions-grid-column > div {
-            padding: 18px 22px !important;
-            font-size: 16px !important;
-            border-radius: 12px !important;
+            padding: 16px 20px !important;
+            font-size: 15px !important;
+            border-radius: 10px !important;
           }
         }
 
         /* Móvil pequeño */
         @media (max-width: 480px) {
           .sessions-overview-section {
-            padding: 30px 16px !important;
+            padding: 40px 20px !important;
           }
 
           .sessions-overview-left,
           .sessions-overview-right {
-            padding: 30px 16px !important;
+            padding: 40px 20px !important;
+          }
+
+          .sessions-overview-left h2 {
+            font-size: 1.8rem !important;
+            line-height: 1.1 !important;
+          }
+
+          .sessions-overview-left h3 {
+            font-size: 1.4rem !important;
+            padding: 18px 25px !important;
+            letter-spacing: 2px !important;
+          }
+
+          .sessions-overview-left > div > div {
+            gap: 25px !important;
+          }
+
+          .sessions-overview-left > div > div > div:nth-child(2) {
+            font-size: 50px !important;
+          }
+
+          .sessions-overview-right h2 {
+            font-size: 1.8rem !important;
+            margin-bottom: 12px !important;
+          }
+
+          .sessions-overview-right h3 {
+            font-size: 1.2rem !important;
+            margin-bottom: 30px !important;
+          }
+
+          .sessions-grid-container {
+            gap: 25px !important;
+            margin-top: 30px !important;
           }
 
           .sessions-grid-column {
-            gap: 16px !important;
+            gap: 14px !important;
           }
 
           .sessions-grid-column h4 {
-            font-size: 16px !important;
+            font-size: 17px !important;
+            margin-bottom: 10px !important;
           }
 
           .sessions-grid-column > div {
             padding: 14px 18px !important;
             font-size: 14px !important;
+            border-radius: 10px !important;
           }
         }
       `}</style>
