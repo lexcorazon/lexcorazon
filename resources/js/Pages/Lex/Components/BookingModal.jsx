@@ -164,6 +164,44 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
               {/* Panel Derecho – FORMULARIO */}
               <div className="booking-right">
                 <form onSubmit={handleSubmitBooking} style={{ display: 'grid', gap: 12, maxWidth: 600, margin: '0 auto' }}>
+                  
+                  {/* Selector de tipo de pack solo para "Pack de sesiones" - PRIMERO */}
+                  {isPack && (
+                    <div style={{ display:'grid', gap:8, marginBottom:16, padding:'16px', background:'rgba(255,213,0,0.1)', borderRadius:10, border:'1px solid #FFD500' }}>
+                      <label style={{ color:'#FFD500', fontSize:17, fontWeight:700 }}>Selecciona el tipo de pack *</label>
+                      <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+                        <label style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'12px', background:packType==='introspectivas'?'rgba(255,213,0,0.2)':'transparent', borderRadius:8, border:'1px solid '+(packType==='introspectivas'?'#FFD500':'#333'), transition:'all 0.2s' }}>
+                          <input
+                            type="radio" 
+                            name="packType" 
+                            value="introspectivas"
+                            checked={packType==='introspectivas'} 
+                            onChange={(e) => setPackType(e.target.value)}
+                            style={{ accentColor:'#FFD500', transform:'scale(1.3)' }}
+                          />
+                          <div>
+                            <div style={{fontWeight:700}}>Sesiones Introspectivas</div>
+                            <div style={{fontSize:14, color:'#aaa'}}>180€ - Viaje a las tripas, Motín existencial, Caja de cerillas</div>
+                          </div>
+                        </label>
+                        <label style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'12px', background:packType==='construccion'?'rgba(255,213,0,0.2)':'transparent', borderRadius:8, border:'1px solid '+(packType==='construccion'?'#FFD500':'#333'), transition:'all 0.2s' }}>
+                          <input
+                            type="radio" 
+                            name="packType" 
+                            value="construccion"
+                            checked={packType==='construccion'} 
+                            onChange={(e) => setPackType(e.target.value)}
+                            style={{ accentColor:'#FFD500', transform:'scale(1.3)' }}
+                          />
+                          <div>
+                            <div style={{fontWeight:700}}>Sesiones de Construcción</div>
+                            <div style={{fontSize:14, color:'#aaa'}}>270€ - Lex ID, Aesthetic Overdose, Carne y hueso</div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+
                   {['birth_date','birth_place','birth_time','phone','expectations'].map(f => {
                     const labels = {
                       birth_date:'Fecha de nacimiento*',
@@ -215,43 +253,6 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
                     <textarea name="creativity" value={form.creativity} onChange={handleChange} rows={2}
                       style={{ background:'#000', color:'#fff', border:'1px solid #333', borderRadius:10, padding:'14px 16px', fontSize:16 }} />
                   </div>
-
-                  {/* Selector de tipo de pack solo para "Pack de sesiones" */}
-                  {isPack && (
-                    <div style={{ display:'grid', gap:8, marginTop:8, padding:'16px', background:'rgba(255,213,0,0.1)', borderRadius:10, border:'1px solid #FFD500' }}>
-                      <label style={{ color:'#FFD500', fontSize:17, fontWeight:700 }}>Selecciona el tipo de pack *</label>
-                      <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-                        <label style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'12px', background:packType==='introspectivas'?'rgba(255,213,0,0.2)':'transparent', borderRadius:8, border:'1px solid '+(packType==='introspectivas'?'#FFD500':'#333'), transition:'all 0.2s' }}>
-                          <input
-                            type="radio" 
-                            name="packType" 
-                            value="introspectivas"
-                            checked={packType==='introspectivas'} 
-                            onChange={(e) => setPackType(e.target.value)}
-                            style={{ accentColor:'#FFD500', transform:'scale(1.3)' }}
-                          />
-                          <div>
-                            <div style={{fontWeight:700}}>Sesiones Introspectivas</div>
-                            <div style={{fontSize:14, color:'#aaa'}}>180€ - Viaje a las tripas, Motín existencial, Caja de cerillas</div>
-                          </div>
-                        </label>
-                        <label style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'12px', background:packType==='construccion'?'rgba(255,213,0,0.2)':'transparent', borderRadius:8, border:'1px solid '+(packType==='construccion'?'#FFD500':'#333'), transition:'all 0.2s' }}>
-                          <input
-                            type="radio" 
-                            name="packType" 
-                            value="construccion"
-                            checked={packType==='construccion'} 
-                            onChange={(e) => setPackType(e.target.value)}
-                            style={{ accentColor:'#FFD500', transform:'scale(1.3)' }}
-                          />
-                          <div>
-                            <div style={{fontWeight:700}}>Sesiones de Construcción</div>
-                            <div style={{fontSize:14, color:'#aaa'}}>270€ - Lex ID, Aesthetic Overdose, Carne y hueso</div>
-                          </div>
-                        </label>
-                      </div>
-                    </div>
-                  )}
 
                   <div style={{ display:'flex', flexWrap:'wrap', gap:16, marginTop:20 }}>
                     <a href="https://wa.me/34678776392" target="_blank" rel="noreferrer"
