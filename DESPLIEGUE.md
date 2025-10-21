@@ -4,7 +4,7 @@
 
 Cuando hagas cambios en la configuración, rutas, o vistas, necesitas ejecutar estos comandos en el servidor:
 
-### 1. Limpiar cachés de Laravel
+### 1. Limpiar cachés de Laravel (SIEMPRE)
 
 ```bash
 php artisan config:clear
@@ -13,13 +13,15 @@ php artisan route:clear
 php artisan view:clear
 ```
 
-### 2. Optimizar para producción (opcional pero recomendado)
+### 2. Optimizar para producción (OBLIGATORIO en Railway)
 
 ```bash
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
+
+⚠️ **IMPORTANTE**: En Railway, Railway ejecuta automáticamente estos comandos de optimización. Si los títulos de página siguen mostrando información incorrecta, es porque la caché antigua sigue activa. **Debes hacer un nuevo deploy** o ejecutar los comandos de limpieza manualmente en Railway.
 
 ### 3. Compilar assets de frontend
 
