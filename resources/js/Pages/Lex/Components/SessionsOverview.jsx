@@ -329,7 +329,7 @@ export default function SessionsOverview() {
 
           .sessions-grid-container {
             grid-template-columns: 1fr !important;
-            gap: 30px !important;
+            gap: 25px !important;
             margin-top: 30px !important;
           }
 
@@ -337,8 +337,19 @@ export default function SessionsOverview() {
             display: none !important;
           }
 
+          .sessions-grid-column {
+            gap: 20px !important;
+          }
+
           .sessions-grid-column h4 {
+            font-size: 18px !important;
+            margin-bottom: 12px !important;
+          }
+
+          .sessions-grid-column > div {
+            padding: 18px 22px !important;
             font-size: 16px !important;
+            border-radius: 12px !important;
           }
         }
 
@@ -353,8 +364,16 @@ export default function SessionsOverview() {
             padding: 30px 16px !important;
           }
 
+          .sessions-grid-column {
+            gap: 16px !important;
+          }
+
+          .sessions-grid-column h4 {
+            font-size: 16px !important;
+          }
+
           .sessions-grid-column > div {
-            padding: 14px 16px !important;
+            padding: 14px 18px !important;
             font-size: 14px !important;
           }
         }

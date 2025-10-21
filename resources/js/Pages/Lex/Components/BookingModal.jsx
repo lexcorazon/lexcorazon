@@ -295,9 +295,10 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     border-radius: 20px;
     box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-    max-width: 1100px;
-    width: 88vw;
-    height: 82vh;
+    max-width: 1200px;
+    width: 90vw;
+    height: 88vh;
+    max-height: 88vh;
     overflow: hidden;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -346,8 +347,8 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 
     .booking-modal {
       width: 92vw !important;
-      height: 92vh !important;
-      max-height: 92vh !important;
+      height: 90vh !important;
+      max-height: 90vh !important;
       margin: auto !important;
       border-radius: 16px;
       display: grid !important;
@@ -357,12 +358,12 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
       background: linear-gradient(120deg,#0b0b0b 0%,#151515 100%);
     }
 
-    /* Panel izquierdo con scroll (texto) */
+    /* Panel izquierdo SIN scroll (texto) */
     .booking-left {
       height: 100%;
-      overflow-y: auto !important;
+      overflow-y: hidden !important;
       overflow-x: hidden !important;
-      padding: 25px 30px !important;
+      padding: 22px 28px !important;
       border-right: 1px solid #222;
       background: radial-gradient(circle at top left, rgba(255,255,255,0.06) 0%, transparent 70%);
       display: flex;
@@ -380,33 +381,33 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     }
 
     .booking-left h2 {
-      font-size: clamp(1.5rem, 2.2vw, 2rem) !important;
-      margin-bottom: 10px !important;
+      font-size: clamp(1.3rem, 1.9vw, 1.7rem) !important;
+      margin-bottom: 6px !important;
       color: #fff !important;
       display: block !important;
       visibility: visible !important;
       opacity: 1 !important;
       font-weight: 900 !important;
       text-transform: uppercase !important;
-      line-height: 1.1 !important;
+      line-height: 1.05 !important;
     }
 
     .booking-left .session-description p {
-      font-size: 14px !important;
-      line-height: 1.5 !important;
-      margin-bottom: 10px;
+      font-size: 12.5px !important;
+      line-height: 1.4 !important;
+      margin-bottom: 7px;
       color: #ddd !important;
     }
     
     .booking-left .session-description ul {
-      margin-left: 18px;
-      margin-bottom: 10px;
+      margin-left: 16px;
+      margin-bottom: 7px;
     }
     
     .booking-left .session-description li {
-      font-size: 13px !important;
-      line-height: 1.4 !important;
-      margin-bottom: 5px;
+      font-size: 12px !important;
+      line-height: 1.35 !important;
+      margin-bottom: 4px;
       color: #ddd !important;
     }
     
@@ -416,12 +417,12 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     }
 
 
-    /* Panel derecho sin scroll interno */
+    /* Panel derecho SIN scroll */
     .booking-right {
       height: 100%;
-      overflow-y: auto !important;
+      overflow-y: hidden !important;
       overflow-x: hidden !important;
-      padding: 25px 30px !important;
+      padding: 22px 28px !important;
       scroll-behavior: smooth;
       background: rgba(0,0,0,0.6);
       display: flex;
@@ -431,26 +432,27 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 
     .booking-right form {
       width: 100%;
-      max-width: 400px;
-      gap: 12px !important;
+      max-width: 380px;
+      gap: 10px !important;
     }
 
     .booking-right form > div {
-      gap: 6px !important;
+      gap: 5px !important;
     }
 
     .booking-right label {
-      font-size: 14px !important;
+      font-size: 13px !important;
     }
 
     .booking-right input,
     .booking-right textarea {
-      padding: 10px 12px !important;
-      font-size: 14px !important;
+      padding: 9px 11px !important;
+      font-size: 13px !important;
     }
 
     .booking-right textarea {
       rows: 2 !important;
+      min-height: 50px !important;
     }
 
     /* Scrollbar estético */
@@ -573,11 +575,11 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    font-size: clamp(2.2rem,4vw,3.6rem) !important;
+    font-size: clamp(1.3rem, 1.9vw, 1.7rem) !important;
     font-weight: 900 !important;
-    margin-bottom: 16px !important;
+    margin-bottom: 6px !important;
     text-transform: uppercase !important;
-    line-height: 1.1 !important;
+    line-height: 1.05 !important;
     position: relative !important;
     z-index: 999 !important;
   }
