@@ -231,7 +231,7 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
           @media (max-width: 1024px) {
             #hero {
               flex-direction: column;
-              padding-top: 0 !important;
+              padding-top: 80px !important;
               min-height: 100vh !important;
             }
             .hero-carousel { 
