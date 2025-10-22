@@ -60,13 +60,21 @@ export default function DressedByMMSection({ media = [] }) {
               className="block w-full max-w-[90vw] sm:max-w-[600px] md:max-w-[800px] 
                          h-[500px] sm:h-[600px] md:h-[650px] object-cover"
             />
+            
+            {/* Título visible en móvil siempre, en desktop solo con hover */}
+            <div className="absolute bottom-0 left-0 right-0 bg-black/50 md:hidden py-3 px-4">
+              <span className="text-white text-xl font-bold text-center block">
+                {titles[idx]}
+              </span>
+            </div>
+            
             {hoveredIdx === idx && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="absolute inset-0 flex items-center justify-center bg-black/40"
+                className="hidden md:flex absolute inset-0 items-center justify-center bg-black/40"
               >
                 <span className="text-white text-3xl md:text-4xl font-bold text-center px-4">
                   {titles[idx]}
