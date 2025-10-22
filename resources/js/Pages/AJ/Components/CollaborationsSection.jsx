@@ -28,7 +28,7 @@ export default function CollaborationsSection() {
     }
 
     return (
-      <div className="relative w-full flex flex-col items-center justify-center h-[380px] sm:h-[460px] md:h-[540px]">
+      <div className="relative w-full flex flex-col items-center justify-center h-[600px] sm:h-[700px] md:h-[800px]">
         <div className="relative w-full flex justify-center items-center h-full overflow-hidden">
           {videos.map((video, idx) => (
             <motion.a
@@ -44,7 +44,7 @@ export default function CollaborationsSection() {
               <img
                 src={video.thumbnail}
                 alt={video.title}
-                className="w-full sm:max-w-[450px] md:max-w-[600px] h-64 sm:h-72 md:h-80 object-cover shadow-lg hover:scale-105 transition-transform"
+                className="w-full sm:max-w-[550px] md:max-w-[750px] h-[500px] sm:h-[600px] md:h-[700px] object-cover shadow-lg hover:scale-105 transition-transform"
               />
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-white text-center px-2">{video.title}</span>
@@ -79,28 +79,19 @@ export default function CollaborationsSection() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}
-      className="px-6 md:px-16 py-28 bg-white border-b border-gray-100"
+      className="px-6 md:px-16 py-28 bg-white border-b border-gray-200"
     >
-      <div className="flex flex-col md:flex-row justify-between items-start gap-8 md:gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-stretch gap-8 md:gap-6">
         <div className="flex-1 w-full flex flex-col items-center">
           <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
-          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-full shadow-md">
-            Colaboraciones de MM en videoclips
-          </h3>
         </div>
 
         <div className="flex-1 w-full flex flex-col items-center">
           <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
-          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-full shadow-md">
-            Dirección artística
-          </h3>
         </div>
 
         <div className="flex-1 w-full flex flex-col items-center">
           <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
-          <h3 className="mt-1 text-lg font-bold text-black bg-white border-2 border-black px-6 py-3 text-center rounded-full shadow-md">
-            Estilismo y coordinación de vestuario
-          </h3>
         </div>
       </div>
     </motion.section>

@@ -15,12 +15,12 @@ export default function AboutMe() {
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
       viewport={{ once: true }}
-      className="relative px-6 md:px-16 py-28 bg-white text-black border-b border-gray-100 overflow-hidden"
+      className="relative px-6 md:px-16 py-28 bg-black text-white border-b border-gray-800 overflow-hidden"
     >
       <div className="max-w-5xl mx-auto flex relative">
         {/* Línea vertical animada */}
         <motion.div
-          className="absolute left-0 top-0 w-1 md:w-2 bg-black rounded-full"
+          className="absolute left-0 top-0 w-1 md:w-2 bg-white rounded-full"
           initial={{ height: 0 }}
           whileInView={{ height: '100%' }}
           transition={{ duration: 2, ease: 'easeInOut' }}
@@ -34,11 +34,11 @@ export default function AboutMe() {
             whileInView={{ opacity: 1, y: 0 }}
             animate={{
               scale: [1, 1.05, 1],
-              color: ['#000000', '#000000', '#000000'],
+              color: ['#ffffff', '#ffffff', '#ffffff'],
               textShadow: [
-                '0px 0px 0px rgba(0,0,0,0)',
-                '0px 0px 0px rgba(0,0,0,0)',
-                '0px 0px 0px rgba(0,0,0,0)',
+                '0px 0px 0px rgba(255,255,255,0)',
+                '0px 0px 10px rgba(255,255,255,0.3)',
+                '0px 0px 0px rgba(255,255,255,0)',
               ],
             }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
@@ -53,7 +53,7 @@ export default function AboutMe() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: i * 0.3 }}
-              className="text-lg leading-relaxed text-black"
+              className="text-lg leading-relaxed text-white"
             >
               {p}
             </motion.p>

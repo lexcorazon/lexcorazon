@@ -44,6 +44,7 @@ export default function ClippingSection({ items = [] }) {
                 target="_blank"
                 rel="noreferrer"
                 className="block w-full h-40 overflow-hidden shadow-md cursor-pointer relative"
+                style={{ borderRadius: 50 }}
               >
                 {item.image && (
                   <img
@@ -52,7 +53,7 @@ export default function ClippingSection({ items = [] }) {
                     className="w-full h-full object-cover"
                   />
                 )}
-                <div className="absolute bottom-2 left-2 px-4 py-1 bg-black rounded-md text-white text-2xl font-extrabold shadow-lg">
+                <div className="absolute bottom-2 left-2 px-4 py-1 bg-black text-white text-2xl font-extrabold shadow-lg" style={{ borderRadius: 50 }}>
                   {item.medio}
                 </div>
               </a>
