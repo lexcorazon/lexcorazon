@@ -18,8 +18,11 @@ export default function Landing() {
   const lexBasis = hovered === 'lex' ? '100%' : hovered === 'aj' ? '0%' : '50%'
 
   // Ajustes responsivos para los logos
-  const logoClass =
+  const logoClassAJ =
     'mx-auto w-full h-auto max-w-[300px] sm:max-w-[360px] md:max-w-[460px] object-contain drop-shadow'
+  
+  const logoClassLex =
+    'mx-auto w-full h-auto max-w-[90vw] sm:max-w-[720px] md:max-w-[920px] object-contain drop-shadow'
 
   // Toggle para touch/móviles
   const handleTouch = (panel) => {
@@ -64,7 +67,7 @@ export default function Landing() {
             <motion.img
               src={AJLogo}
               alt="Alejandra Jaime"
-              className={logoClass}
+              className={logoClassAJ}
               initial={{ opacity: 0, y: 288 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -123,13 +126,13 @@ export default function Landing() {
         />
 
         {/* Contenido Lex */}
-        <section className="relative h-full min-h-[45dvh] md:min-h-dvh w-full flex flex-col items-center justify-center text-white p-8 text-center">
-          <div className="max-w-3xl w-full px-4">
+        <section className="relative h-full min-h-[45dvh] md:min-h-dvh w-full flex flex-col items-center justify-center text-white p-2 md:p-8 text-center">
+          <div className="w-full">
             {/* Logo Lex */}
             <motion.img
               src={LexLogo}
               alt="Lex Corazón"
-              className={logoClass}
+              className={logoClassLex}
               initial={{ opacity: 0, y: -288 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
