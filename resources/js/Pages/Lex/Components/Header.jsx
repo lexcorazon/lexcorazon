@@ -49,7 +49,7 @@ export default function Header() {
           <a href="https://www.instagram.com/lex.corazon/?igsh=MTcwMm5leXM2bmY3MA%3D%3D#" target="_blank" rel="noreferrer" className="icon-link">
             <img src="/images/icons/insta.svg" alt="Instagram" className="social-icon" />
           </a>
-          <a href="https://www.linkedin.com/in/alejandrajaime" target="_blank" rel="noreferrer" className="icon-link">
+          <a href="https://www.linkedin.com/in/alejandra-jaime-mendoza-1b761b1a9/" target="_blank" rel="noreferrer" className="icon-link">
             <img src="/images/icons/linkedin.svg" alt="LinkedIn" className="social-icon" />
           </a>
           <a href="mailto:lexcorazon@gmail.com" className="icon-link">
