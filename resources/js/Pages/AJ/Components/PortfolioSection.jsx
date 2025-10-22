@@ -126,7 +126,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
           transition={{ duration: 0.5, ease: 'easeInOut' }}
           className={`${isVideo ? 'relative' : 'absolute inset-0'} 
                       bg-black/80 flex flex-col justify-center items-center 
-                      text-white text-center p-6 z-50 
+                      text-white text-center p-3 sm:p-6 z-50 
                       ${onOpen && !isVideo ? 'cursor-pointer' : 'cursor-default'}`}
           onClick={() =>
             onOpen && !isVideo && onOpen({ title, description, media: sources })
@@ -136,7 +136,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="text-2xl font-bold mb-4"
+            className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-4 px-2"
           >
             {title}
           </motion.span>
@@ -157,7 +157,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg underline mt-4"
+              className="text-xs sm:text-sm md:text-base lg:text-lg underline mt-2 sm:mt-4"
             >
               Ver proyecto
             </motion.span>

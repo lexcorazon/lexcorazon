@@ -14,7 +14,7 @@ export default function CollaborationsSection() {
     { id: 9, url: 'rBuvvqY4Ibs', title: 'Vuelvo a la nena (Soto Asa)', thumbnail: 'https://img.youtube.com/vi/rBuvvqY4Ibs/hqdefault.jpg' },
   ]
 
-  function VideoCarousel3D({ videos = [] }) {
+  function VideoCarousel3D({ videos = [], categoryTitle = '' }) {
     const [curIdx, setCurIdx] = useState(0)
     const prev = () => setCurIdx((curIdx - 1 + videos.length) % videos.length)
     const next = () => setCurIdx((curIdx + 1) % videos.length)
@@ -46,6 +46,17 @@ export default function CollaborationsSection() {
                 alt={video.title}
                 className="w-full sm:max-w-[550px] md:max-w-[750px] h-[500px] sm:h-[600px] md:h-[700px] object-cover shadow-lg hover:scale-105 transition-transform"
               />
+              
+              {/* Título de categoría visible siempre al pie */}
+              {categoryTitle && (
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 py-3 px-4">
+                  <span className="text-white text-base sm:text-lg md:text-xl font-bold text-center block uppercase tracking-wide">
+                    {categoryTitle}
+                  </span>
+                </div>
+              )}
+              
+              {/* Título del video individual solo con hover */}
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <span className="text-white text-center px-2">{video.title}</span>
               </div>
@@ -83,15 +94,24 @@ export default function CollaborationsSection() {
     >
       <div className="flex flex-col md:flex-row justify-between items-stretch gap-8 md:gap-6">
         <div className="flex-1 w-full flex flex-col items-center">
-          <VideoCarousel3D videos={colaboracionesVideos.slice(0, 3)} />
+          <VideoCarousel3D 
+            videos={colaboracionesVideos.slice(0, 3)} 
+            categoryTitle="COLABORACIONES DE MM"
+          />
         </div>
 
         <div className="flex-1 w-full flex flex-col items-center">
-          <VideoCarousel3D videos={colaboracionesVideos.slice(8, 9)} />
+          <VideoCarousel3D 
+            videos={colaboracionesVideos.slice(8, 9)} 
+            categoryTitle="DIRECCIÓN ARTÍSTICA"
+          />
         </div>
 
         <div className="flex-1 w-full flex flex-col items-center">
-          <VideoCarousel3D videos={colaboracionesVideos.slice(3, 8)} />
+          <VideoCarousel3D 
+            videos={colaboracionesVideos.slice(3, 8)} 
+            categoryTitle="ESTILISMO Y COORDINACIÓN DE VESTUARIO"
+          />
         </div>
       </div>
     </motion.section>

@@ -175,7 +175,7 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
                     marginBottom: 16,
                     lineHeight: 1.7,
                     opacity: 0.95,
-                    fontSize: 32,
+                    fontSize: 'clamp(16px, 2.5vw, 32px)',
                     color: '#eee',
                     textAlign: 'justify',
                   }}
@@ -227,24 +227,47 @@ export default function Hero({ heroImages, activeImage, setActiveImage, activeTe
           .hero-arrow.right { right: 16px; }
           .hero-arrow:hover { color: #fff; }
 
-          /* Responsive móvil: sin fotos + hero más corto */
+          /* Responsive móvil: carrusel arriba, texto abajo */
           @media (max-width: 1024px) {
             #hero {
               flex-direction: column;
-              padding-top: 50px !important;
-              min-height: 90vh !important;
+              padding-top: 0 !important;
+              min-height: 100vh !important;
             }
-            .hero-carousel { display: none !important; }
+            .hero-carousel { 
+              flex: 1 1 auto !important;
+              height: 55vh !important;
+              order: -1;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+            }
+            .hero-carousel img {
+              width: 100% !important;
+              height: 100% !important;
+              object-fit: cover !important;
+            }
+            .hero-arrow {
+              font-size: 28px !important;
+            }
+            .hero-arrow.left { left: 12px !important; }
+            .hero-arrow.right { right: 12px !important; }
+            #hero > div:last-child {
+              padding: 24px 20px !important;
+            }
             #hero h1 {
               font-size: 1.8rem !important;
               text-align: center;
               line-height: 1.2;
-              margin-top: 1rem;
+              margin-top: 0 !important;
             }
-            .custom-scrollbar { max-height: 50vh !important; }
+            .custom-scrollbar { 
+              max-height: 35vh !important;
+              padding-right: 8px !important;
+            }
             .hero-button {
               position: static !important;
-              margin: 2rem auto 0 auto !important;
+              margin: 1.5rem auto 0 auto !important;
               display: block !important;
             }
           }
