@@ -62,6 +62,7 @@ export const aj = {
       titulo: 'Integración — Vogue',
       categoria: 'marca',
       media: [
+        '/images/integracion/vogue/PF17_MariaMagdalena_009.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_001.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_002.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_003.webp',
@@ -69,8 +70,7 @@ export const aj = {
         '/images/integracion/vogue/PF17_MariaMagdalena_005.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_006.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_007.webp',
-        '/images/integracion/vogue/PF17_MariaMagdalena_008.webp',
-        '/images/integracion/vogue/PF17_MariaMagdalena_009.webp',
+        '/images/integracion/vogue/PF17_MariaMagdalena_008.webp',  
         '/images/integracion/vogue/PF17_MariaMagdalena_010.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_011.webp',
         '/images/integracion/vogue/PF17_MariaMagdalena_012.webp',
@@ -100,6 +100,8 @@ export const aj = {
       titulo: 'We are Cattle — Vogue',
       categoria: 'marca',
       media: [
+        
+        '/images/we-are-cattle/vogue/00014-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00001-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00001-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
         '/images/we-are-cattle/vogue/00002-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
@@ -110,8 +112,8 @@ export const aj = {
         '/images/we-are-cattle/vogue/00005-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00006-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00007-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
-        '/images/we-are-cattle/vogue/00007-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
         '/images/we-are-cattle/vogue/00008-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
+        '/images/we-are-cattle/vogue/00007-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
         '/images/we-are-cattle/vogue/00009-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00009-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
         '/images/we-are-cattle/vogue/00010-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
@@ -119,7 +121,6 @@ export const aj = {
         '/images/we-are-cattle/vogue/00011-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00012-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00013-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
-        '/images/we-are-cattle/vogue/00014-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00014-Maria-Magdalena-Madrid-Fall-2015-RTW-Details.jpg',
         '/images/we-are-cattle/vogue/00015-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
         '/images/we-are-cattle/vogue/00016-Maria-Magdalena-Madrid-Fall-2015-RTW.jpg',
@@ -143,10 +144,10 @@ export const aj = {
       categoria: 'producto',
       // Solo imágenes (ejemplo):
       media: [
+        '/images/play-for-art/DSC05927.webp',
         '/images/play-for-art/DSC05813(1).webp',
         '/images/play-for-art/DSC05916.webp',
-        '/images/play-for-art/DSC05920.webp',
-        '/images/play-for-art/DSC05927.webp',
+        '/images/play-for-art/DSC05920.webp', 
         '/images/play-for-art/DSC05933.webp',
         '/images/play-for-art/DSC06093.webp',
         '/images/play-for-art/DSC06445.webp',
@@ -166,10 +167,10 @@ export const aj = {
     {
       titulo: "drogas-meditacion",
       images: [
+        "images/drogas-meditacion/4.webp",
+        "images/drogas-meditacion/3.webp",
         "images/drogas-meditacion/1.webp",
         "images/drogas-meditacion/2.webp",
-        "images/drogas-meditacion/3.webp",
-        "images/drogas-meditacion/4.webp",
       ]
     },
 
