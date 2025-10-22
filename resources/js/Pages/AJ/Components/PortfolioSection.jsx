@@ -136,7 +136,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold mb-2 sm:mb-4 px-2"
+            className="text-xs sm:text-base md:text-lg lg:text-xl font-bold mb-2 sm:mb-4 px-2"
           >
             {title}
           </motion.span>
@@ -157,7 +157,7 @@ function AutoAspectTile({ title, media = [], images = [], onOpen, description })
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-xs sm:text-sm md:text-base lg:text-lg underline mt-2 sm:mt-4"
+              className="text-[10px] sm:text-xs md:text-sm lg:text-base underline mt-2 sm:mt-4"
             >
               Ver proyecto
             </motion.span>
