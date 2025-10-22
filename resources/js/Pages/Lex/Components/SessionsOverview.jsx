@@ -64,21 +64,21 @@ export default function SessionsOverview() {
       style={{
         width: '100%',
         minHeight: '120vh',
-        background: '#000',
+        background: '#fff',
         padding: '100px 60px',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         gap: 0,
-        borderBottom: '1px solid #222'
+        borderBottom: '1px solid #ddd'
       }}
     >
       {/* IZQUIERDA - Coaching Astrológico */}
       <div className="sessions-overview-left" style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        borderRight: '1px solid #222',
+        borderRight: '1px solid #ddd',
         padding: '80px 60px'
       }}>
         <motion.div
@@ -97,7 +97,7 @@ export default function SessionsOverview() {
           <h2 style={{
             fontSize: 'clamp(3rem, 6vw, 5rem)',
             fontWeight: 900,
-            color: '#77cee4',
+            color: '#000',
             textTransform: 'uppercase',
             letterSpacing: 2,
             lineHeight: 1.2
@@ -117,37 +117,33 @@ export default function SessionsOverview() {
             }}
             style={{
               fontSize: 80,
-              color: '#77cee4'
+              color: '#000'
             }}
           >
             ↓
           </motion.div>
 
-          <h3 
+          <motion.h3 
             onClick={() => scrollToSession('Carta Natal')}
             style={{
               fontSize: 'clamp(2.5rem, 5vw, 4rem)',
               fontWeight: 900,
-              color: '#fff',
+              color: '#000',
               textTransform: 'uppercase',
               letterSpacing: 3,
               padding: '30px 50px',
-              border: '3px solid #77cee4',
-              borderRadius: 20,
+              border: '4px solid #000',
+              borderRadius: 100,
               cursor: 'pointer',
-              transition: 'all 0.3s ease'
+              background: '#77cee4'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#77cee4'
-              e.currentTarget.style.color = '#000'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-              e.currentTarget.style.color = '#fff'
+            whileHover={{
+              scale: 1.05,
+              transition: { duration: 0 }
             }}
           >
             CARTA NATAL
-          </h3>
+          </motion.h3>
         </motion.div>
       </div>
 
@@ -155,7 +151,7 @@ export default function SessionsOverview() {
       <div className="sessions-overview-right" style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         padding: '80px 60px'
       }}>
         <motion.div
@@ -168,7 +164,7 @@ export default function SessionsOverview() {
           <h2 style={{
             fontSize: 'clamp(3rem, 6vw, 5rem)',
             fontWeight: 900,
-            color: '#FFD500',
+            color: '#000',
             textTransform: 'uppercase',
             letterSpacing: 2,
             marginBottom: 20,
@@ -182,13 +178,13 @@ export default function SessionsOverview() {
           <h3 style={{
             fontSize: 'clamp(2rem, 4vw, 3rem)',
             fontWeight: 700,
-            color: '#fff',
+            color: '#FFD500',
             textTransform: 'uppercase',
             letterSpacing: 1.5,
             marginBottom: 50,
             textAlign: 'center'
           }}>
-            VIAJE LEX CORAZÓN
+            VIAJE LEX CORAZON
           </h3>
 
           {/* Grid de sesiones */}
@@ -207,7 +203,7 @@ export default function SessionsOverview() {
               <h4 style={{
                 fontSize: 22,
                 fontWeight: 700,
-                color: '#FFD500',
+                color: '#000',
                 textTransform: 'uppercase',
                 letterSpacing: 1,
                 marginBottom: 15,
@@ -221,14 +217,14 @@ export default function SessionsOverview() {
                   onClick={() => scrollToSession(sesion)}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + (i * 0.1), duration: 0.5 }}
+                  transition={{ delay: 0.4 + (i * 0.1), duration: 0.5, type: "spring", stiffness: 400, damping: 25 }}
                   viewport={{ once: true }}
                   style={{
                     padding: '28px 35px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '2px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 16,
-                    color: '#fff',
+                    background: '#fff',
+                    border: '4px solid #000',
+                    borderRadius: 50,
+                    color: '#000',
                     fontSize: 24,
                     fontWeight: 600,
                     textAlign: 'center',
@@ -236,13 +232,8 @@ export default function SessionsOverview() {
                     textTransform: 'uppercase'
                   }}
                   whileHover={{
-                    background: 'rgba(255, 213, 0, 0.15)',
-                    borderColor: '#FFD500',
-                    scale: 1.05
-                  }}
-                  transition={{
-                    duration: 0.2,
-                    ease: 'easeInOut'
+                    scale: 1.05,
+                    transition: { duration: 0 }
                   }}
                 >
                   {sesion}
@@ -253,7 +244,7 @@ export default function SessionsOverview() {
             {/* Línea separadora */}
             <div className="sessions-grid-separator" style={{
               width: 2,
-              background: '#FFD500',
+              background: '#000',
               height: '100%'
             }} />
 
@@ -266,7 +257,7 @@ export default function SessionsOverview() {
               <h4 style={{
                 fontSize: 22,
                 fontWeight: 700,
-                color: '#FFD500',
+                color: '#000',
                 textTransform: 'uppercase',
                 letterSpacing: 1,
                 marginBottom: 15,
@@ -280,14 +271,14 @@ export default function SessionsOverview() {
                   onClick={() => scrollToSession(sesion)}
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 + (i * 0.1), duration: 0.5 }}
+                  transition={{ delay: 0.4 + (i * 0.1), duration: 0.5, type: "spring", stiffness: 400, damping: 25 }}
                   viewport={{ once: true }}
                   style={{
                     padding: '28px 35px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '2px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 16,
-                    color: '#fff',
+                    background: '#fff',
+                    border: '4px solid #000',
+                    borderRadius: 50,
+                    color: '#000',
                     fontSize: 24,
                     fontWeight: 600,
                     textAlign: 'center',
@@ -295,13 +286,8 @@ export default function SessionsOverview() {
                     textTransform: 'uppercase'
                   }}
                   whileHover={{
-                    background: 'rgba(255, 213, 0, 0.15)',
-                    borderColor: '#FFD500',
-                    scale: 1.05
-                  }}
-                  transition={{
-                    duration: 0.2,
-                    ease: 'easeInOut'
+                    scale: 1.05,
+                    transition: { duration: 0 }
                   }}
                 >
                   {sesion}
@@ -324,7 +310,7 @@ export default function SessionsOverview() {
           
           .sessions-overview-left {
             border-right: none !important;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #ddd;
             padding: 50px 20px !important;
             min-height: auto !important;
           }

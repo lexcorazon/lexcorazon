@@ -114,7 +114,7 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
                       </p>
                     )}
                     {sessionInfo.trial && (
-                      <p style={{ fontSize: 14, color: '#7CFFB2', fontStyle: 'italic' }}>
+                      <p style={{ fontSize: 14, color: '#77cee4', fontStyle: 'italic' }}>
                         {sessionInfo.trial}
                       </p>
                     )}
@@ -141,17 +141,17 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
                     <label style={{ color:'#fff', fontSize:18, fontWeight:700, textAlign:'center', marginBottom:8 }}>Selecciona el tipo de pack</label>
                     <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
                       <button type="button" onClick={() => window.open('https://buy.stripe.com/5kQbJ3aUi8Rx5fbdEV4c805', '_blank')}
-                        style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'16px 20px', background:'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)', borderRadius:12, border:'1px solid rgba(255,255,255,0.2)', transition:'all 0.3s ease', fontWeight:600, backdropFilter:'blur(10px)', boxShadow:'0 4px 15px rgba(0,0,0,0.1)' }}>
-                        <div>
+                        style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, cursor:'pointer', fontSize:16, color:'#000', padding:'16px 20px', background:'#fff', borderRadius:12, border:'1px solid rgba(0,0,0,0.1)', transition:'all 0.3s ease', fontWeight:600, boxShadow:'0 4px 15px rgba(0,0,0,0.1)' }}>
+                        <div style={{ textAlign:'center' }}>
                           <div style={{fontWeight:700, fontSize:17}}>Sesiones Introspectivas</div>
-                          <div style={{fontSize:14, color:'rgba(255,255,255,0.7)', marginTop:4}}>180€ - Viaje a las tripas, Motín existencial, Caja de cerillas</div>
+                          <div style={{fontSize:14, color:'rgba(0,0,0,0.7)', marginTop:4}}>180€ - Viaje a las tripas, Motín existencial, Caja de cerillas</div>
                         </div>
                       </button>
                       <button type="button" onClick={() => window.open('https://buy.stripe.com/6oU00laUi9VB7nj1Wd4c804', '_blank')}
-                        style={{ display:'flex', alignItems:'center', gap:12, cursor:'pointer', fontSize:16, color:'#fff', padding:'16px 20px', background:'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%)', borderRadius:12, border:'1px solid rgba(255,255,255,0.2)', transition:'all 0.3s ease', fontWeight:600, backdropFilter:'blur(10px)', boxShadow:'0 4px 15px rgba(0,0,0,0.1)' }}>
-                        <div>
+                        style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:12, cursor:'pointer', fontSize:16, color:'#000', padding:'16px 20px', background:'#fff', borderRadius:12, border:'1px solid rgba(0,0,0,0.1)', transition:'all 0.3s ease', fontWeight:600, boxShadow:'0 4px 15px rgba(0,0,0,0.1)' }}>
+                        <div style={{ textAlign:'center' }}>
                           <div style={{fontWeight:700, fontSize:17}}>Sesiones de Construcción</div>
-                          <div style={{fontSize:14, color:'rgba(255,255,255,0.7)', marginTop:4}}>270€ - Lex ID, Aesthetic Overdose, Carne y hueso</div>
+                          <div style={{fontSize:14, color:'rgba(0,0,0,0.7)', marginTop:4}}>270€ - Lex ID, Aesthetic Overdose, Carne y hueso</div>
                         </div>
                       </button>
                     </div>
@@ -216,15 +216,15 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
 
                   <div style={{ display:'flex', flexWrap:'wrap', gap:16, marginTop:20 }}>
                     <a href="https://wa.me/34678776392" target="_blank" rel="noreferrer"
-                      style={{ background:'linear-gradient(135deg, #25D366 0%, #128C7E 100%)', color:'#fff', borderRadius:12, padding:'12px 18px', fontWeight:700, fontSize:17, textDecoration:'none', boxShadow:'0 4px 15px rgba(37, 211, 102, 0.3)', transition:'all 0.3s ease' }}>
+                      style={{ background:'#25D366', color:'#fff', borderRadius:12, padding:'12px 18px', fontWeight:700, fontSize:17, textDecoration:'none', boxShadow:'0 4px 15px rgba(37, 211, 102, 0.3)', transition:'all 0.3s ease' }}>
                       💬 WhatsApp
                     </a>
                     
                     {/* Botón de sesión de prueba para sesiones introspectivas */}
                     {isIntrospective && (
                       <button type="button" onClick={() => window.open('https://buy.stripe.com/00wcN74vUc3JbDzasJ4c80b', '_blank')}
-                        style={{ background:'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color:'#fff', borderRadius:12, padding:'12px 18px', fontWeight:700, fontSize:17, cursor:'pointer', border:'none', boxShadow:'0 4px 15px rgba(102, 126, 234, 0.3)', transition:'all 0.3s ease' }}>
-                        🎯 Sesión Prueba (50€)
+                        style={{ background:'#000', color:'#fff', borderRadius:12, padding:'12px 18px', fontWeight:700, fontSize:17, cursor:'pointer', border:'1px solid rgba(255,255,255,0.2)', boxShadow:'0 4px 15px rgba(0,0,0,0.3)', transition:'all 0.3s ease' }}>
+                        Sesión Prueba (50€)
                       </button>
                     )}
                     
@@ -259,8 +259,9 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
   }
   
   /* Efectos hover específicos para cada botón */
-  button[style*="667eea"]:hover {
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4) !important;
+  button[style*="background:'#000'"]:hover {
+    background: #111 !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4) !important;
   }
   
   a[style*="25D366"]:hover {
@@ -271,10 +272,10 @@ export default function BookingModal({ bookingOpen, setBookingOpen, sessionTitle
     box-shadow: 0 8px 25px rgba(124, 255, 178, 0.4) !important;
   }
   
-  /* Efectos hover para botones de packs */
-  button[style*="rgba(255,255,255,0.1)"]:hover {
-    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%) !important;
-    border-color: rgba(255,255,255,0.3) !important;
+  /* Efectos hover para botones de packs blancos */
+  button[style*="background:'#fff'"]:hover {
+    background: #f8f9fa !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
   }
   /* 🌐 GENERAL — asegura que el modal cubra todo el viewport */
   .booking-modal {
